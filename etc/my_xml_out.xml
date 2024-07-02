@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title/>
+            </titleStmt>
+            <publicationStmt>
+                <p/>
+            </publicationStmt>
+            <sourceDesc>
+                <p/>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text xml:lang="fr">
+        <body xml:lang="fro">
+            <div>
+                <p>
+                    <w lemma="Artu" n="0" xml:id="w_0">Artus</w>
+                    <w lemma="je" n="1" xml:id="w_1">je</w>
+                    <w lemma="tu" n="2" xml:id="w_2">te</w>
+                    <w lemma="conoistre" n="3" xml:id="w_3">conois</w>
+                    <w lemma="m" n="4" xml:id="w_4">mult</w>
+                    <w lemma="m" n="5" xml:id="w_5">miaus</w>
+                    <w lemma="que1" n="6" xml:id="w_6">que</w>
+                    <w lemma="tu" n="7" xml:id="w_7">tu</w>
+                    <w lemma="ne1" n="8" xml:id="w_8">ne</w>
+                    <w lemma="faire" n="9" xml:id="w_9">fas</w>
+                    <w lemma="je" n="10" xml:id="w_10">moi</w>
+                </p>
+            </div>
+        </body>
+    </text>
+</TEI>
