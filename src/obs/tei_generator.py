@@ -1,9 +1,11 @@
 import xml.etree.ElementTree as ET
 
 from xml.dom import minidom
+from constants import TEXT_lIST
+from utils import get_lemmas_from_text
 
 
-def create_tei(text, lemmas, ):
+def create_tei(text, lemmas):
     # Creazione della struttura base del documento TEI
     TEI = ET.Element("TEI", xmlns="http://www.tei-c.org/ns/1.0")
     teiHeader = ET.SubElement(TEI, "teiHeader")
@@ -20,17 +22,26 @@ def create_tei(text, lemmas, ):
     body = ET.SubElement(text_elem, "body", attrib={"xml:lang": "it"})
     div = ET.SubElement(body, "div")
 
-    # Creazione della frase <s>
+    # Creazione delle frasi <s> considerando punteggiatura e fine linea
     s = ET.SubElement(div, "s")
 
-    # Iterazione sulle parole e sui lemmi per creare gli elementi <w>
     for i, (word, lemma) in enumerate(zip(text, lemmas)):
-        w = ET.SubElement(s, "w", attrib={
-            "xml:id": f"w_{i}",
-            "n": str(i),
-            "lemma": lemma
-        })
+        if word in [',', '.', '!', '?', ';', ':', "'"]:  # Punteggiatura
+            w = ET.SubElement(s, "pc", attrib={
+                "xml:id": f"w_{i}",
+                "n": str(i)
+            })
+        else:
+            w = ET.SubElement(s, "w", attrib={
+                "xml:id": f"w_{i}",
+                "n": str(i),
+                "lemma": lemma
+            })
         w.text = word
+
+        # Aggiungere nuova frase (nuova linea)
+        if word in ['.', '!', '?']:
+            s = ET.SubElement(div, "s")
 
     # Funzione per generare una stringa XML formattata
     def prettify(elem):
@@ -39,43 +50,18 @@ def create_tei(text, lemmas, ):
 
         return reparsed.toprettyxml(indent="    ")
 
-    # format and return
+    # Stampa il documento XML formattato
     return prettify(TEI)
 
 
 # Input
-lemmas = [
-    'Artu',
-    'je',
-    'tu',
-    'conoistre',
-    'm',
-    'm',
-    'que1',
-    'tu',
-    'ne1',
-    'faire',
-    'je'
-]
-
-text = [
-    'Artus',
-    'je',
-    'te',
-    'conois',
-    'mult',
-    'miaus',
-    'que',
-    'tu',
-    'ne',
-    'fas',
-    'moi'
-]
+my_text = TEXT_lIST['inf_1']
+my_lemmas = get_lemmas_from_text(my_text)
 
 # Genera il file TEI
-xml_ou = create_tei(text, lemmas)
+xml_ou = create_tei(my_text, my_lemmas)
 
-with open('../etc/my_xml_out.xml', 'w') as xml_out:
+with open('../../etc/my_xml_out.xml', 'w') as xml_out:
     xml_out.write(xml_ou)
 
 

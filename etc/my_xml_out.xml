@@ -13,22 +13,70 @@
             </sourceDesc>
         </fileDesc>
     </teiHeader>
-    <text xml:lang="fr">
-        <body xml:lang="fro">
+    <text xml:lang="it">
+        <body xml:lang="it">
             <div>
-                <p>
-                    <w lemma="Artu" n="0" xml:id="w_0">Artus</w>
-                    <w lemma="je" n="1" xml:id="w_1">je</w>
-                    <w lemma="tu" n="2" xml:id="w_2">te</w>
-                    <w lemma="conoistre" n="3" xml:id="w_3">conois</w>
-                    <w lemma="m" n="4" xml:id="w_4">mult</w>
-                    <w lemma="m" n="5" xml:id="w_5">miaus</w>
-                    <w lemma="que1" n="6" xml:id="w_6">que</w>
-                    <w lemma="tu" n="7" xml:id="w_7">tu</w>
-                    <w lemma="ne1" n="8" xml:id="w_8">ne</w>
-                    <w lemma="faire" n="9" xml:id="w_9">fas</w>
-                    <w lemma="je" n="10" xml:id="w_10">moi</w>
-                </p>
+                <s>
+                    <w lemma="in il" n="0" xml:id="w_0">Nel</w>
+                    <w lemma="mezzo" n="1" xml:id="w_1">mezzo</w>
+                    <w lemma="di il" n="2" xml:id="w_2">del</w>
+                    <w lemma="cammin" n="3" xml:id="w_3">cammin</w>
+                    <w lemma="di" n="4" xml:id="w_4">di</w>
+                    <w lemma="nostro" n="5" xml:id="w_5">nostra</w>
+                    <w lemma="vita" n="6" xml:id="w_6">vita</w>
+                    <pc n="7" xml:id="w_7">,</pc>
+                    <w lemma="mi" n="8" xml:id="w_8">mi</w>
+                    <w lemma="ritrovaire" n="9" xml:id="w_9">ritrovai</w>
+                    <w lemma="in" n="10" xml:id="w_10">in</w>
+                    <w lemma="uno" n="11" xml:id="w_11">una</w>
+                    <w lemma="selva" n="12" xml:id="w_12">selva</w>
+                    <w lemma="oscuro" n="13" xml:id="w_13">oscura</w>
+                    <pc n="14" xml:id="w_14">,</pc>
+                    <w lemma="ché" n="15" xml:id="w_15">ché</w>
+                    <w lemma="il" n="16" xml:id="w_16">la</w>
+                    <w lemma="diritta" n="17" xml:id="w_17">diritta</w>
+                    <w lemma="via" n="18" xml:id="w_18">via</w>
+                    <w lemma="essere" n="19" xml:id="w_19">era</w>
+                    <w lemma="smarrire" n="20" xml:id="w_20">smarrita</w>
+                    <pc n="21" xml:id="w_21">.</pc>
+                </s>
+                <s>
+                    <w lemma="ahi" n="22" xml:id="w_22">Ahi</w>
+                    <w lemma="quanto" n="23" xml:id="w_23">quanto</w>
+                    <w lemma="a" n="24" xml:id="w_24">a</w>
+                    <w lemma="dire" n="25" xml:id="w_25">dir</w>
+                    <w lemma="quale" n="26" xml:id="w_26">qual</w>
+                    <w lemma="essere" n="27" xml:id="w_27">era</w>
+                    <w lemma="essere" n="28" xml:id="w_28">è</w>
+                    <w lemma="duro" n="29" xml:id="w_29">dura</w>
+                    <w lemma="questo" n="30" xml:id="w_30">questa</w>
+                    <w lemma="selva" n="31" xml:id="w_31">selva</w>
+                    <w lemma="selvaggio" n="32" xml:id="w_32">selvaggia</w>
+                    <w lemma="e" n="33" xml:id="w_33">e</w>
+                    <w lemma="aspra" n="34" xml:id="w_34">aspra</w>
+                    <w lemma="e" n="35" xml:id="w_35">e</w>
+                    <w lemma="forte" n="36" xml:id="w_36">forte</w>
+                    <w lemma="che" n="37" xml:id="w_37">che</w>
+                    <w lemma="in il" n="38" xml:id="w_38">nel</w>
+                    <w lemma="pensier" n="39" xml:id="w_39">pensier</w>
+                    <w lemma="rinovare" n="40" xml:id="w_40">rinova</w>
+                    <w lemma="il" n="41" xml:id="w_41">la</w>
+                    <w lemma="paura" n="42" xml:id="w_42">paura</w>
+                    <pc n="43" xml:id="w_43">!</pc>
+                </s>
+                <s>
+                    <w lemma="Tant" n="44" xml:id="w_44">Tant</w>
+                    <pc n="45" xml:id="w_45">'</pc>
+                    <w lemma="essere" n="46" xml:id="w_46">è</w>
+                    <w lemma="amaro" n="47" xml:id="w_47">amaro</w>
+                    <w lemma="che" n="48" xml:id="w_48">che</w>
+                    <w lemma="poco" n="49" xml:id="w_49">poco</w>
+                    <w lemma="essere" n="50" xml:id="w_50">è</w>
+                    <w lemma="più" n="51" xml:id="w_51">più</w>
+                    <w lemma="morto" n="52" xml:id="w_52">morte</w>
+                    <pc n="53" xml:id="w_53">.</pc>
+                </s>
+                <s/>
             </div>
         </body>
     </text>

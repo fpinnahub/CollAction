@@ -15,7 +15,7 @@ def validate(xml_path: str, xsd_path: str = '../dat/teiP5osis.2.5.0.xsd') -> boo
 #
 
 # if validate("path/to/file.xml", "path/to/scheme.xsd"):
-if validate("../etc/my_xml_out.xml"):
+if validate("../../etc/my_xml_out.xml"):
     print('Valid! :)')
 else:
     print('Not valid! :(')
