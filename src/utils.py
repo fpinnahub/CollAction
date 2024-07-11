@@ -1,5 +1,5 @@
 
-from constants import PUNCT_SINGS, ETC_FOLDER
+from constants import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE
 
 
 def plain_text_from_split(txt):
@@ -12,28 +12,42 @@ def plain_text_from_split(txt):
     return my_txt
 
 
-def get_lemmas_from_text(txt, lang_model='it_core_news_sm', **lang_model_params):
+def get_spacy_lemmas_from_text(txt, lang_model='it_core_news_lg', **lang_model_params):
     """Given a text as a long string or as a list of words, get its lemmas. Only for Italian"""
     import spacy
 
     # loading spacy language model
     if 'disable' not in lang_model_params:
         lang_model_params['disable'] = ['parser', 'ner']
-    load_model = spacy.load(lang_model, **lang_model_params)
+    nlp = spacy.load(lang_model, **lang_model_params)
 
     # checking and loading input
     if isinstance(txt, str):
-        doc = load_model(txt)
+        doc = nlp(txt)
     elif isinstance(txt, list):
         _txt = plain_text_from_split(txt)
-        doc = load_model(_txt)
+        doc = nlp(_txt)
     else:
 
         raise TypeError('Text must be a string or a list of words')
 
-    # getting the lemmas
-    lemmas = [token.lemma_ for token in doc]
-
+    # getting the lemmas and words
+    lemmas = []
+    for token in doc:
+        lemmas.append(
+            {
+                'word': token.text,
+                'lemma': token.lemma_,
+                'pos': token.pos_,
+                'morph': token.morph.__str__(),
+                'n': token.i,
+                'sentence_start': token.is_sent_start,
+                'sentence_end': token.is_sent_end,
+                'punctuation': token.is_punct,
+                'out_of_voc': token.is_oov,
+                'title': token.is_title
+            }
+        )
     return lemmas
 
 
@@ -75,15 +89,16 @@ def get_tei_from_plain_text(
 
         raise TypeError('A string of text must be given')
 
-    # words list
-    txt_w = split_string_text(txt)
+    # # words list
+    # txt_w = split_string_text(txt)  # avoid this way, get it from spacy!
 
     out_tei = tei_file if normpath('/') in tei_file else f'{ETC_FOLDER}{tei_file}'
 
     # lemmatize, if not given lemmas
     if lemmas is None:
-        lemmas = get_lemmas_from_text(txt_w, lang_model) \
-            if lang_model else get_lemmas_from_text(txt_w)
+        # lemmas = get_lemmas_from_text(txt_w, lang_model)
+        lemmas = get_spacy_lemmas_from_text(txt, lang_model) \
+            if lang_model else get_spacy_lemmas_from_text(txt)
 
     # basic TEI file structure creation
     TEI = ET.Element("TEI", xmlns="http://www.tei-c.org/ns/1.0")
@@ -104,22 +119,25 @@ def get_tei_from_plain_text(
     # sentences <s> creation, taking into account punctuation and line-breaks (maybe!)
     s = ET.SubElement(div, 's')
 
-    for i, (word, lemma) in enumerate(zip(txt_w, lemmas)):
-        if word in [',', '.', '!', '?', ';', ':', "'"]:  # Punteggiatura
-            w = ET.SubElement(s, "pc", attrib={
-                "xml:id": f"w_{i}",
-                "n": str(i)
-            })
-        else:
-            w = ET.SubElement(s, "w", attrib={
-                "xml:id": f"w_{i}",
-                "n": str(i),
-                "lemma": lemma
-            })
+    for lem in lemmas:
+        word = lem['word']
+        # line breaks (XML killing characters) management
+        word = word.replace('\n', '{LB}')
+        n = str(lem.get('n', -1))
+        # if word in [',', '.', '!', '?', ';', ':', "'"]:  # punctuation
+        if lem['punctuation']:
+            pass
+        w = ET.SubElement(s, "w", attrib={
+            "xml:id": f"w_{n}",
+            "n": n,
+            "lemma": lem['lemma'].replace('\n', '{LB}'),
+            'pos': lem.get('pos', 'empy'),
+            'msd': lem.get('morph', 'empty')
+        })
         w.text = word
 
         # adding new sentence (new line)
-        if word in ['.', '!', '?']:
+        if word in END_SENTENCE or lem['sentence_end']:
             s = ET.SubElement(div, "s")
 
     # saving in the right XML format

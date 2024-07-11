@@ -1,0 +1,191 @@
+digraph {
+	graph [rankdir=LR]
+	1 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>start</B></TD><TD ALIGN='LEFT'>exact: 0</TD></TR></TABLE>>]
+	2 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>end</B></TD><TD ALIGN='LEFT'>exact: 23</TD></TR></TABLE>>]
+	3 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B> ave( ndo)</B></TD><TD ALIGN='LEFT'>exact: 1</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'> ave(ndo) </FONT></TD><TD ALIGN='LEFT'>P</TD></TR></TABLE>>]
+	4 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>gran disio dipinsi una</B></TD><TD ALIGN='LEFT'>exact: 2</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>gran disio dipinsi una </FONT></TD><TD ALIGN='LEFT'>P, V, L</TD></TR></TABLE>>]
+	5 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>pintura</B></TD><TD ALIGN='LEFT'>exact: 3</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>pintura </FONT></TD><TD ALIGN='LEFT'>P, V</TD></TR></TABLE>>]
+	6 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>bella</B></TD><TD ALIGN='LEFT'>exact: 4</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>bella </FONT></TD><TD ALIGN='LEFT'>P, V, L</TD></TR></TABLE>>]
+	7 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>uoi</B></TD><TD ALIGN='LEFT'>exact: 5</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>uoi </FONT></TD><TD ALIGN='LEFT'>P, L</TD></TR></TABLE>>]
+	8 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>simiglante Equando</B></TD><TD ALIGN='LEFT'>exact: 6</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>simiglante Equando </FONT></TD><TD ALIGN='LEFT'>P, V, L</TD></TR></TABLE>>]
+	9 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>no</B></TD><TD ALIGN='LEFT'>exact: 7</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>no</FONT></TD><TD ALIGN='LEFT'>P</TD></TR></TABLE>>]
+	10 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>( n)</B></TD><TD ALIGN='LEFT'>exact: 9</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>(n) </FONT></TD><TD ALIGN='LEFT'>P, L</TD></TR></TABLE>>]
+	11 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>uiueo viveo</B></TD><TD ALIGN='LEFT'>exact: 10</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>uiueo          viveo </FONT></TD><TD ALIGN='LEFT'>P</TD></TR></TABLE>>]
+	12 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>guardo</B></TD><TD ALIGN='LEFT'>exact: 11</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>guardo     </FONT></TD><TD ALIGN='LEFT'>P, V</TD></TR></TABLE>>]
+	13 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>inquella</B></TD><TD ALIGN='LEFT'>exact: 12</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>inquella </FONT></TD><TD ALIGN='LEFT'>P, V, L</TD></TR></TABLE>>]
+	14 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>figura</B></TD><TD ALIGN='LEFT'>exact: 13</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>figura </FONT></TD><TD ALIGN='LEFT'>P, V</TD></TR></TABLE>>]
+	15 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>par keo</B></TD><TD ALIGN='LEFT'>exact: 14</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>par    keo    </FONT></TD><TD ALIGN='LEFT'>P</TD></TR></TABLE>>]
+	16 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>uagia</B></TD><TD ALIGN='LEFT'>exact: 15</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>uagia    </FONT></TD><TD ALIGN='LEFT'>P</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>uagia     </FONT></TD><TD ALIGN='LEFT'>V</TD></TR></TABLE>>]
+	17 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>dauante kome quello kecrede</B></TD><TD ALIGN='LEFT'>exact: 16</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>dauante kome   quello kecrede </FONT></TD><TD ALIGN='LEFT'>P</TD></TR></TABLE>>]
+	18 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>saluarsi</B></TD><TD ALIGN='LEFT'>exact: 18</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>saluarsi    </FONT></TD><TD ALIGN='LEFT'>P, V</TD></TR></TABLE>>]
+	19 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>p( er) suafede ancor</B></TD><TD ALIGN='LEFT'>exact: 19</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>p(er)    suafede ancor       </FONT></TD><TD ALIGN='LEFT'>P, V, L</TD></TR></TABLE>>]
+	20 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>no( n)</B></TD><TD ALIGN='LEFT'>exact: 20</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>no(n) </FONT></TD><TD ALIGN='LEFT'>P</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>no(n)    </FONT></TD><TD ALIGN='LEFT'>L</TD></TR></TABLE>>]
+	21 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>uegia</B></TD><TD ALIGN='LEFT'>exact: 21</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>uegia </FONT></TD><TD ALIGN='LEFT'>P</TD></TR></TABLE>>]
+	22 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>inante</B></TD><TD ALIGN='LEFT'>exact: 22</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>inante</FONT></TD><TD ALIGN='LEFT'>P, V, L</TD></TR></TABLE>>]
+	23 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>avendo</B></TD><TD ALIGN='LEFT'>exact: 1</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>avendo </FONT></TD><TD ALIGN='LEFT'>V, L</TD></TR></TABLE>>]
+	24 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>auoi</B></TD><TD ALIGN='LEFT'>exact: 5</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>auoi </FONT></TD><TD ALIGN='LEFT'>V</TD></TR></TABLE>>]
+	25 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>uoi</B></TD><TD ALIGN='LEFT'>exact: 7</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>uoi </FONT></TD><TD ALIGN='LEFT'>V, L</TD></TR></TABLE>>]
+	26 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>nonueo veo</B></TD><TD ALIGN='LEFT'>exact: 8</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>nonueo          veo </FONT></TD><TD ALIGN='LEFT'>V</TD></TR></TABLE>>]
+	27 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>epar chio</B></TD><TD ALIGN='LEFT'>exact: 14</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>epar   chio  </FONT></TD><TD ALIGN='LEFT'>V</TD></TR></TABLE>>]
+	28 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>auante</B></TD><TD ALIGN='LEFT'>exact: 16</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>auante </FONT></TD><TD ALIGN='LEFT'>V, L</TD></TR></TABLE>>]
+	29 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>sicomomo checrede</B></TD><TD ALIGN='LEFT'>exact: 17</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>sicomomo       checrede </FONT></TD><TD ALIGN='LEFT'>V</TD></TR></TABLE>>]
+	30 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>non a</B></TD><TD ALIGN='LEFT'>exact: 20</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>non       a     </FONT></TD><TD ALIGN='LEFT'>V</TD></TR></TABLE>>]
+	31 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>figura</B></TD><TD ALIGN='LEFT'>exact: 3</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>figura </FONT></TD><TD ALIGN='LEFT'>L</TD></TR></TABLE>>]
+	32 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>nonuio vio guardo</B></TD><TD ALIGN='LEFT'>exact: 8</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>nonuio          vio guardo</FONT></TD><TD ALIGN='LEFT'>L</TD></TR></TABLE>>]
+	33 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>pintura eppar cheo uaggia</B></TD><TD ALIGN='LEFT'>exact: 13</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>pintura eppar cheo  uaggia   </FONT></TD><TD ALIGN='LEFT'>L</TD></TR></TABLE>>]
+	34 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>sicomom chessicrede saluare</B></TD><TD ALIGN='LEFT'>exact: 17</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>sicomom         chessicrede saluare     </FONT></TD><TD ALIGN='LEFT'>L</TD></TR></TABLE>>]
+	35 [label=<<TABLE CELLSPACING="0"><TR><TD ALIGN='LEFT'><B>ua</B></TD><TD ALIGN='LEFT'>exact: 21</TD></TR><TR><TD ALIGN='LEFT'><FONT FACE='Bukyvede'>ua   </FONT></TD><TD ALIGN='LEFT'>L</TD></TR></TABLE>>]
+	1 -> 3 [label=P]
+	1 -> 23 [label="V, L"]
+	3 -> 4 [label=P]
+	4 -> 5 [label="P, V"]
+	4 -> 31 [label=L]
+	5 -> 6 [label="P, V"]
+	6 -> 7 [label="P, L"]
+	6 -> 24 [label=V]
+	7 -> 8 [label="P, L"]
+	8 -> 9 [label=P]
+	8 -> 25 [label="V, L"]
+	9 -> 10 [label=P]
+	10 -> 11 [label=P]
+	10 -> 13 [label=L]
+	11 -> 12 [label=P]
+	12 -> 13 [label="P, V"]
+	13 -> 14 [label="P, V"]
+	13 -> 33 [label=L]
+	14 -> 15 [label=P]
+	14 -> 27 [label=V]
+	15 -> 16 [label=P]
+	16 -> 17 [label=P]
+	16 -> 28 [label=V]
+	17 -> 18 [label=P]
+	18 -> 19 [label="P, V"]
+	19 -> 20 [label="P, L"]
+	19 -> 30 [label=V]
+	20 -> 21 [label=P]
+	20 -> 35 [label=L]
+	21 -> 22 [label=P]
+	22 -> 2 [label="P, V, L"]
+	23 -> 4 [label="V, L"]
+	24 -> 8 [label=V]
+	25 -> 26 [label=V]
+	25 -> 32 [label=L]
+	26 -> 12 [label=V]
+	27 -> 16 [label=V]
+	28 -> 29 [label=V]
+	28 -> 34 [label=L]
+	29 -> 18 [label=V]
+	30 -> 22 [label=V]
+	31 -> 6 [label=L]
+	32 -> 10 [label=L]
+	33 -> 28 [label=L]
+	34 -> 19 [label=L]
+	35 -> 22 [label=L]
+	{
+		graph [rank=same]
+		1
+	}
+	{
+		graph [rank=same]
+		3
+		23
+	}
+	{
+		graph [rank=same]
+		4
+	}
+	{
+		graph [rank=same]
+		5
+		31
+	}
+	{
+		graph [rank=same]
+		6
+	}
+	{
+		graph [rank=same]
+		7
+		24
+	}
+	{
+		graph [rank=same]
+		8
+	}
+	{
+		graph [rank=same]
+		9
+		25
+	}
+	{
+		graph [rank=same]
+		26
+		32
+	}
+	{
+		graph [rank=same]
+		10
+	}
+	{
+		graph [rank=same]
+		11
+	}
+	{
+		graph [rank=same]
+		12
+	}
+	{
+		graph [rank=same]
+		13
+	}
+	{
+		graph [rank=same]
+		14
+		33
+	}
+	{
+		graph [rank=same]
+		15
+		27
+	}
+	{
+		graph [rank=same]
+		16
+	}
+	{
+		graph [rank=same]
+		17
+		28
+	}
+	{
+		graph [rank=same]
+		29
+		34
+	}
+	{
+		graph [rank=same]
+		18
+	}
+	{
+		graph [rank=same]
+		19
+	}
+	{
+		graph [rank=same]
+		20
+		30
+	}
+	{
+		graph [rank=same]
+		21
+		35
+	}
+	{
+		graph [rank=same]
+		22
+	}
+	{
+		graph [rank=same]
+		2
+	}
+}
