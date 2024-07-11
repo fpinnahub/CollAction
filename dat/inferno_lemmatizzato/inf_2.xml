@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title/>
+            </titleStmt>
+            <publicationStmt>
+                <p/>
+            </publicationStmt>
+            <sourceDesc>
+                <p/>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text xml:lang="it">
+        <body xml:lang="it">
+            <div>
+                <s>
+                    <w lemma="in il" msd="Definite=Def|Gender=Masc|Number=Sing|PronType=Art" n="0" pos="ADP" xml:id="w_0">Nel</w>
+                    <w lemma="mezzo" msd="Gender=Masc|Number=Sing" n="1" pos="NOUN" xml:id="w_1">mezzo</w>
+                    <w lemma="di il" msd="Definite=Def|Gender=Masc|Number=Sing|PronType=Art" n="2" pos="ADP" xml:id="w_2">del</w>
+                    <w lemma="cammin" msd="Gender=Masc|Number=Sing" n="3" pos="NOUN" xml:id="w_3">cammin</w>
+                    <w lemma="di" msd="" n="4" pos="ADP" xml:id="w_4">di</w>
+                    <w lemma="nostro" msd="Gender=Fem|Number=Sing|Poss=Yes|PronType=Prs" n="5" pos="DET" xml:id="w_5">nostra</w>
+                    <w lemma="esistenza" msd="Gender=Fem|Number=Sing" n="6" pos="NOUN" xml:id="w_6">esistenza</w>
+                    <w lemma="LB" msd="" n="7" pos="SPACE" xml:id="w_7">LB</w>
+                    <w lemma="mi" msd="Clitic=Yes|Number=Sing|Person=1|PronType=Prs" n="8" pos="PRON" xml:id="w_8">mi</w>
+                    <w lemma="trovai" msd="Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin" n="9" pos="VERB" xml:id="w_9">trovai</w>
+                    <w lemma="per" msd="" n="10" pos="ADP" xml:id="w_10">per</w>
+                    <w lemma="uno" msd="Definite=Ind|Gender=Fem|Number=Sing|PronType=Art" n="11" pos="DET" xml:id="w_11">una</w>
+                    <w lemma="selva" msd="Gender=Fem|Number=Sing" n="12" pos="NOUN" xml:id="w_12">selva</w>
+                    <w lemma="oscuro" msd="Gender=Fem|Number=Sing" n="13" pos="ADJ" xml:id="w_13">oscura</w>
+                    <w lemma="," msd="" n="14" pos="PUNCT" xml:id="w_14">,</w>
+                    <w lemma="LB" msd="" n="15" pos="SPACE" xml:id="w_15">LB</w>
+                    <w lemma="ch�" msd="" n="16" pos="SCONJ" xml:id="w_16">ch�</w>
+                    <w lemma="il" msd="Definite=Def|Gender=Fem|Number=Sing|PronType=Art" n="17" pos="DET" xml:id="w_17">la</w>
+                    <w lemma="diritta" msd="Gender=Fem|Number=Sing" n="18" pos="NOUN" xml:id="w_18">diritta</w>
+                    <w lemma="via" msd="" n="19" pos="ADV" xml:id="w_19">via</w>
+                    <w lemma="essere" msd="Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin" n="20" pos="AUX" xml:id="w_20">era</w>
+                    <w lemma="perdire" msd="Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part" n="21" pos="VERB" xml:id="w_21">perduta</w>
+                    <w lemma="." msd="" n="22" pos="PUNCT" xml:id="w_22">.</w>
+                </s>
+                <s>
+                    <w lemma="LBLB" msd="" n="23" pos="SPACE" xml:id="w_23">LBLB</w>
+                    <w lemma="Ahi" msd="" n="24" pos="PROPN" xml:id="w_24">Ahi</w>
+                    <w lemma="quanto" msd="" n="25" pos="ADV" xml:id="w_25">quanto</w>
+                    <w lemma="dir" msd="VerbForm=Inf" n="26" pos="VERB" xml:id="w_26">dir</w>
+                    <w lemma="quale" msd="Number=Sing|PronType=Int" n="27" pos="PRON" xml:id="w_27">qual</w>
+                    <w lemma="essere" msd="Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin" n="28" pos="AUX" xml:id="w_28">era</w>
+                    <w lemma="essere" msd="Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin" n="29" pos="AUX" xml:id="w_29">�</w>
+                    <w lemma="cosa" msd="Gender=Fem|Number=Sing" n="30" pos="NOUN" xml:id="w_30">cosa</w>
+                    <w lemma="duro" msd="Gender=Fem|Number=Sing" n="31" pos="ADJ" xml:id="w_31">dura</w>
+                    <w lemma="LB" msd="" n="32" pos="SPACE" xml:id="w_32">LB</w>
+                    <w lemma="questo" msd="Gender=Fem|Number=Sing|PronType=Dem" n="33" pos="DET" xml:id="w_33">questa</w>
+                    <w lemma="selva" msd="Gender=Fem|Number=Sing" n="34" pos="NOUN" xml:id="w_34">selva</w>
+                    <w lemma="selvaggio" msd="Gender=Fem|Number=Sing" n="35" pos="ADJ" xml:id="w_35">selvaggia</w>
+                    <w lemma="e" msd="" n="36" pos="CCONJ" xml:id="w_36">e</w>
+                    <w lemma="aspra" msd="Gender=Fem|Number=Sing" n="37" pos="ADJ" xml:id="w_37">aspra</w>
+                    <w lemma="e" msd="" n="38" pos="CCONJ" xml:id="w_38">e</w>
+                    <w lemma="forte" msd="Number=Sing" n="39" pos="ADJ" xml:id="w_39">forte</w>
+                    <w lemma="LB" msd="" n="40" pos="SPACE" xml:id="w_40">LB</w>
+                    <w lemma="che" msd="PronType=Rel" n="41" pos="PRON" xml:id="w_41">che</w>
+                    <w lemma="in il" msd="Definite=Def|Gender=Masc|Number=Sing|PronType=Art" n="42" pos="ADP" xml:id="w_42">nel</w>
+                    <w lemma="pensier" msd="" n="43" pos="PROPN" xml:id="w_43">pensier</w>
+                    <w lemma="rinovare" msd="Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin" n="44" pos="VERB" xml:id="w_44">rinova</w>
+                    <w lemma="il" msd="Definite=Def|Gender=Fem|Number=Sing|PronType=Art" n="45" pos="DET" xml:id="w_45">la</w>
+                    <w lemma="spaventare" msd="Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin" n="46" pos="VERB" xml:id="w_46">spaventa</w>
+                    <w lemma="!" msd="" n="47" pos="PUNCT" xml:id="w_47">!</w>
+                </s>
+                <s>
+                    <w lemma="LBLB" msd="" n="48" pos="SPACE" xml:id="w_48">LBLB</w>
+                    <w lemma="tanto" msd="Gender=Masc|Number=Sing|PronType=Ind" n="49" pos="PRON" xml:id="w_49">Tanto</w>
+                    <w lemma="essere" msd="Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin" n="50" pos="AUX" xml:id="w_50">�</w>
+                    <w lemma="amaro" msd="Gender=Fem|Number=Sing" n="51" pos="ADJ" xml:id="w_51">amara</w>
+                    <w lemma="che" msd="" n="52" pos="SCONJ" xml:id="w_52">che</w>
+                    <w lemma="poco" msd="" n="53" pos="ADV" xml:id="w_53">poco</w>
+                    <w lemma="essere" msd="Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin" n="54" pos="AUX" xml:id="w_54">�</w>
+                    <w lemma="pi�" msd="" n="55" pos="ADV" xml:id="w_55">pi�</w>
+                    <w lemma="morte" msd="Gender=Fem|Number=Plur" n="56" pos="ADJ" xml:id="w_56">morte</w>
+                    <w lemma=";" msd="" n="57" pos="PUNCT" xml:id="w_57">;</w>
+                    <w lemma="LB" msd="" n="58" pos="SPACE" xml:id="w_58">LB</w>
+                    <w lemma="ma" msd="" n="59" pos="CCONJ" xml:id="w_59">ma</w>
+                    <w lemma="per" msd="" n="60" pos="ADP" xml:id="w_60">per</w>
+                    <w lemma="raccontare" msd="VerbForm=Inf" n="61" pos="VERB" xml:id="w_61">raccontar</w>
+                    <w lemma="di il" msd="Definite=Def|Gender=Masc|Number=Sing|PronType=Art" n="62" pos="ADP" xml:id="w_62">del</w>
+                    <w lemma="bene" msd="" n="63" pos="ADV" xml:id="w_63">ben</w>
+                    <w lemma="ch'" msd="" n="64" pos="SCONJ" xml:id="w_64">ch'</w>
+                    <w lemma="il" msd="Definite=Def|Gender=Masc|Number=Plur|PronType=Art" n="65" pos="DET" xml:id="w_65">i</w>
+                    <w lemma="'" msd="" n="66" pos="PUNCT" xml:id="w_66">'</w>
+                    <w lemma="vi" msd="Clitic=Yes|Number=Plur|Person=2|PronType=Prs" n="67" pos="PRON" xml:id="w_67">vi</w>
+                    <w lemma="trovai" msd="Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin" n="68" pos="VERB" xml:id="w_68">trovai</w>
+                    <w lemma="," msd="" n="69" pos="PUNCT" xml:id="w_69">,</w>
+                    <w lemma="LB" msd="" n="70" pos="SPACE" xml:id="w_70">LB</w>
+                    <w lemma="dire" msd="Mood=Ind|Number=Sing|Person=1|Tense=Fut|VerbForm=Fin" n="71" pos="VERB" xml:id="w_71">dir�</w>
+                    <w lemma="di il" msd="Definite=Def|Number=Sing|PronType=Art" n="72" pos="ADP" xml:id="w_72">dell'</w>
+                    <w lemma="altro" msd="Gender=Fem|Number=Plur" n="73" pos="ADJ" xml:id="w_73">altre</w>
+                    <w lemma="cosa" msd="Gender=Fem|Number=Plur" n="74" pos="NOUN" xml:id="w_74">cose</w>
+                    <w lemma="ch'" msd="" n="75" pos="CCONJ" xml:id="w_75">ch'</w>
+                    <w lemma="il" msd="Definite=Def|Gender=Masc|Number=Plur|PronType=Art" n="76" pos="DET" xml:id="w_76">i</w>
+                    <w lemma="'" msd="" n="77" pos="PUNCT" xml:id="w_77">'</w>
+                    <w lemma="vi" msd="Clitic=Yes|PronType=Prs" n="78" pos="PRON" xml:id="w_78">v'</w>
+                    <w lemma="avere" msd="Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin" n="79" pos="VERB" xml:id="w_79">ho</w>
+                    <w lemma="scorta" msd="Gender=Fem|Number=Plur" n="80" pos="NOUN" xml:id="w_80">scorte</w>
+                    <w lemma="." msd="" n="81" pos="PUNCT" xml:id="w_81">.</w>
+                </s>
+                <s/>
+            </div>
+        </body>
+    </text>
+</TEI>
