@@ -1,5 +1,5 @@
 
-from constants import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE
+from src.constants import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS
 
 
 def plain_text_from_split(txt):
@@ -144,3 +144,60 @@ def get_tei_from_plain_text(
     with open(out_tei, 'w') as xml_out:
         xml_out.write(prettify(TEI))
 
+
+def parse_xml_file(file_path):
+    from lxml import etree
+
+    tree = etree.parse(file_path)
+    root = tree.getroot()
+
+    # load namespace from xml file
+    _ns, _ns_key = root.tag[1:].split('}')
+    # check namespace
+    if _ns.lower() not in XML_NAMESPACE.values() or _ns_key.lower() not in XML_NAMESPACE:
+        print('WARNING: unknown xml namespace')  # TODO: replace with real warning
+
+    # dynamic XPath string creation
+    xpath_query = \
+        ".//tei:*[" + " or ".join(f"self::{key_tag}:{tag}" \
+                                  for tag in XML_TAGS_FOR_LEMMAS \
+                                  for key_tag in XML_NAMESPACE) + "]"
+
+    tokens = []
+    for w in root.xpath(xpath_query, namespaces=XML_NAMESPACE):
+        token = {
+            'form': w.text or '',
+            'xml:id': f"{w.tag.split('}')[1]}_{w.get('n', '')}",
+            't': w.get('lemma', ''),
+            'pos': w.get('pos', ''),
+            'morph': w.get('msd', '')
+        }
+        tokens.append(token)
+
+    return tokens
+
+
+def generate_json(xml_files):
+    witnesses = []
+    for i, file_path in enumerate(xml_files, 1):
+        tokens = parse_xml_file(file_path)
+        witness = {
+          'id': f'inf_{i}',
+          'tokens': tokens
+        }
+        witnesses.append(witness)
+
+    json_data = {
+        'witnesses': witnesses
+    }
+
+    return json_data
+
+
+def convert_xml_to_json(xml_files, output_file):
+    import json
+
+    json_data = generate_json(xml_files)
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(json_data, f, ensure_ascii=False, indent=2)

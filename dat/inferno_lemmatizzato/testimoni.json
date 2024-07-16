@@ -1,0 +1,1183 @@
+{
+  "witnesses": [
+    {
+      "id": "inf_1",
+      "tokens": [
+        {
+          "form": "Nel",
+          "xml:id": "w_0",
+          "t": "in il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "mezzo",
+          "xml:id": "w_1",
+          "t": "mezzo",
+          "pos": "NOUN",
+          "morph": "Gender=Masc|Number=Sing"
+        },
+        {
+          "form": "del",
+          "xml:id": "w_2",
+          "t": "di il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "cammin",
+          "xml:id": "w_3",
+          "t": "cammin",
+          "pos": "NOUN",
+          "morph": "Gender=Masc|Number=Sing"
+        },
+        {
+          "form": "di",
+          "xml:id": "w_4",
+          "t": "di",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "nostra",
+          "xml:id": "w_5",
+          "t": "nostro",
+          "pos": "DET",
+          "morph": "Gender=Fem|Number=Sing|Poss=Yes|PronType=Prs"
+        },
+        {
+          "form": "vita",
+          "xml:id": "w_6",
+          "t": "vita",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_7",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "mi",
+          "xml:id": "w_8",
+          "t": "mi",
+          "pos": "PRON",
+          "morph": "Clitic=Yes|Number=Sing|Person=1|PronType=Prs"
+        },
+        {
+          "form": "ritrovai",
+          "xml:id": "w_9",
+          "t": "ritrovai",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"
+        },
+        {
+          "form": "per",
+          "xml:id": "w_10",
+          "t": "per",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "una",
+          "xml:id": "w_11",
+          "t": "uno",
+          "pos": "DET",
+          "morph": "Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "selva",
+          "xml:id": "w_12",
+          "t": "selva",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "oscura",
+          "xml:id": "w_13",
+          "t": "oscuro",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": ",",
+          "xml:id": "w_14",
+          "t": ",",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_15",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "ch",
+          "xml:id": "w_16",
+          "t": "ch",
+          "pos": "SCONJ",
+          "morph": ""
+        },
+        {
+          "form": "la",
+          "xml:id": "w_17",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "diritta",
+          "xml:id": "w_18",
+          "t": "diritta",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "via",
+          "xml:id": "w_19",
+          "t": "via",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "era",
+          "xml:id": "w_20",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin"
+        },
+        {
+          "form": "smarrita",
+          "xml:id": "w_21",
+          "t": "smarrire",
+          "pos": "VERB",
+          "morph": "Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part"
+        },
+        {
+          "form": ".",
+          "xml:id": "w_22",
+          "t": ".",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LBLB",
+          "xml:id": "w_23",
+          "t": "LBLB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "Ahi",
+          "xml:id": "w_24",
+          "t": "Ahi",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "quanto",
+          "xml:id": "w_25",
+          "t": "quanto",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "a",
+          "xml:id": "w_26",
+          "t": "a",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "dir",
+          "xml:id": "w_27",
+          "t": "dire",
+          "pos": "VERB",
+          "morph": "VerbForm=Inf"
+        },
+        {
+          "form": "qual",
+          "xml:id": "w_28",
+          "t": "quale",
+          "pos": "PRON",
+          "morph": "Number=Sing|PronType=Int"
+        },
+        {
+          "form": "era",
+          "xml:id": "w_29",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin"
+        },
+        {
+          "form": "",
+          "xml:id": "w_30",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "cosa",
+          "xml:id": "w_31",
+          "t": "cosa",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "dura",
+          "xml:id": "w_32",
+          "t": "duro",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_33",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "esta",
+          "xml:id": "w_34",
+          "t": "esta",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "selva",
+          "xml:id": "w_35",
+          "t": "selva",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "selvaggia",
+          "xml:id": "w_36",
+          "t": "selvaggio",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "e",
+          "xml:id": "w_37",
+          "t": "e",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "aspra",
+          "xml:id": "w_38",
+          "t": "aspra",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "e",
+          "xml:id": "w_39",
+          "t": "e",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "forte",
+          "xml:id": "w_40",
+          "t": "forte",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_41",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "che",
+          "xml:id": "w_42",
+          "t": "che",
+          "pos": "PRON",
+          "morph": "PronType=Rel"
+        },
+        {
+          "form": "nel",
+          "xml:id": "w_43",
+          "t": "in il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "pensier",
+          "xml:id": "w_44",
+          "t": "pensier",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "rinova",
+          "xml:id": "w_45",
+          "t": "rinovare",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "la",
+          "xml:id": "w_46",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "paura",
+          "xml:id": "w_47",
+          "t": "paura",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "!",
+          "xml:id": "w_48",
+          "t": "!",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LBLB",
+          "xml:id": "w_49",
+          "t": "LBLB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "Tant",
+          "xml:id": "w_50",
+          "t": "Tant",
+          "pos": "PRON",
+          "morph": "Clitic=Yes|PronType=Prs"
+        },
+        {
+          "form": "",
+          "xml:id": "w_51",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "amara",
+          "xml:id": "w_52",
+          "t": "amaro",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "che",
+          "xml:id": "w_53",
+          "t": "che",
+          "pos": "SCONJ",
+          "morph": ""
+        },
+        {
+          "form": "poco",
+          "xml:id": "w_54",
+          "t": "poco",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "",
+          "xml:id": "w_55",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "pi",
+          "xml:id": "w_56",
+          "t": "pi",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "morte",
+          "xml:id": "w_57",
+          "t": "morte",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": ";",
+          "xml:id": "w_58",
+          "t": ";",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_59",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "ma",
+          "xml:id": "w_60",
+          "t": "ma",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "per",
+          "xml:id": "w_61",
+          "t": "per",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "trattar",
+          "xml:id": "w_62",
+          "t": "trattare",
+          "pos": "VERB",
+          "morph": "VerbForm=Inf"
+        },
+        {
+          "form": "del",
+          "xml:id": "w_63",
+          "t": "di il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "ben",
+          "xml:id": "w_64",
+          "t": "bene",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "ch",
+          "xml:id": "w_65",
+          "t": "ch",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "i",
+          "xml:id": "w_66",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Masc|Number=Plur|PronType=Art"
+        },
+        {
+          "form": "",
+          "xml:id": "w_67",
+          "t": "",
+          "pos": "PRON",
+          "morph": "Clitic=Yes|Number=Sing|Person=3|PronType=Prs"
+        },
+        {
+          "form": "vi",
+          "xml:id": "w_68",
+          "t": "vi",
+          "pos": "PRON",
+          "morph": "Clitic=Yes|Number=Plur|Person=2|PronType=Prs"
+        },
+        {
+          "form": "trovai",
+          "xml:id": "w_69",
+          "t": "trovai",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"
+        },
+        {
+          "form": ",",
+          "xml:id": "w_70",
+          "t": ",",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_71",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "dir",
+          "xml:id": "w_72",
+          "t": "dire",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=1|Tense=Fut|VerbForm=Fin"
+        },
+        {
+          "form": "de",
+          "xml:id": "w_73",
+          "t": "de",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "l",
+          "xml:id": "w_74",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "altre",
+          "xml:id": "w_75",
+          "t": "altro",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": "cose",
+          "xml:id": "w_76",
+          "t": "cosa",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": "ch",
+          "xml:id": "w_77",
+          "t": "ch",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "i",
+          "xml:id": "w_78",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Masc|Number=Plur|PronType=Art"
+        },
+        {
+          "form": "",
+          "xml:id": "w_79",
+          "t": "",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "v",
+          "xml:id": "w_80",
+          "t": "v",
+          "pos": "ADJ",
+          "morph": "NumType=Ord|Number=Sing"
+        },
+        {
+          "form": "",
+          "xml:id": "w_81",
+          "t": "",
+          "pos": "PRON",
+          "morph": "Clitic=Yes|Number=Sing|Person=3|PronType=Prs"
+        },
+        {
+          "form": "ho",
+          "xml:id": "w_82",
+          "t": "avere",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "scorte",
+          "xml:id": "w_83",
+          "t": "scorta",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": ".",
+          "xml:id": "w_84",
+          "t": ".",
+          "pos": "PUNCT",
+          "morph": ""
+        }
+      ]
+    },
+    {
+      "id": "inf_2",
+      "tokens": [
+        {
+          "form": "Nel",
+          "xml:id": "w_0",
+          "t": "in il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "mezzo",
+          "xml:id": "w_1",
+          "t": "mezzo",
+          "pos": "NOUN",
+          "morph": "Gender=Masc|Number=Sing"
+        },
+        {
+          "form": "del",
+          "xml:id": "w_2",
+          "t": "di il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "cammin",
+          "xml:id": "w_3",
+          "t": "cammin",
+          "pos": "NOUN",
+          "morph": "Gender=Masc|Number=Sing"
+        },
+        {
+          "form": "di",
+          "xml:id": "w_4",
+          "t": "di",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "nostra",
+          "xml:id": "w_5",
+          "t": "nostro",
+          "pos": "DET",
+          "morph": "Gender=Fem|Number=Sing|Poss=Yes|PronType=Prs"
+        },
+        {
+          "form": "esistenza",
+          "xml:id": "w_6",
+          "t": "esistenza",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_7",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "mi",
+          "xml:id": "w_8",
+          "t": "mi",
+          "pos": "PRON",
+          "morph": "Clitic=Yes|Number=Sing|Person=1|PronType=Prs"
+        },
+        {
+          "form": "trovai",
+          "xml:id": "w_9",
+          "t": "trovai",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"
+        },
+        {
+          "form": "per",
+          "xml:id": "w_10",
+          "t": "per",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "una",
+          "xml:id": "w_11",
+          "t": "uno",
+          "pos": "DET",
+          "morph": "Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "selva",
+          "xml:id": "w_12",
+          "t": "selva",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "oscura",
+          "xml:id": "w_13",
+          "t": "oscuro",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": ",",
+          "xml:id": "w_14",
+          "t": ",",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_15",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "ch",
+          "xml:id": "w_16",
+          "t": "ch",
+          "pos": "SCONJ",
+          "morph": ""
+        },
+        {
+          "form": "la",
+          "xml:id": "w_17",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "diritta",
+          "xml:id": "w_18",
+          "t": "diritta",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "via",
+          "xml:id": "w_19",
+          "t": "via",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "era",
+          "xml:id": "w_20",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin"
+        },
+        {
+          "form": "perduta",
+          "xml:id": "w_21",
+          "t": "perdire",
+          "pos": "VERB",
+          "morph": "Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part"
+        },
+        {
+          "form": ".",
+          "xml:id": "w_22",
+          "t": ".",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LBLB",
+          "xml:id": "w_23",
+          "t": "LBLB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "Ahi",
+          "xml:id": "w_24",
+          "t": "Ahi",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "quanto",
+          "xml:id": "w_25",
+          "t": "quanto",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "dir",
+          "xml:id": "w_26",
+          "t": "dir",
+          "pos": "VERB",
+          "morph": "VerbForm=Inf"
+        },
+        {
+          "form": "qual",
+          "xml:id": "w_27",
+          "t": "quale",
+          "pos": "PRON",
+          "morph": "Number=Sing|PronType=Int"
+        },
+        {
+          "form": "era",
+          "xml:id": "w_28",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin"
+        },
+        {
+          "form": "",
+          "xml:id": "w_29",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "cosa",
+          "xml:id": "w_30",
+          "t": "cosa",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "dura",
+          "xml:id": "w_31",
+          "t": "duro",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_32",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "questa",
+          "xml:id": "w_33",
+          "t": "questo",
+          "pos": "DET",
+          "morph": "Gender=Fem|Number=Sing|PronType=Dem"
+        },
+        {
+          "form": "selva",
+          "xml:id": "w_34",
+          "t": "selva",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "selvaggia",
+          "xml:id": "w_35",
+          "t": "selvaggio",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "e",
+          "xml:id": "w_36",
+          "t": "e",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "aspra",
+          "xml:id": "w_37",
+          "t": "aspra",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "e",
+          "xml:id": "w_38",
+          "t": "e",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "forte",
+          "xml:id": "w_39",
+          "t": "forte",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_40",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "che",
+          "xml:id": "w_41",
+          "t": "che",
+          "pos": "PRON",
+          "morph": "PronType=Rel"
+        },
+        {
+          "form": "nel",
+          "xml:id": "w_42",
+          "t": "in il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "pensier",
+          "xml:id": "w_43",
+          "t": "pensier",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "rinova",
+          "xml:id": "w_44",
+          "t": "rinovare",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "la",
+          "xml:id": "w_45",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "spaventa",
+          "xml:id": "w_46",
+          "t": "spaventare",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "!",
+          "xml:id": "w_47",
+          "t": "!",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LBLB",
+          "xml:id": "w_48",
+          "t": "LBLB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "Tanto",
+          "xml:id": "w_49",
+          "t": "tanto",
+          "pos": "PRON",
+          "morph": "Gender=Masc|Number=Sing|PronType=Ind"
+        },
+        {
+          "form": "",
+          "xml:id": "w_50",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "amara",
+          "xml:id": "w_51",
+          "t": "amaro",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "che",
+          "xml:id": "w_52",
+          "t": "che",
+          "pos": "SCONJ",
+          "morph": ""
+        },
+        {
+          "form": "poco",
+          "xml:id": "w_53",
+          "t": "poco",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "",
+          "xml:id": "w_54",
+          "t": "essere",
+          "pos": "AUX",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "pi",
+          "xml:id": "w_55",
+          "t": "pi",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "morte",
+          "xml:id": "w_56",
+          "t": "morte",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": ";",
+          "xml:id": "w_57",
+          "t": ";",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_58",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "ma",
+          "xml:id": "w_59",
+          "t": "ma",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "per",
+          "xml:id": "w_60",
+          "t": "per",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "raccontar",
+          "xml:id": "w_61",
+          "t": "raccontare",
+          "pos": "VERB",
+          "morph": "VerbForm=Inf"
+        },
+        {
+          "form": "del",
+          "xml:id": "w_62",
+          "t": "di il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Gender=Masc|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "ben",
+          "xml:id": "w_63",
+          "t": "bene",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "ch",
+          "xml:id": "w_64",
+          "t": "ch",
+          "pos": "SCONJ",
+          "morph": ""
+        },
+        {
+          "form": "i",
+          "xml:id": "w_65",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Masc|Number=Plur|PronType=Art"
+        },
+        {
+          "form": "",
+          "xml:id": "w_66",
+          "t": "",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "vi",
+          "xml:id": "w_67",
+          "t": "vi",
+          "pos": "PRON",
+          "morph": "Clitic=Yes|Number=Plur|Person=2|PronType=Prs"
+        },
+        {
+          "form": "trovai",
+          "xml:id": "w_68",
+          "t": "trovai",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"
+        },
+        {
+          "form": ",",
+          "xml:id": "w_69",
+          "t": ",",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "LB",
+          "xml:id": "w_70",
+          "t": "LB",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "dir",
+          "xml:id": "w_71",
+          "t": "dire",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=1|Tense=Fut|VerbForm=Fin"
+        },
+        {
+          "form": "dell",
+          "xml:id": "w_72",
+          "t": "di il",
+          "pos": "ADP",
+          "morph": "Definite=Def|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "altre",
+          "xml:id": "w_73",
+          "t": "altro",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": "cose",
+          "xml:id": "w_74",
+          "t": "cosa",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": "ch",
+          "xml:id": "w_75",
+          "t": "ch",
+          "pos": "CCONJ",
+          "morph": ""
+        },
+        {
+          "form": "i",
+          "xml:id": "w_76",
+          "t": "il",
+          "pos": "DET",
+          "morph": "Definite=Def|Gender=Masc|Number=Plur|PronType=Art"
+        },
+        {
+          "form": "",
+          "xml:id": "w_77",
+          "t": "",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "v",
+          "xml:id": "w_78",
+          "t": "vi",
+          "pos": "PRON",
+          "morph": "Clitic=Yes|PronType=Prs"
+        },
+        {
+          "form": "ho",
+          "xml:id": "w_79",
+          "t": "avere",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "scorte",
+          "xml:id": "w_80",
+          "t": "scorta",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": ".",
+          "xml:id": "w_81",
+          "t": ".",
+          "pos": "PUNCT",
+          "morph": ""
+        }
+      ]
+    }
+  ]
+}

@@ -5,6 +5,10 @@ PUNCT_SINGS = [',', '.', ';', ':', '?', '!']
 
 END_SENTENCE = ['.', '!', '?']
 
+XML_TAGS_FOR_LEMMAS = ['w']
+
+XML_NAMESPACE = {'tei': 'http://www.tei-c.org/ns/1.0'}
+
 LEMMAS = {
     'inf_1': [
         'Nel', 'mezzo', 'di', 'cammin', 'di', 'nostro', 'vita',
