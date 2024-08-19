@@ -29,7 +29,7 @@ def get_spacy_lemmas_from_text(txt, lang_model='it_core_news_lg', **lang_model_p
         doc = nlp(_txt)
     else:
 
-        raise TypeError('Text must be a string or a list of words')
+        raise TypeError('Text must be a string or a list of')
 
     # getting the lemmas and words
     lemmas = []
@@ -66,6 +66,53 @@ def split_string_text(txt):
             w_list.append(w)
 
     return w_list
+
+
+
+
+def dictfy_witness_text(txt, witness_name, lang_model=None, txt_lang='it'):
+    """Get dictionary of lemmas from a plain text"""
+    lemmas = get_spacy_lemmas_from_text(txt, lang_model) \
+        if lang_model else get_spacy_lemmas_from_text(txt)
+
+    witness = {
+        "id": witness_name,
+        "tokens": [
+            {
+                "form": lem['word'].replace('\n', 'LB'),
+                "xml:id": f'w_{n}',
+                "t": lem['lemma'].replace('\n', 'LB'),
+                "pos": lem['pos'],
+                "morph": lem['morph']
+            } for n, lem in enumerate(lemmas)
+        ]
+    }
+
+    return witness
+
+
+def jsonfy_witnesses(json_out, witness_path_names, witness_names=None):
+    """
+    Get json from all witness texts
+    :param json_out: str, json output file name
+    :param witness_path_names: list, list of witness text file whole path
+    :param witness_names; list (opt.), the list of witnesses names
+    """
+    import json
+    from os.path import normpath
+
+    witnesses = []
+    for wit in witness_path_names:
+        f_name = wit.split(normpath('/'))[-1].split('.')[0]
+        with open(wit, 'r', encoding='utf-8') as w:
+            witnesses.append(dictfy_witness_text(w.read(), f_name))
+
+    with open(normpath(json_out), 'w', encoding='utf8') as jo:
+        json.dump({'witnesses': witnesses}, jo, indent=2, ensure_ascii=False)
+
+    return
+
+
 
 
 def get_tei_from_plain_text(
