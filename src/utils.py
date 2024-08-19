@@ -115,6 +115,65 @@ def jsonfy_witnesses(json_out, witness_path_names, witness_names=None):
 
 
 
+# def table_to_xml(table):
+#     """
+#     Redefining a core collatex function to have other attributes
+#     :param table: a collatex table
+#     :return: an XML collated document, with all the attributes existing in the input
+#     """
+#     readings = []
+#     for column in table.columns:
+#         app = etree.Element('app')
+#         for key, value in sorted(column.tokens_per_witness.items()):
+#             child = etree.Element('rdg')
+#             child.attrib['wit'] = "#" + key
+#             child.text = "".join(str(item.token_data["form"]) for item in value)
+#             # TODO: redéfinir pour accepter un nombre arbitraire d'éléments et faire ça proprement
+#             # TODO: apparemment, aussi, il ne veut pas d'xml:id
+#             child.attrib['id'] = "".join(str(item.token_data["xml:id"]) for item in value)
+#             child.attrib['lemma'] = "".join(str(item.token_data["t"]) for item in value)
+#             child.attrib['pos'] = "".join(str(item.token_data["pos"]) for item in value)
+#             child.attrib['msd'] = "".join(str(item.token_data["morph"]) for item in value)
+#             app.append(child)
+#         # Without the encoding specification, outputs bytes instead of a string
+#         result = etree.tostring(app, encoding="unicode")
+#         readings.append(result)
+#     return "<root>" + "".join(readings) + "</root>"
+
+
+
+def collate_from_json(json_input, output_dir, seg=False):
+    import json
+    from os.path import normpath
+    from collatex import collate, Collation
+    from falcon.collation import table_to_xml
+
+    with open(json_input, 'r', encoding='utf8') as ji:
+        collation_material = json.load(ji)
+
+    # alignment_table_html = collate(json_in, layout='vertical', output='html')
+
+    if seg:
+        collation =Collation()
+        for w in collation_material['witnesses']:
+            all_forms = ' '.join([d['form'] for d in w['tokens']])
+            collation.add_plain_witness(w['id'], all_forms)
+        collation_material = collation
+
+    table = collate(collation_material, output="table", layout="vertical", segmentation=seg, near_match=not seg)
+    xml_output = table_to_xml(table)
+
+    # with open(normpath(output_dir) + "/coll" + "/out.html", 'w') as f:
+    #     print(alignment_table_html, file=f)
+
+    with open(normpath(output_dir) + "/coll" + "/out.xml", 'w') as f:
+        print(xml_output, file=f)
+
+    with open(normpath(output_dir) + "/coll" + "/out.table", 'w') as f:
+        print(table, file=f)
+
+    return
+
 def get_tei_from_plain_text(
         txt, tei_file='xml-tei_out.xml', lemmas=None, lang_model=None, txt_lang='it',
         body_lang='it', **tei_tags
