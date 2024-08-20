@@ -17,6 +17,7 @@ inf_json_lemmas = '..\\etc\\inf.json'
 output_folder = '..\\etc'
 
 collate_from_json(inf_json_lemmas, output_folder, seg=True)
+# collate_from_json(inf_json_lemmas, output_folder, seg=False)
 
 
 ### adesso viene generato l'XML come input lemmatizzato, ma va fatta una funzione che generi diret-

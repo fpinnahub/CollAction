@@ -113,66 +113,127 @@ def jsonfy_witnesses(json_out, witness_path_names, witness_names=None):
     return
 
 
+def table_to_xml(table):
+    """
+    Redefining a core collatex function to have other attributes
+    :param table: a collatex table
+    :return: an XML collated document, with all the attributes existing in the input
+    """
+    from lxml import etree
+
+    readings = []
+    for column in table.columns:
+        app = etree.Element('app')
+        for key, value in sorted(column.tokens_per_witness.items()):
+            child = etree.Element('rdg')
+            child.attrib['wit'] = "#" + key
+            child.text = "".join(str(item.token_data["form"]) for item in value)
+            # TODO: redéfinir pour accepter un nombre arbitraire d'éléments et faire ça proprement
+            # TODO: apparemment, aussi, il ne veut pas d'xml:id
+            child.attrib['id'] = "".join(str(item.token_data["xml:id"]) for item in value)
+            child.attrib['lemma'] = "".join(str(item.token_data["t"]) for item in value)
+            child.attrib['pos'] = "".join(str(item.token_data["pos"]) for item in value)
+            child.attrib['msd'] = "".join(str(item.token_data["morph"]) for item in value)
+            app.append(child)
+        # Without the encoding specification, outputs bytes instead of a string
+        result = etree.tostring(app, encoding="unicode", pretty_print=True)
+        readings.append(result)
+    return "<root>" + "".join(readings) + "</root>"
 
 
-# def table_to_xml(table):
-#     """
-#     Redefining a core collatex function to have other attributes
-#     :param table: a collatex table
-#     :return: an XML collated document, with all the attributes existing in the input
-#     """
-#     readings = []
-#     for column in table.columns:
-#         app = etree.Element('app')
-#         for key, value in sorted(column.tokens_per_witness.items()):
-#             child = etree.Element('rdg')
-#             child.attrib['wit'] = "#" + key
-#             child.text = "".join(str(item.token_data["form"]) for item in value)
-#             # TODO: redéfinir pour accepter un nombre arbitraire d'éléments et faire ça proprement
-#             # TODO: apparemment, aussi, il ne veut pas d'xml:id
-#             child.attrib['id'] = "".join(str(item.token_data["xml:id"]) for item in value)
-#             child.attrib['lemma'] = "".join(str(item.token_data["t"]) for item in value)
-#             child.attrib['pos'] = "".join(str(item.token_data["pos"]) for item in value)
-#             child.attrib['msd'] = "".join(str(item.token_data["morph"]) for item in value)
-#             app.append(child)
-#         # Without the encoding specification, outputs bytes instead of a string
-#         result = etree.tostring(app, encoding="unicode")
-#         readings.append(result)
-#     return "<root>" + "".join(readings) + "</root>"
+def table_to_html(table, data):
+    """Generate html collation table from plain text table"""
+
+    # bare HTML table
+    html = "<table border='1' cellspacing='0' cellpadding='5'>\n"
+
+    # get rows and cells
+    rows = [row.strip("|").strip() for row in table.splitlines() if "+" not in row and row.strip()]
+
+    # working row by row
+    n = [0] * len(data['witnesses'])
+    for row in rows[1:]:
+        cells = [cell.strip() for cell in row.split("|")]
+        html += "  <tr>\n"
+        for i, cell in enumerate(cells):
+            witness_id = data['witnesses'][i]['id']
+            witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id)
+            cell_html = ""
+
+            if n[i] == len(witness_data) - 1:
+                break
+            while witness_data[n[i]]['t'] in cell:
+                token = witness_data[n[i]]
+                form, pos, morph, lemma = token['form'], token['pos'], token['morph'], token['t']
+                tooltip = f"LEM: {lemma}\nPOS: {pos}\nMorph: {morph}" if \
+                          pos not in {'PUNCT', 'SPACE'} else ""
+                cell_html += f'<span title="{tooltip}">{form}</span> '
+                n[i] += 1
+
+            html += f"    <td>{cell_html.strip()}</td>\n"
+        html += "  </tr>\n"
+
+    html += "</table>"
+
+    return html
 
 
+def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):
+    """
 
-def collate_from_json(json_input, output_dir, seg=False):
+    :param json_input: str
+    :param output_dir: str
+    :param seg: bool (opt.), collate with segmentation
+    :param coll_by_lemmas: bool (opt,), collate by lemmas or by forms
+    """
     import json
     from os.path import normpath
     from collatex import collate, Collation
-    from falcon.collation import table_to_xml
 
+    # load witnesses
     with open(json_input, 'r', encoding='utf8') as ji:
-        collation_material = json.load(ji)
+        collation_material_json = json.load(ji)
 
-    # alignment_table_html = collate(json_in, layout='vertical', output='html')
-
+    # segmentation
     if seg:
-        collation =Collation()
-        for w in collation_material['witnesses']:
-            all_forms = ' '.join([d['form'] for d in w['tokens']])
-            collation.add_plain_witness(w['id'], all_forms)
+        collation = Collation()
+        for w in collation_material_json['witnesses']:
+            if coll_by_lemmas:
+                all_lemmas = ' '.join([d['t'] for d in w['tokens']])
+                collation.add_plain_witness(w['id'], all_lemmas)
+            else:
+                all_forms = ' '.join([d['form'] for d in w['tokens']])
+                collation.add_plain_witness(w['id'], all_forms)
         collation_material = collation
+    else:
+        collation_material = collation_material_json
 
-    table = collate(collation_material, output="table", layout="vertical", segmentation=seg, near_match=not seg)
-    xml_output = table_to_xml(table)
+    # generate output
+    table = collate(
+        collation_material, output="table", layout="vertical", segmentation=seg, near_match=not seg
+    )
+    tei_output = collate(
+        collation_material, output="tei", layout="vertical", segmentation=seg, near_match=not seg,
+        indent=True
+    )
+    xml_output = table_to_xml(table) if not seg else ''
+    html_table = table_to_html(table.__str__(), collation_material_json)
 
-    # with open(normpath(output_dir) + "/coll" + "/out.html", 'w') as f:
-    #     print(alignment_table_html, file=f)
+    # writing output files
+    with open(normpath(output_dir) + "/coll" + "/out.html", 'w') as f:
+        print(html_table, file=f)
 
     with open(normpath(output_dir) + "/coll" + "/out.xml", 'w') as f:
         print(xml_output, file=f)
+
+    with open(normpath(output_dir) + "/coll" + "/out_tei.xml", 'w') as f:
+        print(tei_output, file=f)
 
     with open(normpath(output_dir) + "/coll" + "/out.table", 'w') as f:
         print(table, file=f)
 
     return
+
 
 def get_tei_from_plain_text(
         txt, tei_file='xml-tei_out.xml', lemmas=None, lang_model=None, txt_lang='it',
