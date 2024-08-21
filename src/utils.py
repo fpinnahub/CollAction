@@ -141,6 +141,15 @@ def table_to_xml(table):
     return "<root>" + "".join(readings) + "</root>"
 
 
+
+def all_equal(iterable):
+    """Check if all elements in an iterable are equals"""
+    from itertools import groupby
+
+    g = groupby(iterable)
+    return next(g, True) and not next(g, False)
+
+
 def table_to_html(table, data):
     """Generate html collation table from plain text table"""
 
@@ -168,6 +177,8 @@ def table_to_html(table, data):
     html += "  </tr>\n"
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
+        bkgrnd_col = """style=\"background-color:rgba(0, 0, 0, 0);\"""" \
+            if all_equal(cells) else """style=\"background-color:red;\""""
         html += "  <tr>\n"
         for i, cell in enumerate(cells):
             witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
@@ -193,7 +204,7 @@ def table_to_html(table, data):
                 else:
                     save_cell[i] = ''
 
-            html += f"    <td>{cell_html.strip()}</td>\n"
+            html += f"    <td {bkgrnd_col}>{cell_html.strip()}</td>\n"
         html += "  </tr>\n"
 
     html += "</table>"
