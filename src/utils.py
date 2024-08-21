@@ -156,15 +156,21 @@ def table_to_html(table, data):
     # get rows and cells
     rows = [row.strip("|").strip() for row in table.splitlines() if "+" not in row and row.strip()]
 
+    # witness names
+    witness_id = [wit['id'] for wit in data['witnesses']]
+    html += "  <tr>\n"
+
     # working row by row
     n = [0] * len(data['witnesses'])
     save_cell = [''] * len(data['witnesses'])
+    for w_id in witness_id:
+        html += f"""    <td><span style="font-weight:bold;font-size:xx-large;">{w_id.strip()}</span></td>\n"""
+    html += "  </tr>\n"
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
         html += "  <tr>\n"
         for i, cell in enumerate(cells):
-            witness_id = data['witnesses'][i]['id']
-            witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id)
+            witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
             cell_html = ""
 
             # consume the cell words
