@@ -152,6 +152,7 @@ def table_to_html(table, data):
 
     # working row by row
     n = [0] * len(data['witnesses'])
+    save_cell = [''] * len(data['witnesses'])
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
         html += "  <tr>\n"
@@ -160,15 +161,25 @@ def table_to_html(table, data):
             witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id)
             cell_html = ""
 
-            if n[i] == len(witness_data) - 1:
-                break
-            while witness_data[n[i]]['t'] in cell:
+            # consume the cell words
+            cell_check = str(cell)
+            while n[i] < len(witness_data) and (
+                    witness_data[n[i]]['t'] in f'{save_cell[i]}{cell}' or
+                    witness_data[n[i]]['t'] in f'{save_cell[i]} {cell}'):
+                cell_check = cell_check.replace(
+                    witness_data[n[i]]['t'].replace(save_cell[i].strip(), ''), '', 1
+                )
                 token = witness_data[n[i]]
                 form, pos, morph, lemma = token['form'], token['pos'], token['morph'], token['t']
                 tooltip = f"LEM: {lemma}\nPOS: {pos}\nMorph: {morph}" if \
                           pos not in {'PUNCT', 'SPACE'} else ""
                 cell_html += f'<span title="{tooltip}">{form}</span> '
                 n[i] += 1
+            else:
+                if len(cell_check.strip()):
+                    save_cell[i] = str(cell_check)
+                else:
+                    save_cell[i] = ''
 
             html += f"    <td>{cell_html.strip()}</td>\n"
         html += "  </tr>\n"
