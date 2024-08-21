@@ -145,7 +145,13 @@ def table_to_html(table, data):
     """Generate html collation table from plain text table"""
 
     # bare HTML table
-    html = "<table border='1' cellspacing='0' cellpadding='5'>\n"
+    html = """<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<table border='1' cellspacing='0' cellpadding='5'>\n"""
 
     # get rows and cells
     rows = [row.strip("|").strip() for row in table.splitlines() if "+" not in row and row.strip()]
@@ -231,7 +237,7 @@ def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):
     html_table = table_to_html(table.__str__(), collation_material_json)
 
     # writing output files
-    with open(normpath(output_dir) + "/coll" + "/out.html", 'w') as f:
+    with open(normpath(output_dir) + "/coll" + "/out.html", 'w', encoding='utf8') as f:
         print(html_table, file=f)
 
     with open(normpath(output_dir) + "/coll" + "/out.xml", 'w') as f:
