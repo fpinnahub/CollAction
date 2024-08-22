@@ -30,7 +30,7 @@ merav_json_lemmas = '..\\etc\\merav.json'
 
 output_folder = '..\\etc'
 
-# collate_from_json(inf_json_lemmas, output_folder, seg=True)
+collate_from_json(inf_json_lemmas, output_folder, seg=True)
 # collate_from_json(inf_json_lemmas, output_folder, seg=False)
 
 

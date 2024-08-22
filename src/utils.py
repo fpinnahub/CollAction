@@ -141,7 +141,6 @@ def table_to_xml(table):
     return "<root>" + "".join(readings) + "</root>"
 
 
-
 def all_equal(iterable):
     """Check if all elements in an iterable are equals"""
     from itertools import groupby
@@ -171,16 +170,22 @@ def table_to_html(table, data):
 
     # working row by row
     n = [0] * len(data['witnesses'])
-    # save_cell = [''] * len(data['witnesses'])
+    lemmas = [''] * len(data['witnesses'])
+    poss = [''] * len(data['witnesses'])
+    morphs = [''] * len(data['witnesses'])
     for w_id in witness_id:
         html += f"""    <td style="text-align: center;">
         <span style="font-weight:bold;font-size:xx-large;">{w_id.strip()}</span>
         </td>\n"""
+    html += f"""    <td style="text-align: center;">
+            <span style="font-style:italic;font-size:x-large;">category</span>
+            </td>\n"""
     html += "  </tr>\n"
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
-        bkgrnd_col = """style=\"background-color:rgba(0, 0, 0, 0);\"""" \
-            if all_equal(cells) else """style=\"background-color:red;\""""
+        variant = not all_equal(cells)
+        bkgrnd_col = """style=\"background-color:red;\"""" \
+            if variant else """style=\"background-color:rgba(0, 0, 0, 0);\""""
         html += "  <tr>\n"
         for i, cell in enumerate(cells):
             witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
@@ -191,35 +196,58 @@ def table_to_html(table, data):
             cell_html = ""
 
             # consume the cell words
-            cell_check = str(cell)
-            # while n[i] < len(witness_data) and (
-            #         witness_data[n[i]]['t'] in f'{save_cell[i]}{cell}' or
-            #         witness_data[n[i]]['t'] in f'{save_cell[i]} {cell}'):
-            #     cell_check = cell_check.replace(
-            #         witness_data[n[i]]['t'].replace(save_cell[i].strip(), ''), '', 1
-            #     )
+            cell_remainder = str(cell)
             while n[i] < len(witness_data) and witness_data[n[i]]['t'] in cell:
-                cell_check = cell_check.replace(
+                cell_remainder = cell_remainder.replace(
                     witness_data[n[i]]['t'], '', 1
                 )
                 token = witness_data[n[i]]
                 form, pos, morph, lemma = token['form'], token['pos'], token['morph'], token['t']
+                if variant:
+                    lemmas[i] += f'{lemma}¬'
+                    poss[i] += f'{pos}¬'
+                    morphs[i] += f'{morph}¬'
                 tooltip = f"LEM: {lemma}\nPOS: {pos}\nMorph: {morph}" if \
                           pos not in {'PUNCT', 'SPACE'} else ""
                 cell_html += f'<span title="{tooltip}">{form}</span> '
                 n[i] += 1
-            # else:
-            #     if len(cell_check.strip()):
-            #         save_cell[i] = str(cell_check)
-            #     else:
-            #         save_cell[i] = ''
             else:
-                if len(cell_check.strip()):
-                    cell_html += f'<span title="UNKNOWN">{cell_check}</span> '
+                if len(cell_remainder.strip()):
+                    cell_html += f'<span title="UNKNOWN">{cell_remainder}</span> '
                 if n[i] < len(witness_data) and cell in witness_data[n[i]]['t']:
                     n[i] += 1
+                if variant:
+                    if lemmas[i]:
+                        lemmas[i] = lemmas[i][:-1]
+                    if poss[i]:
+                        poss[i] = poss[i][:-1]
+                    if morphs[i]:
+                        morphs[i] = morphs[i][:-1]
 
             html += f"    <td {bkgrnd_col}>{cell_html.strip()}</td>\n"
+
+        # guess the category
+        if variant:
+            # if forms have same @lemma, @pos and @msd => diffGraph
+            if all_equal(lemmas) and all_equal(poss) and all_equal(morphs):
+                variation_cat = "graphematic"
+            # if forms have same @lemma, @pos, but different @msd > diffMorph
+            elif all_equal(lemmas) and all_equal(poss):
+                variation_cat = "flexional"
+            # if forms have same @lemma, but different @pos and @msd > diffPos
+            elif all_equal(lemmas):
+                variation_cat = "morphosyntactic"
+            else:
+                variation_cat = "lexical"
+
+            # write the category
+            html += f"    <td {bkgrnd_col}>{variation_cat}</td>\n"
+
+            # reset category vars
+            lemmas = [''] * len(data['witnesses'])
+            poss = [''] * len(data['witnesses'])
+            morphs = [''] * len(data['witnesses'])
+
         html += "  </tr>\n"
 
     html += "</table>"
@@ -265,20 +293,20 @@ def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):
         collation_material, output="tei", layout="vertical", segmentation=seg, near_match=not seg,
         indent=True
     )
-    xml_output = table_to_xml(table) if not seg else ''
+    xml_output = table_to_xml(table) if not seg else collate(collation_material, output='xml', indent=True)
     html_table = table_to_html(table.__str__(), collation_material_json)
 
     # writing output files
     with open(normpath(output_dir) + "/coll" + "/out.html", 'w', encoding='utf8') as f:
         print(html_table, file=f)
 
-    with open(normpath(output_dir) + "/coll" + "/out.xml", 'w') as f:
+    with open(normpath(output_dir) + "/coll" + "/out.xml", 'w', encoding='utf8') as f:
         print(xml_output, file=f)
 
-    with open(normpath(output_dir) + "/coll" + "/out_tei.xml", 'w') as f:
+    with open(normpath(output_dir) + "/coll" + "/out_tei.xml", 'w', encoding='utf8') as f:
         print(tei_output, file=f)
 
-    with open(normpath(output_dir) + "/coll" + "/out.table", 'w') as f:
+    with open(normpath(output_dir) + "/coll" + "/out.table", 'w', encoding='utf8') as f:
         print(table, file=f)
 
     return

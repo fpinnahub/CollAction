@@ -1,0 +1,901 @@
+{
+  "witnesses": [
+    {
+      "id": "prova1",
+      "tokens": [
+        {
+          "form": " ",
+          "xml:id": "w_0",
+          "t": " ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "ave(ndo",
+          "xml:id": "w_1",
+          "t": "ave(ndo",
+          "pos": "ADJ",
+          "morph": "Degree=Abs|Gender=Fem|Number=Sing"
+        },
+        {
+          "form": ")",
+          "xml:id": "w_2",
+          "t": ")",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "gran",
+          "xml:id": "w_3",
+          "t": "Gran",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "disio",
+          "xml:id": "w_4",
+          "t": "disio",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "dipinsi",
+          "xml:id": "w_5",
+          "t": "dipinsi",
+          "pos": "VERB",
+          "morph": "Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "una",
+          "xml:id": "w_6",
+          "t": "uno",
+          "pos": "DET",
+          "morph": "Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "pintura",
+          "xml:id": "w_7",
+          "t": "pintura",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "bella",
+          "xml:id": "w_8",
+          "t": "bello",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "uoi",
+          "xml:id": "w_9",
+          "t": "uoi",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "simiglante",
+          "xml:id": "w_10",
+          "t": "simiglante",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "Equando",
+          "xml:id": "w_11",
+          "t": "Equando",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "no(n",
+          "xml:id": "w_12",
+          "t": "no(n",
+          "pos": "ADV",
+          "morph": "PronType=Neg"
+        },
+        {
+          "form": ")",
+          "xml:id": "w_13",
+          "t": ")",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "uiueo",
+          "xml:id": "w_14",
+          "t": "uiueo",
+          "pos": "ADJ",
+          "morph": "Number=Plur"
+        },
+        {
+          "form": "         ",
+          "xml:id": "w_15",
+          "t": "         ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "viveo",
+          "xml:id": "w_16",
+          "t": "viveo",
+          "pos": "NOUN",
+          "morph": "Gender=Masc"
+        },
+        {
+          "form": "guardo",
+          "xml:id": "w_17",
+          "t": "guardare",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "    ",
+          "xml:id": "w_18",
+          "t": "    ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "inquella",
+          "xml:id": "w_19",
+          "t": "inquello",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "figura",
+          "xml:id": "w_20",
+          "t": "figurare",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "par",
+          "xml:id": "w_21",
+          "t": "par",
+          "pos": "X",
+          "morph": "Foreign=Yes"
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_22",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "keo",
+          "xml:id": "w_23",
+          "t": "keo",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_24",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "uagia",
+          "xml:id": "w_25",
+          "t": "uagio",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_26",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "dauante",
+          "xml:id": "w_27",
+          "t": "dauante",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "kome",
+          "xml:id": "w_28",
+          "t": "kome",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "  ",
+          "xml:id": "w_29",
+          "t": "  ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "quello",
+          "xml:id": "w_30",
+          "t": "quello",
+          "pos": "DET",
+          "morph": "Gender=Masc|Number=Sing|PronType=Dem"
+        },
+        {
+          "form": "kecrede",
+          "xml:id": "w_31",
+          "t": "Kecrede",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "saluarsi",
+          "xml:id": "w_32",
+          "t": "saluare si",
+          "pos": "VERB",
+          "morph": "Clitic=Yes|Person=3|PronType=Prs|VerbForm=Inf"
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_33",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "p(er",
+          "xml:id": "w_34",
+          "t": "p(er",
+          "pos": "VERB",
+          "morph": "Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part"
+        },
+        {
+          "form": ")",
+          "xml:id": "w_35",
+          "t": ")",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_36",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "suafede",
+          "xml:id": "w_37",
+          "t": "suafede",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "ancor",
+          "xml:id": "w_38",
+          "t": "ancora",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "      ",
+          "xml:id": "w_39",
+          "t": "      ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "no(n",
+          "xml:id": "w_40",
+          "t": "no(n",
+          "pos": "ADV",
+          "morph": "PronType=Neg"
+        },
+        {
+          "form": ")",
+          "xml:id": "w_41",
+          "t": ")",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "uegia",
+          "xml:id": "w_42",
+          "t": "uegia",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "inante",
+          "xml:id": "w_43",
+          "t": "inante",
+          "pos": "ADP",
+          "morph": ""
+        }
+      ]
+    },
+    {
+      "id": "prova2",
+      "tokens": [
+        {
+          "form": "avendo",
+          "xml:id": "w_0",
+          "t": "avere",
+          "pos": "VERB",
+          "morph": "VerbForm=Ger"
+        },
+        {
+          "form": "gran",
+          "xml:id": "w_1",
+          "t": "Gran",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "disio",
+          "xml:id": "w_2",
+          "t": "disio",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "dipinsi",
+          "xml:id": "w_3",
+          "t": "dipinsi",
+          "pos": "VERB",
+          "morph": "Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "una",
+          "xml:id": "w_4",
+          "t": "uno",
+          "pos": "DET",
+          "morph": "Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "pintura",
+          "xml:id": "w_5",
+          "t": "pintura",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "bella",
+          "xml:id": "w_6",
+          "t": "bello",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "auoi",
+          "xml:id": "w_7",
+          "t": "auoi",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "simiglante",
+          "xml:id": "w_8",
+          "t": "simiglante",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "Equando",
+          "xml:id": "w_9",
+          "t": "Equando",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "uoi",
+          "xml:id": "w_10",
+          "t": "uoio",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "nonueo",
+          "xml:id": "w_11",
+          "t": "nonueo",
+          "pos": "ADJ",
+          "morph": "Gender=Masc|Number=Sing"
+        },
+        {
+          "form": "         ",
+          "xml:id": "w_12",
+          "t": "         ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "veo",
+          "xml:id": "w_13",
+          "t": "veo",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "guardo",
+          "xml:id": "w_14",
+          "t": "guardare",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "    ",
+          "xml:id": "w_15",
+          "t": "    ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "inquella",
+          "xml:id": "w_16",
+          "t": "inquello",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "figura",
+          "xml:id": "w_17",
+          "t": "figura",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "epar",
+          "xml:id": "w_18",
+          "t": "epar",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "  ",
+          "xml:id": "w_19",
+          "t": "  ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "chio",
+          "xml:id": "w_20",
+          "t": "chio",
+          "pos": "NOUN",
+          "morph": "Gender=Masc|Number=Sing"
+        },
+        {
+          "form": " ",
+          "xml:id": "w_21",
+          "t": " ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "uagia",
+          "xml:id": "w_22",
+          "t": "uagio",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "    ",
+          "xml:id": "w_23",
+          "t": "    ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "auante",
+          "xml:id": "w_24",
+          "t": "auante",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "sicomomo",
+          "xml:id": "w_25",
+          "t": "sicomomo",
+          "pos": "ADJ",
+          "morph": "Gender=Masc|Number=Sing"
+        },
+        {
+          "form": "      ",
+          "xml:id": "w_26",
+          "t": "      ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "checrede",
+          "xml:id": "w_27",
+          "t": "checrede",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "saluarsi",
+          "xml:id": "w_28",
+          "t": "saluare si",
+          "pos": "VERB",
+          "morph": "Clitic=Yes|Person=3|PronType=Prs|VerbForm=Inf"
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_29",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "p(er",
+          "xml:id": "w_30",
+          "t": "p(er",
+          "pos": "VERB",
+          "morph": "Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part"
+        },
+        {
+          "form": ")",
+          "xml:id": "w_31",
+          "t": ")",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_32",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "suafede",
+          "xml:id": "w_33",
+          "t": "suafede",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "ancor",
+          "xml:id": "w_34",
+          "t": "ancora",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "      ",
+          "xml:id": "w_35",
+          "t": "      ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "non",
+          "xml:id": "w_36",
+          "t": "non",
+          "pos": "ADV",
+          "morph": "PronType=Neg"
+        },
+        {
+          "form": "      ",
+          "xml:id": "w_37",
+          "t": "      ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "a",
+          "xml:id": "w_38",
+          "t": "a",
+          "pos": "ADP",
+          "morph": ""
+        },
+        {
+          "form": "    ",
+          "xml:id": "w_39",
+          "t": "    ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "inante",
+          "xml:id": "w_40",
+          "t": "inante",
+          "pos": "ADV",
+          "morph": ""
+        }
+      ]
+    },
+    {
+      "id": "prova3",
+      "tokens": [
+        {
+          "form": "avendo",
+          "xml:id": "w_0",
+          "t": "avere",
+          "pos": "VERB",
+          "morph": "VerbForm=Ger"
+        },
+        {
+          "form": "gran",
+          "xml:id": "w_1",
+          "t": "Gran",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "disio",
+          "xml:id": "w_2",
+          "t": "disio",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "dipinsi",
+          "xml:id": "w_3",
+          "t": "dipinsi",
+          "pos": "VERB",
+          "morph": "Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "una",
+          "xml:id": "w_4",
+          "t": "uno",
+          "pos": "DET",
+          "morph": "Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"
+        },
+        {
+          "form": "figura",
+          "xml:id": "w_5",
+          "t": "figura",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "bella",
+          "xml:id": "w_6",
+          "t": "bello",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "uoi",
+          "xml:id": "w_7",
+          "t": "uoi",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "simiglante",
+          "xml:id": "w_8",
+          "t": "simiglante",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "Equando",
+          "xml:id": "w_9",
+          "t": "equando",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "uoi",
+          "xml:id": "w_10",
+          "t": "uoio",
+          "pos": "NOUN",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "nonuio",
+          "xml:id": "w_11",
+          "t": "nonuioo",
+          "pos": "ADJ",
+          "morph": "Gender=Masc|Number=Sing"
+        },
+        {
+          "form": "         ",
+          "xml:id": "w_12",
+          "t": "         ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "vio",
+          "xml:id": "w_13",
+          "t": "vio",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "guardo(n",
+          "xml:id": "w_14",
+          "t": "guardo(n",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": ")",
+          "xml:id": "w_15",
+          "t": ")",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "inquella",
+          "xml:id": "w_16",
+          "t": "inque il",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "pintura",
+          "xml:id": "w_17",
+          "t": "pintura",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "eppar",
+          "xml:id": "w_18",
+          "t": "eppar",
+          "pos": "VERB",
+          "morph": "Mood=Imp|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "cheo",
+          "xml:id": "w_19",
+          "t": "Cheo",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": " ",
+          "xml:id": "w_20",
+          "t": " ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "uaggia",
+          "xml:id": "w_21",
+          "t": "uaggio",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Sing"
+        },
+        {
+          "form": "  ",
+          "xml:id": "w_22",
+          "t": "  ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "auante",
+          "xml:id": "w_23",
+          "t": "auante",
+          "pos": "ADJ",
+          "morph": "Number=Sing"
+        },
+        {
+          "form": "sicomom",
+          "xml:id": "w_24",
+          "t": "sicomom",
+          "pos": "ADJ",
+          "morph": "Gender=Fem|Number=Plur"
+        },
+        {
+          "form": "        ",
+          "xml:id": "w_25",
+          "t": "        ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "chessicrede",
+          "xml:id": "w_26",
+          "t": "chessicrede",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "saluare",
+          "xml:id": "w_27",
+          "t": "saluare",
+          "pos": "VERB",
+          "morph": "VerbForm=Inf"
+        },
+        {
+          "form": "    ",
+          "xml:id": "w_28",
+          "t": "    ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "p(er",
+          "xml:id": "w_29",
+          "t": "p(er",
+          "pos": "VERB",
+          "morph": "Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part"
+        },
+        {
+          "form": ")",
+          "xml:id": "w_30",
+          "t": ")",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_31",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "suafede",
+          "xml:id": "w_32",
+          "t": "suafede",
+          "pos": "VERB",
+          "morph": "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"
+        },
+        {
+          "form": "ancor",
+          "xml:id": "w_33",
+          "t": "ancora",
+          "pos": "ADV",
+          "morph": ""
+        },
+        {
+          "form": "      ",
+          "xml:id": "w_34",
+          "t": "      ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "no(n",
+          "xml:id": "w_35",
+          "t": "no(n",
+          "pos": "ADV",
+          "morph": "PronType=Neg"
+        },
+        {
+          "form": ")",
+          "xml:id": "w_36",
+          "t": ")",
+          "pos": "PUNCT",
+          "morph": ""
+        },
+        {
+          "form": "   ",
+          "xml:id": "w_37",
+          "t": "   ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "ua",
+          "xml:id": "w_38",
+          "t": "ua",
+          "pos": "PROPN",
+          "morph": ""
+        },
+        {
+          "form": "  ",
+          "xml:id": "w_39",
+          "t": "  ",
+          "pos": "SPACE",
+          "morph": ""
+        },
+        {
+          "form": "inante",
+          "xml:id": "w_40",
+          "t": "inante",
+          "pos": "ADV",
+          "morph": ""
+        }
+      ]
+    }
+  ]
+}
