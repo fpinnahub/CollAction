@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<cx:apparatus xmlns="http://www.tei-c.org/ns/1.0" xmlns:cx="http://interedition.eu/collatex/ns/1.0">
+	<app>
+		<rdg wit="#prova1">ave(ndo )</rdg>
+		<rdg wit="#prova2 #prova3">avere</rdg>
+	</app>
+	 
+	Gran disio dipinsi uno 
+	<app>
+		<rdg wit="#prova1 #prova2">pintura</rdg>
+		<rdg wit="#prova3">figura</rdg>
+	</app>
+	 
+	bello 
+	<app>
+		<rdg wit="#prova1 #prova3">uoi</rdg>
+		<rdg wit="#prova2">auoi</rdg>
+	</app>
+	 
+	simiglante 
+	<app>
+		<rdg wit="#prova1 #prova2">Equando</rdg>
+		<rdg wit="#prova3">equando</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1">no</rdg>
+		<rdg wit="#prova2 #prova3">uoio</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova2">nonueo           veo</rdg>
+		<rdg wit="#prova3">nonuioo           vio guardo</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1 #prova3">(n )</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1">uiueo           viveo</rdg>
+		<rdg wit="#prova3">inque il pintura eppar Cheo   uaggio</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1 #prova2">guardare      inquello</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1">figurare par     keo</rdg>
+		<rdg wit="#prova2">figura epar    chio</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1">uagio</rdg>
+		<rdg wit="#prova2">uagio</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1">dauante kome    quello Kecrede</rdg>
+		<rdg wit="#prova2 #prova3">auante</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova2">sicomomo        checrede</rdg>
+		<rdg wit="#prova3">sicomom          chessicrede</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1 #prova2">saluare</rdg>
+		<rdg wit="#prova3">saluare</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1 #prova2">si</rdg>
+	</app>
+	 
+	p(er )     suafede ancora        
+	<app>
+		<rdg wit="#prova1">no(n )</rdg>
+		<rdg wit="#prova2">non        a</rdg>
+		<rdg wit="#prova3">no(n )</rdg>
+	</app>
+	 
+	<app>
+		<rdg wit="#prova1">uegia</rdg>
+		<rdg wit="#prova3">ua</rdg>
+	</app>
+	 
+	inante
+</cx:apparatus>
+
