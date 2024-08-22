@@ -171,9 +171,11 @@ def table_to_html(table, data):
 
     # working row by row
     n = [0] * len(data['witnesses'])
-    save_cell = [''] * len(data['witnesses'])
+    # save_cell = [''] * len(data['witnesses'])
     for w_id in witness_id:
-        html += f"""    <td><span style="font-weight:bold;font-size:xx-large;">{w_id.strip()}</span></td>\n"""
+        html += f"""    <td style="text-align: center;">
+        <span style="font-weight:bold;font-size:xx-large;">{w_id.strip()}</span>
+        </td>\n"""
     html += "  </tr>\n"
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
@@ -182,15 +184,23 @@ def table_to_html(table, data):
         html += "  <tr>\n"
         for i, cell in enumerate(cells):
             witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
+            if cell == '-' and cell not in witness_data[n[i]]['t']:
+                html += f"    <td {bkgrnd_col}>-</td>\n"
+
+                continue
             cell_html = ""
 
             # consume the cell words
             cell_check = str(cell)
-            while n[i] < len(witness_data) and (
-                    witness_data[n[i]]['t'] in f'{save_cell[i]}{cell}' or
-                    witness_data[n[i]]['t'] in f'{save_cell[i]} {cell}'):
+            # while n[i] < len(witness_data) and (
+            #         witness_data[n[i]]['t'] in f'{save_cell[i]}{cell}' or
+            #         witness_data[n[i]]['t'] in f'{save_cell[i]} {cell}'):
+            #     cell_check = cell_check.replace(
+            #         witness_data[n[i]]['t'].replace(save_cell[i].strip(), ''), '', 1
+            #     )
+            while n[i] < len(witness_data) and witness_data[n[i]]['t'] in cell:
                 cell_check = cell_check.replace(
-                    witness_data[n[i]]['t'].replace(save_cell[i].strip(), ''), '', 1
+                    witness_data[n[i]]['t'], '', 1
                 )
                 token = witness_data[n[i]]
                 form, pos, morph, lemma = token['form'], token['pos'], token['morph'], token['t']
@@ -198,11 +208,16 @@ def table_to_html(table, data):
                           pos not in {'PUNCT', 'SPACE'} else ""
                 cell_html += f'<span title="{tooltip}">{form}</span> '
                 n[i] += 1
+            # else:
+            #     if len(cell_check.strip()):
+            #         save_cell[i] = str(cell_check)
+            #     else:
+            #         save_cell[i] = ''
             else:
                 if len(cell_check.strip()):
-                    save_cell[i] = str(cell_check)
-                else:
-                    save_cell[i] = ''
+                    cell_html += f'<span title="UNKNOWN">{cell_check}</span> '
+                if cell in witness_data[n[i]]['t']:
+                    n[i] += 1
 
             html += f"    <td {bkgrnd_col}>{cell_html.strip()}</td>\n"
         html += "  </tr>\n"
