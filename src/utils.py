@@ -216,7 +216,7 @@ def table_to_html(table, data):
             else:
                 if len(cell_check.strip()):
                     cell_html += f'<span title="UNKNOWN">{cell_check}</span> '
-                if cell in witness_data[n[i]]['t']:
+                if n[i] < len(witness_data) and cell in witness_data[n[i]]['t']:
                     n[i] += 1
 
             html += f"    <td {bkgrnd_col}>{cell_html.strip()}</td>\n"
