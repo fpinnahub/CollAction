@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COLLAZIONATORE</title>
+    <script>
+        async function fetchWitnesses() {
+            const response = await fetch('/get_witnesses/');
+            const witnesses = await response.json();
+            const witnessesList = document.getElementById('witnesses-list');
+            witnessesList.innerHTML = '';
+            witnesses.forEach(w => {
+                const listItem = document.createElement('li');
+
+                console.log('witness', w);
+
+                listItem.innerHTML = `
+                    ${w.name}
+                    <button onclick="deleteWitness(${w.id})">Rimuovi</button>
+                `;
+                witnessesList.appendChild(listItem);
+            });
+        }
+
+        async function deleteWitness(id) {
+            const witObj = { witness_id: id };
+            console.log('witObj', witObj);
+
+            const response = await fetch('/delete_witness/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(witObj)
+            });
+            if (response.ok) {
+                alert('Testimone rimosso con successo!');
+                fetchWitnesses();  // Ricarica la lista dei testimoni
+            } else {
+                alert('Errore nella rimozione del testimone');
+            }
+        }
+
+        window.onload = fetchWitnesses;
+    </script>
+</head>
+<body>
+    <h1 style="text-align: center;">COLLAZIONATORE</h1>
+    <p style="text-align: center;">Uno strumento per la collazione dei testimoni.</p>
+
+    <form action="/add_witness/" method="post" style="text-align: center;">
+        <label for="name">Nome Testimone:</label><br>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="text">Testo del Testimone:</label><br>
+        <textarea id="text" name="text" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Aggiungi Testimone">
+    </form>
+
+    <br>
+
+    <!-- Lista dei testimoni nel database -->
+    <h3 style="text-align: center;">Testimoni nel Database:</h3>
+    <ul id="witnesses-list" style="text-align: center; list-style-type: none;">
+        <!-- I testimoni saranno caricati qui tramite JavaScript -->
+    </ul>
+
+    <br>
+
+    <form action="/collation/" method="get" style="text-align: center;">
+        <input type="submit" value="Avvia Collazione">
+    </form>
+
+    {% if collation_html %}
+    <div style="text-align: center;">
+        <h2>Risultato della Collazione</h2>
+        <div>{{ collation_html | safe }}</div>
+    </div>
+    {% endif %}
+</body>
+</html>

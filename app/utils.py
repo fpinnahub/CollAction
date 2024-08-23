@@ -255,6 +255,37 @@ def table_to_html(table, data):
     return html
 
 
+def collation_html_from_dict(dict_input, seg=True, coll_by_lemmas=True):
+    """
+    HTML collation table given lemmatized witnesses dict
+    :param dict_input: str
+    :param seg: bool (opt.), collate with segmentation
+    :param coll_by_lemmas: bool (opt,), collate by lemmas or by forms
+    """
+    from collatex import collate, Collation
+
+    # segmentation
+    if seg:
+        collation = Collation()
+        for w in dict_input['witnesses']:
+            if coll_by_lemmas:
+                all_lemmas = ' '.join([d['t'] for d in w['tokens']])
+                collation.add_plain_witness(w['id'], all_lemmas)
+            else:
+                all_forms = ' '.join([d['form'] for d in w['tokens']])
+                collation.add_plain_witness(w['id'], all_forms)
+        collation_material = collation
+    else:
+        collation_material = dict_input
+
+    # generate output
+    table = collate(
+        collation_material, output="table", layout="vertical", segmentation=seg, near_match=not seg
+    )
+
+    return table_to_html(table.__str__(), dict_input)
+
+
 def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):
     """
 
