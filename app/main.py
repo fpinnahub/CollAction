@@ -1,14 +1,26 @@
 import uvicorn
-
 import models, database
+from typing import List
 from fastapi import FastAPI, Depends, HTTPException, Request, Form, Body
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 from utils import collation_html_from_dict, dictfy_witness_text
+from consts import LEMMATIZERS
 
 app = FastAPI()
+
+# Aggiungi il middleware CORS per permettere richieste dal frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 templates = Jinja2Templates(directory="app/templates")
 
@@ -23,6 +35,10 @@ class AddWitnessRequest(BaseModel):
     witness_text: str
 
 
+class CollationRequest(BaseModel):
+    lemmatizer: str
+
+
 # Dependency per ottenere la sessione DB
 def get_db():
     db = database.SessionLocal()
@@ -30,6 +46,12 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+@app.get("/lemmatizers/", response_model=List[str])
+async def get_lemmatizers():
+
+    return LEMMATIZERS
 
 
 @app.post("/add_witness/")
@@ -69,7 +91,8 @@ async def delete_witness(request: DeleteWitnessRequest, db: Session = Depends(ge
 
 
 @app.get("/collation/", response_class=HTMLResponse)
-async def get_collation(request: Request, db: Session = Depends(get_db)):
+async def get_collation(request: Request, lemmatizer, db: Session = Depends(get_db)):
+    selected_lemmatizer = lemmatizer    # per adesso, non utilizzato
     witnesses = db.query(models.Witness).all()
     if len(witnesses) < 2:
 

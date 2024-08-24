@@ -75,6 +75,13 @@
     <h1 style="text-align: center;">COLLAZIONATORE</h1>
     <p style="text-align: center;">Uno strumento per la collazione dei testimoni.</p>
 
+    <!-- Menu a tendina per selezionare il lemmatizzatore -->
+    <label for="lemmatizer">Seleziona un Lemmatizzatore:</label><br>
+    <select id="lemmatizer">
+        <option value="">Seleziona...</option>
+        <!-- Opzioni saranno aggiunte dinamicamente da JavaScript -->
+    </select><br><br>
+
     <form id="addWitnessForm" style="text-align: center;">
         <label for="name">Nome Testimone:</label><br>
         <input type="text" id="name" name="name"><br><br>
@@ -102,7 +109,7 @@
 
     <br>
 
-    <form action="/collation/" method="get" style="text-align: center;">
+    <form id="collationForm" method="get" style="text-align: center;">
         <input type="submit" value="Avvia Collazione">
     </form>
 
@@ -113,6 +120,23 @@
     </div>
     {% endif %}
     <script>
+        // Funzione per caricare i lemmatizzatori dal backend
+        async function loadLemmatizers() {
+            const response = await fetch('/lemmatizers/');
+            const lemmatizers = await response.json();
+            const lemmatizerSelect = document.getElementById('lemmatizer');
+            lemmatizers.forEach(lemmatizer => {
+                const option = document.createElement('option');
+                option.value = lemmatizer;
+                option.textContent = lemmatizer;
+                lemmatizerSelect.appendChild(option);
+            });
+        }
+
+        // Chiamare la funzione per caricare i lemmatizzatori quando la pagina viene caricata
+        document.addEventListener('DOMContentLoaded', loadLemmatizers);
+
+        // Form per l'aggiunta del testimone
         document.getElementById('addWitnessForm').addEventListener('submit', async function(event) {
             event.preventDefault();
 
@@ -142,6 +166,22 @@
             } else {
                 alert(`Errore: ${result.detail || 'Impossibile aggiungere il testimone'}`);
             }
+        });
+
+        // Gestione del form di collazione
+        document.getElementById('collationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const selectedLemmatizer = document.getElementById('lemmatizer').value;
+
+            if (!selectedLemmatizer) {
+                alert('Seleziona un lemmatizzatore prima di avviare la collazione.');
+                return;
+            }
+
+            // Costruisci l'URL con il parametro del lemmatizzatore
+            const url = `/collation/?lemmatizer=${encodeURIComponent(selectedLemmatizer)}`;
+            window.location.href = url;
         });
     </script>
 </body>
