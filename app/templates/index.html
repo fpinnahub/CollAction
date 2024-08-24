@@ -52,7 +52,6 @@
 
         async function deleteWitness(id) {
             const witObj = { witness_id: id };
-            console.log('witObj', witObj);
 
             const response = await fetch('/delete_witness/', {
                 method: 'POST',
@@ -76,7 +75,7 @@
     <h1 style="text-align: center;">COLLAZIONATORE</h1>
     <p style="text-align: center;">Uno strumento per la collazione dei testimoni.</p>
 
-    <form action="/add_witness/" method="post" style="text-align: center;">
+    <form id="addWitnessForm" style="text-align: center;">
         <label for="name">Nome Testimone:</label><br>
         <input type="text" id="name" name="name"><br><br>
         <label for="text">Testo del Testimone:</label><br>
@@ -113,5 +112,37 @@
         <div>{{ collation_html | safe }}</div>
     </div>
     {% endif %}
+    <script>
+        document.getElementById('addWitnessForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const text = document.getElementById('text').value;
+            const witToAdd = {
+                    witness_name: name,
+                    witness_text: text,
+                };
+
+            const response = await fetch('/add_witness/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(witToAdd),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert('Testimone aggiunto con successo!');
+                document.getElementById('name').value = '';
+                document.getElementById('text').value = '';
+                // Se necessario, aggiorna la lista dei testimoni senza ricaricare la pagina
+                updateWitnessesList(result.witnesses);
+            } else {
+                alert(`Errore: ${result.detail || 'Impossibile aggiungere il testimone'}`);
+            }
+        });
+    </script>
 </body>
 </html>

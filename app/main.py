@@ -18,6 +18,11 @@ class DeleteWitnessRequest(BaseModel):
     witness_id: int
 
 
+class AddWitnessRequest(BaseModel):
+    witness_name: str
+    witness_text: str
+
+
 # Dependency per ottenere la sessione DB
 def get_db():
     db = database.SessionLocal()
@@ -29,14 +34,18 @@ def get_db():
 
 @app.post("/add_witness/")
 async def add_witness(
-        name: str = Form(...), text: str = Form(...), db: Session = Depends(get_db)
+        request: AddWitnessRequest, db: Session = Depends(get_db)
 ):
-    new_witness = models.Witness(name=name, text=text)
+    new_witness = models.Witness(
+        name=request.witness_name, text=request.witness_text
+    )
     db.add(new_witness)
     db.commit()
     db.refresh(new_witness)
 
-    return {"status": "Witness has been added!"}
+    witnesses = db.query(models.Witness).all()
+
+    return {"witnesses": [{"id": w.id, "name": w.name} for w in witnesses]}
 
 
 @app.get("/get_witnesses/", response_class=JSONResponse)
@@ -48,7 +57,6 @@ async def get_witnesses(db: Session = Depends(get_db)):
 
 @app.post("/delete_witness/")
 async def delete_witness(request: DeleteWitnessRequest, db: Session = Depends(get_db)):
-    print('delete_witness')
     witness = db.query(models.Witness).filter(models.Witness.id == request.witness_id).first()
     if witness:
         db.delete(witness)
