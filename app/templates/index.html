@@ -179,6 +179,15 @@
                 return;
             }
 
+            // Conta il numero di testimoni nella tabella
+            const witnessTable = document.getElementById('witnesses-table');
+            const witnessCount = witnessTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr').length;
+
+            if (witnessCount < 2) {
+                alert('Servono almeno due testimoni per avviare la collazione.');
+                return;
+            }
+
             // Costruisci l'URL con il parametro del lemmatizzatore
             const url = `/collation/?lemmatizer=${encodeURIComponent(selectedLemmatizer)}`;
             window.location.href = url;
