@@ -1,11 +1,12 @@
 import uvicorn
 import models, database
 from typing import List
+from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends, HTTPException, Request, Form, Body
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from utils import collation_html_from_dict, dictfy_witness_text
 from consts import LEMMATIZERS
@@ -112,14 +113,15 @@ async def get_collation(request: Request, lemmatizer, db: Session = Depends(get_
     # Ottieni l'HTML della tabella
     html_table = collation_html_from_dict(data)
 
-    return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "collation_html": html_table,
-            "collation_title": "Risultato della Collazione"
-        }
-    )
+    return JSONResponse(content=jsonable_encoder({"collation_html": html_table}))
+    # return templates.TemplateResponse(
+    #     "index.html",
+    #     {
+    #         "request": request,
+    #         "collation_html": html_table,
+    #         "collation_title": "Risultato della Collazione"
+    #     }
+    # )
 
 
 # API POST per salvare una tabella di collazione nel DB

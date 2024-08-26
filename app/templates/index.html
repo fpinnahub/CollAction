@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* Classe per indicare che è in corso un'operazione di caricamento */
+        .loading {
+            cursor: wait; /* Cambia il cursore in una clessidra o indicatore di caricamento */
+        }
         /* Centrare la tabella nella pagina */
         #witnesses-table {
             margin: 0 auto; /* Centro orizzontalmente */
@@ -189,7 +193,7 @@
         });
 
         // Gestione del form di collazione
-        document.getElementById('collationForm').addEventListener('submit', function(event) {
+        document.getElementById('collationForm').addEventListener('submit', async function(event) {
             event.preventDefault();
 
             const selectedLemmatizer = document.getElementById('lemmatizer').value;
@@ -197,7 +201,7 @@
             if (!selectedLemmatizer) {
                 alert('Seleziona un lemmatizzatore prima di avviare la collazione.');
                 return;
-            }
+            };
 
             // Conta il numero di testimoni nella tabella
             const witnessTable = document.getElementById('witnesses-table');
@@ -206,11 +210,37 @@
             if (witnessCount < 2) {
                 alert('Servono almeno due testimoni per avviare la collazione.');
                 return;
-            }
+            };
 
-            // Costruisci l'URL con il parametro del lemmatizzatore
+            // Usa fetchWithLoading per avviare la collazione senza cambiare pagina
             const url = `/collation/?lemmatizer=${encodeURIComponent(selectedLemmatizer)}`;
-            window.location.href = url;
+
+            try {
+                const response = await fetchWithLoading(url, { method: 'GET' });
+
+                if (response.ok) {
+                    // Qui puoi gestire la risposta, ad esempio:
+                    const result = await response.json();
+                    // Mostra il risultato nella pagina corrente, oppure...
+                    let collationDiv = document.getElementById("collationHTMLtable");
+
+                    // Se l'elemento non esiste, crealo
+                    if (!collationDiv) {
+                        collationDiv = document.createElement('div');
+                        collationDiv.id = "collationHTMLtable";
+                        collationDiv.style.textAlign = "center"; // Stile opzionale, come prima
+                        document.body.appendChild(collationDiv);
+                    };
+                    collationDiv.innerHTML = `        <h2>Risultato della Collazione</h2>${result.collation_html}`;
+                    // ... o naviga a una nuova pagina:
+                    // window.location.href = url; (se proprio vuoi navigare dopo aver ricevuto una risposta positiva)
+                } else {
+                    alert('Errore durante la collazione.');
+                }
+            } catch (error) {
+                console.error('Errore nella richiesta:', error);
+                alert('Errore nella connessione al server.');
+            };
         });
 
         document.getElementById('saveCollationButton').addEventListener('click', async function() {
@@ -326,6 +356,19 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateSaveCollationButton();
         });
+
+        async function fetchWithLoading(url, options = {}) {
+            // Aggiungi la classe 'loading' al body
+            document.body.classList.add('loading');
+
+            try {
+                const response = await fetch(url, options);
+                return response;
+            } finally {
+                // Rimuovi la classe 'loading' dal body, indipendentemente dal successo o fallimento
+                document.body.classList.remove('loading');
+            };
+        };
     </script>
 </body>
 </html>
