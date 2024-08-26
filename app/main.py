@@ -39,6 +39,10 @@ class CollationRequest(BaseModel):
     lemmatizer: str
 
 
+class CollationTableRequest(BaseModel):
+    name: str
+
+
 # Dependency per ottenere la sessione DB
 def get_db():
     db = database.SessionLocal()
@@ -111,6 +115,57 @@ async def get_collation(request: Request, lemmatizer, db: Session = Depends(get_
     return templates.TemplateResponse(
         "index.html", {"request": request, "collation_html": html_table}
     )
+
+
+# API POST per salvare una tabella di collazione nel DB
+@app.post("/save_collation/")
+async def save_collation(
+        name: str = Body(...), html_table: str = Body(...), db: Session = Depends(get_db)
+):
+    existing = db.query(models.Collation).filter(models.Collation.name == name).first()
+    if existing:
+
+        raise HTTPException(status_code=400, detail="Una collazione con questo nome esiste già.")
+
+    new_collation = models.Collation(name=name, html_table=html_table)
+    db.add(new_collation)
+    db.commit()
+
+    return {"message": "Collazione salvata con successo"}
+
+
+# API POST per cancellare una tabella di collazione dal DB
+@app.post("/delete_collation/")
+async def delete_collation(request: CollationTableRequest, db: Session = Depends(get_db)):
+    collation = db.query(models.Collation).filter(models.Collation.name == request.name).first()
+    if collation:
+        db.delete(collation)
+        db.commit()
+
+        return {"message": "Collazione rimossa con successo"}
+
+    raise HTTPException(status_code=404, detail="Collazione non trovata")
+
+
+# API POST per caricare una tabella di collazione dal DB
+@app.post("/load_collation/")
+async def load_collation(request: CollationTableRequest, db: Session = Depends(get_db)):
+    collation = db.query(models.Collation).filter(
+        models.Collation.name == request.name
+    ).first()
+    if collation:
+
+        return {"name": collation.name, "html_table": collation.html_table}
+
+    raise HTTPException(status_code=404, detail="Collazione non trovata")
+
+
+# API GET per ottenere la lista di tutte le tabelle di collazione nel DB
+@app.get("/get_collations/")
+async def get_collations(db: Session = Depends(get_db)):
+    collations = db.query(models.Collation).all()
+
+    return [{"name": collation.name} for collation in collations]
 
 
 @app.get("/", response_class=HTMLResponse)

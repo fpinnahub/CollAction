@@ -109,14 +109,34 @@
 
     <br>
 
-    <form id="collationForm" method="get" style="text-align: center;">
-        <input type="submit" value="Avvia Collazione">
-    </form>
+    <div style="text-align: center;">
+        <form id="collationForm" method="get" style="display: inline;">
+            <input type="submit" value="Avvia Collazione">
+        </form>
+        <button id="saveCollationButton">Salva Collazione</button>
+        <button id="savedCollationsButton">Collazioni Salvate</button>
+    </div>
+
+    <!-- Tabella per le collazioni salvate -->
+    <div id="savedCollationsList" style="text-align: center; display: none;">
+        <h3>Collazioni Salvate:</h3>
+        <table id="collations-table" border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Azione</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Le righe della tabella saranno aggiunte dinamicamente con JavaScript -->
+            </tbody>
+        </table>
+    </div>
 
     {% if collation_html %}
     <div style="text-align: center;">
         <h2>Risultato della Collazione</h2>
-        <div>{{ collation_html | safe }}</div>
+        <div id="collationHTMLtable">{{ collation_html | safe }}</div>
     </div>
     {% endif %}
     <script>
@@ -191,6 +211,98 @@
             // Costruisci l'URL con il parametro del lemmatizzatore
             const url = `/collation/?lemmatizer=${encodeURIComponent(selectedLemmatizer)}`;
             window.location.href = url;
+        });
+
+        document.getElementById('saveCollationButton').addEventListener('click', async function() {
+            const collationName = prompt("Inserisci il nome per la collazione:");
+            if (!collationName) return;
+
+            const collationHtml = document.querySelector("#collationHTMLtable").innerHTML;
+            const response = await fetch('/save_collation/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: collationName, html_table: collationHtml }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert('Collazione salvata con successo!');
+            } else {
+                alert(`Errore: ${result.detail}`);
+            }
+        });
+
+        document.getElementById('savedCollationsButton').addEventListener('click', async function() {
+            const savedCollationsList = document.getElementById('savedCollationsList');
+            savedCollationsList.style.display = 'block'; // Mostra la lista delle collazioni salvate
+
+            const response = await fetch('/get_collations/');
+            const collations = await response.json();
+            const tableBody = document.querySelector('#collations-table tbody');
+            tableBody.innerHTML = ''; // Pulisci il contenuto della tabella
+
+            collations.forEach(collation => {
+                const row = document.createElement('tr');
+                const nameCell = document.createElement('td');
+                nameCell.textContent = collation.name;
+                row.appendChild(nameCell);
+
+                const actionCell = document.createElement('td');
+
+                const loadButton = document.createElement('button');
+                loadButton.textContent = 'Carica';
+                loadButton.onclick = async () => {
+                    const response = await fetch('/load_collation/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name: collation.name }),
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        let collationDiv = document.getElementById("collationHTMLtable");
+
+                        // Se l'elemento non esiste, crealo
+                        if (!collationDiv) {
+                            collationDiv = document.createElement('div');
+                            collationDiv.id = "collationHTMLtable";
+                            collationDiv.style.textAlign = "center"; // Stile opzionale, come prima
+                            document.body.appendChild(collationDiv);
+                        }
+
+                        collationDiv.innerHTML = `        <h2>${collation.name}</h2>${result.html_table}`;
+                    } else {
+                        alert(`Errore: ${result.detail}`);
+                    };
+                };
+                actionCell.appendChild(loadButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Rimuovi';
+                deleteButton.onclick = async () => {
+                    const response = await fetch('/delete_collation/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name: collation.name }),
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        alert('Collazione rimossa con successo!');
+                        row.remove();
+                    } else {
+                        alert(`Errore: ${result.detail}`);
+                    }
+                };
+                actionCell.appendChild(deleteButton);
+
+                row.appendChild(actionCell);
+                tableBody.appendChild(row);
+            });
         });
     </script>
 </body>
