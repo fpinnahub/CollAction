@@ -277,6 +277,7 @@
                             document.getElementById("collationTitle").innerHTML = "";
                         };
                         collationDiv.innerHTML = `        <h2>${collation.name}</h2>${result.html_table}`;
+                        updateSaveCollationButton();  // Aggiorna lo stato del bottone
                     } else {
                         alert(`Errore: ${result.detail}`);
                     };
@@ -297,6 +298,7 @@
                     if (response.ok) {
                         alert('Collazione rimossa con successo!');
                         row.remove();
+                        updateSaveCollationButton();  // Aggiorna lo stato del bottone
                     } else {
                         alert(`Errore: ${result.detail}`);
                     }
@@ -306,6 +308,23 @@
                 row.appendChild(actionCell);
                 tableBody.appendChild(row);
             });
+        });
+
+        // Funzione per aggiornare lo stato del bottone "Salva Collazione"
+        function updateSaveCollationButton() {
+            const collationDiv = document.getElementById("collationHTMLtable");
+            const saveButton = document.getElementById('saveCollationButton');
+
+            if (collationDiv && collationDiv.innerHTML.trim() !== "") {
+                saveButton.disabled = false; // Abilita il bottone
+            } else {
+                saveButton.disabled = true; // Disabilita il bottone
+            }
+        }
+
+        // Chiamare la funzione precedente quando la pagina viene caricata
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSaveCollationButton();
         });
     </script>
 </body>
