@@ -180,12 +180,17 @@ def table_to_html(table, data):
     html += f"""    <td style="text-align: center;">
             <span style="font-style:italic;font-size:x-large;">category</span>
             </td>\n"""
+    html += f"""    <td style="text-align: center;">
+                <span style="font-style:italic;font-size:x-large;">notes</span>
+                </td>\n"""
     html += "  </tr>\n"
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
         variant = not all_equal(cells)
         bkgrnd_col = """style=\"background-color:red;\"""" \
             if variant else """style=\"background-color:rgba(0, 0, 0, 0);\""""
+        notes_bkgrnd_col = """style=\"background-color:beige;\"""" \
+            if variant else """style=\"background-color:bisque;\""""
         html += "  <tr>\n"
         for i, cell in enumerate(cells):
             witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
@@ -247,6 +252,11 @@ def table_to_html(table, data):
             lemmas = [''] * len(data['witnesses'])
             poss = [''] * len(data['witnesses'])
             morphs = [''] * len(data['witnesses'])
+        else:
+            # empty cell for category
+            html += f"    <td {bkgrnd_col}></td>\n"
+        # editable notes' cell
+        html += f'    <td contenteditable="true" class="notes-cell" {notes_bkgrnd_col}></td>\n'
 
         html += "  </tr>\n"
 
