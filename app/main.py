@@ -113,7 +113,12 @@ async def get_collation(request: Request, lemmatizer, db: Session = Depends(get_
     html_table = collation_html_from_dict(data)
 
     return templates.TemplateResponse(
-        "index.html", {"request": request, "collation_html": html_table}
+        "index.html",
+        {
+            "request": request,
+            "collation_html": html_table,
+            "collation_title": "Risultato della Collazione"
+        }
     )
 
 

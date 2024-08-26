@@ -135,7 +135,7 @@
 
     {% if collation_html %}
     <div style="text-align: center;">
-        <h2>Risultato della Collazione</h2>
+        <h2 id="collationTitle">{{ collation_title | safe }}</h2>
         <div id="collationHTMLtable">{{ collation_html | safe }}</div>
     </div>
     {% endif %}
@@ -273,6 +273,9 @@
                             document.body.appendChild(collationDiv);
                         }
 
+                        if (document.getElementById("collationTitle")) {
+                            document.getElementById("collationTitle").innerHTML = "";
+                        };
                         collationDiv.innerHTML = `        <h2>${collation.name}</h2>${result.html_table}`;
                     } else {
                         alert(`Errore: ${result.detail}`);
