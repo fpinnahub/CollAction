@@ -259,6 +259,10 @@
             const result = await response.json();
             if (response.ok) {
                 alert('Collazione salvata con successo!');
+                if (document.getElementById('collations-table')) {
+                    const savedColsBtn = document.getElementById('savedCollationsButton');
+                    savedColsBtn.click();
+                };
             } else {
                 alert(`Errore: ${result.detail}`);
             }
