@@ -159,7 +159,7 @@ def table_to_html(table, data):
     <meta charset="UTF-8">
 </head>
 <body>
-<table border='1' cellspacing='0' cellpadding='5'>\n"""
+<table id='the-collation-table' border='1' cellspacing='0' cellpadding='5'>\n"""
 
     # get rows and cells
     rows = [row.strip("|").strip() for row in table.splitlines() if "+" not in row and row.strip()]

@@ -27,7 +27,11 @@
         }
     </style>
     <title>COLLAZIONATORE</title>
+<!--    Librerie esterne-->
+<!--    SheetJS (xlsx)-->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script>
+        // Gestione chiamare asincrone
         async function fetchWitnesses() {
             const response = await fetch('/get_witnesses/');
             const witnesses = await response.json();
@@ -101,7 +105,7 @@
     <form id="addWitnessForm" style="text-align: center;">
         <label for="name">Nome Testimone:</label><br>
         <input type="text" id="name" name="name" autocomplete="off"><br><br>
-        <label for="text">Testo del Testimone:</label><br>
+        <label for="witness-text-area">Testo del Testimone:</label><br>
         <textarea id="witness-text-area" name="text" rows="4" cols="50"></textarea><br><br>
         <input type="submit" id="addWitnessButton" disabled value="Aggiungi Testimone">
     </form>
@@ -480,39 +484,21 @@
             };
         };
 
-        // Espottazione in CSV/XLS
+        // Esportazione in CSV/XLS
         document.getElementById('exportButton').addEventListener('click', function () {
             const table = document.getElementById('collationHTMLtable');
             if (!table) {
                 alert('Nessuna tabella da esportare.');
+
                 return;
             }
 
-            // Converte la tabella in CSV
-            const csv = tableToCSV(table);
+            // Converte la tabella HTML in un foglio di calcolo
+            const wb = XLSX.utils.table_to_book(table.querySelector("#the-collation-table"), { sheet: "Collation Data" });
 
-            // Crea un blob e un link per scaricare il file
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('href', url);
-            a.setAttribute('download', 'collation_export.xls');
-            a.click();
+            // Genera il file Excel e lo scarica
+            XLSX.writeFile(wb, 'collation_export.xlsx');
         });
-
-        function tableToCSV(table) {
-            const rows = table.querySelectorAll('tr');
-            let csv = '';
-
-            rows.forEach(row => {
-                const cols = row.querySelectorAll('td, th');
-                let rowData = [];
-                cols.forEach(col => rowData.push('"' + col.innerText + '"'));
-                csv += rowData.join(',') + '\n';
-            });
-
-            return csv;
-        };
     </script>
 </body>
 </html>
