@@ -130,6 +130,7 @@
             <input type="submit" value="Avvia Collazione">
         </form>
         <button id="saveCollationButton">Salva Collazione</button>
+        <button id="exportButton">Esporta in Excel</button>
         <button id="savedCollationsButton">Collazioni Salvate</button>
     </div>
 
@@ -479,6 +480,39 @@
             };
         };
 
+        // Espottazione in CSV/XLS
+        document.getElementById('exportButton').addEventListener('click', function () {
+            const table = document.getElementById('collationHTMLtable');
+            if (!table) {
+                alert('Nessuna tabella da esportare.');
+                return;
+            }
+
+            // Converte la tabella in CSV
+            const csv = tableToCSV(table);
+
+            // Crea un blob e un link per scaricare il file
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'collation_export.xls');
+            a.click();
+        });
+
+        function tableToCSV(table) {
+            const rows = table.querySelectorAll('tr');
+            let csv = '';
+
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td, th');
+                let rowData = [];
+                cols.forEach(col => rowData.push('"' + col.innerText + '"'));
+                csv += rowData.join(',') + '\n';
+            });
+
+            return csv;
+        };
     </script>
 </body>
 </html>
