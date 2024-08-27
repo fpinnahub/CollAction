@@ -102,8 +102,8 @@
         <label for="name">Nome Testimone:</label><br>
         <input type="text" id="name" name="name" autocomplete="off"><br><br>
         <label for="text">Testo del Testimone:</label><br>
-        <textarea id="text" name="text" rows="4" cols="50"></textarea><br><br>
-        <input type="submit" value="Aggiungi Testimone">
+        <textarea id="witness-text-area" name="text" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" id="addWitnessButton" disabled value="Aggiungi Testimone">
     </form>
 
     <br>
@@ -172,12 +172,44 @@
         // Chiamare la funzione per caricare i lemmatizzatori quando la pagina viene caricata
         document.addEventListener('DOMContentLoaded', loadLemmatizers);
 
+        // Disabilita il caricamento dei testimoni se l'area è vuota
+        document.getElementById('witness-text-area').addEventListener('input', function() {
+            const text = document.getElementById('witness-text-area').value;
+            const addButton = document.getElementById('addWitnessButton');
+
+            if (text.trim().length > 0) {
+                addButton.disabled = false; // Abilita il bottone se c'è testo
+            } else {
+                addButton.disabled = true; // Disabilita il bottone se non c'è testo
+            }
+        });
+
         // Form per l'aggiunta del testimone
         document.getElementById('addWitnessForm').addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            const name = document.getElementById('name').value;
-            const text = document.getElementById('text').value;
+            const name = document.getElementById('name').value.trim();
+            const text = document.getElementById('witness-text-area').value;
+
+            // Controlla se il nome è vuoto
+            if (name === '') {
+                alert('Errore: il nome del testimone non può essere vuoto.');
+
+                return;
+            };
+
+            // Controlla se il nome esiste già nella tabella dei testimoni
+            const witnessNames = Array.from(
+                document.querySelectorAll('#witnesses-table tbody tr td:nth-child(2)')
+            ).map(td => td.textContent.trim().toLowerCase());
+
+            if (witnessNames.includes(name.toLowerCase())) {
+                alert('Errore: esiste già un testimone con questo nome.');
+
+                return;
+            };
+
+            // Invia la richiesta per aggiungere il testimone
             const witToAdd = {
                     witness_name: name,
                     witness_text: text,
@@ -196,7 +228,8 @@
             if (response.ok) {
                 alert('Testimone aggiunto con successo!');
                 document.getElementById('name').value = '';
-                document.getElementById('text').value = '';
+                document.getElementById('witness-text-area').value = '';
+                document.getElementById('addWitnessButton').disabled = true; // Disabilita il bottone dopo l'aggiunta
                 // Se necessario, aggiorna la lista dei testimoni senza ricaricare la pagina
                 updateWitnessesList(result.witnesses);
                 updateWitnessesTitle(); // Aggiorna il titolo
@@ -293,6 +326,14 @@
 
             const response = await fetch('/get_collations/');
             const collations = await response.json();
+
+            // Controllo se la lista delle collazioni è vuota
+            if (collations.length === 0) {
+                alert('Nessuna Collazione presente nel Database.');
+
+                return; // Esce dalla funzione se non ci sono collazioni
+            };
+
             const tableBody = document.querySelector('#collations-table tbody');
             tableBody.innerHTML = ''; // Pulisci il contenuto della tabella
 
