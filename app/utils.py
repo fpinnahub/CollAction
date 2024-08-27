@@ -229,7 +229,7 @@ def table_to_html(table, data):
                     if morphs[i]:
                         morphs[i] = morphs[i][:-1]
 
-            html += f"    <td {bkgrnd_col}>{cell_html.strip()}</td>\n"
+            html += f"    <td  class=\"witness-cell\" {bkgrnd_col}>{cell_html.strip()}</td>\n"
 
         # guess the category
         if variant:

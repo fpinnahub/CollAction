@@ -19,6 +19,12 @@
             flex-direction: column;
             align-items: center;
         }
+        /* Classe per le lezioni accolte */
+        .selected-cell {
+            border-color: green !important;
+            border-width: thick !important;
+            background-color: lightgreen !important;
+        }
     </style>
     <title>COLLAZIONATORE</title>
     <script>
@@ -52,6 +58,8 @@
 
                 tableBody.appendChild(row);
             });
+
+            updateWitnessesTitle(); // Aggiorna il titolo dopo aver aggiornato la lista
         };
 
         async function deleteWitness(id) {
@@ -67,12 +75,16 @@
             if (response.ok) {
                 alert('Testimone rimosso con successo!');
                 fetchWitnesses();  // Ricarica la lista dei testimoni
+                updateWitnessesTitle(); // Aggiorna il titolo
             } else {
                 alert('Errore nella rimozione del testimone');
-            }
-        }
+            };
+        };
 
-        window.onload = fetchWitnesses;
+        window.onload = function() {
+            fetchWitnesses();
+            updateWitnessesTitle(); // Aggiorna il titolo quando la pagina viene caricata
+        };
     </script>
 </head>
 <body>
@@ -88,7 +100,7 @@
 
     <form id="addWitnessForm" style="text-align: center;">
         <label for="name">Nome Testimone:</label><br>
-        <input type="text" id="name" name="name"><br><br>
+        <input type="text" id="name" name="name" autocomplete="off"><br><br>
         <label for="text">Testo del Testimone:</label><br>
         <textarea id="text" name="text" rows="4" cols="50"></textarea><br><br>
         <input type="submit" value="Aggiungi Testimone">
@@ -97,7 +109,7 @@
     <br>
 
     <!-- Lista dei testimoni nel database -->
-    <h3 style="text-align: center;">Testimoni nel Database:</h3>
+    <h3 id="witness-table-title" style="text-align: center;">Testimoni nel Database:</h3>
     <table id="witnesses-table" border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
@@ -187,6 +199,7 @@
                 document.getElementById('text').value = '';
                 // Se necessario, aggiorna la lista dei testimoni senza ricaricare la pagina
                 updateWitnessesList(result.witnesses);
+                updateWitnessesTitle(); // Aggiorna il titolo
             } else {
                 alert(`Errore: ${result.detail || 'Impossibile aggiungere il testimone'}`);
             }
@@ -234,6 +247,12 @@
                     collationDiv.innerHTML = `        <h2>Risultato della Collazione</h2>${result.collation_html}`;
                     // ... o naviga a una nuova pagina:
                     // window.location.href = url; (se proprio vuoi navigare dopo aver ricevuto una risposta positiva)
+
+                    // Aggiorna il bottone "Save Collection"
+                    updateSaveCollationButton();
+
+                    // Abilita la selezione delle celle dopo aver caricato la collazione
+                    enableCellSelection();
                 } else {
                     alert('Errore durante la collazione.');
                 }
@@ -312,6 +331,7 @@
                         };
                         collationDiv.innerHTML = `        <h2>${collation.name}</h2>${result.html_table}`;
                         updateSaveCollationButton();  // Aggiorna lo stato del bottone
+                        enableCellSelection();  // Abilitare la selezione delle celle
                     } else {
                         alert(`Errore: ${result.detail}`);
                     };
@@ -373,6 +393,51 @@
                 document.body.classList.remove('loading');
             };
         };
+
+        // Abilitare la selezione delle celle dei testimoni per accogliere le lezioni
+        function enableCellSelection() {
+            const collationTable = document.getElementById('collationHTMLtable');
+            if (!collationTable) return;
+
+            const witnessCells = collationTable.querySelectorAll('td.witness-cell');
+
+            witnessCells.forEach(cell => {
+                cell.addEventListener('click', handleCellSelection);
+            });
+        };
+
+        // Funzione per gestire la selezione delle celle
+        function handleCellSelection(event) {
+            const clickedCell = event.target;
+            const currentRow = clickedCell.parentElement;
+
+            // Se la cella era già selezionata, deselezionarla
+            if (clickedCell.classList.contains('selected-cell')) {
+                clickedCell.classList.remove('selected-cell');
+
+                return
+            };
+
+            // Deseleziona qualsiasi altra cella selezionata nella stessa riga
+            const selectedCells = currentRow.querySelectorAll('.selected-cell');
+            selectedCells.forEach(cell => cell.classList.remove('selected-cell'));
+
+            // Seleziona la cella cliccata
+            clickedCell.classList.add('selected-cell');
+        };
+
+        function updateWitnessesTitle() {
+            const witnessTable = document.getElementById('witnesses-table');
+            const witnessCount = witnessTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr').length;
+            const titleElement = document.getElementById('witness-table-title');
+
+            if (witnessCount === 0) {
+                titleElement.textContent = "Testimoni nel Database: nessun Testimone attualmente caricato";
+            } else {
+                titleElement.textContent = "Testimoni nel Database:";
+            };
+        };
+
     </script>
 </body>
 </html>
