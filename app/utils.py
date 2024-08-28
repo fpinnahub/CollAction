@@ -159,7 +159,7 @@ def table_to_html(table, data):
     <meta charset="UTF-8">
 </head>
 <body>
-<table border='1' cellspacing='0' cellpadding='5'>\n"""
+<table id='the-collation-table' border='1' cellspacing='0' cellpadding='5'>\n"""
 
     # get rows and cells
     rows = [row.strip("|").strip() for row in table.splitlines() if "+" not in row and row.strip()]
@@ -180,12 +180,17 @@ def table_to_html(table, data):
     html += f"""    <td style="text-align: center;">
             <span style="font-style:italic;font-size:x-large;">category</span>
             </td>\n"""
+    html += f"""    <td style="text-align: center;">
+                <span style="font-style:italic;font-size:x-large;">notes</span>
+                </td>\n"""
     html += "  </tr>\n"
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
         variant = not all_equal(cells)
         bkgrnd_col = """style=\"background-color:red;\"""" \
             if variant else """style=\"background-color:rgba(0, 0, 0, 0);\""""
+        notes_bkgrnd_col = """style=\"background-color:beige;\"""" \
+            if variant else """style=\"background-color:bisque;\""""
         html += "  <tr>\n"
         for i, cell in enumerate(cells):
             witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
@@ -224,7 +229,7 @@ def table_to_html(table, data):
                     if morphs[i]:
                         morphs[i] = morphs[i][:-1]
 
-            html += f"    <td {bkgrnd_col}>{cell_html.strip()}</td>\n"
+            html += f"    <td  class=\"witness-cell\" {bkgrnd_col}>{cell_html.strip()}</td>\n"
 
         # guess the category
         if variant:
@@ -247,12 +252,48 @@ def table_to_html(table, data):
             lemmas = [''] * len(data['witnesses'])
             poss = [''] * len(data['witnesses'])
             morphs = [''] * len(data['witnesses'])
+        else:
+            # empty cell for category
+            html += f"    <td {bkgrnd_col}></td>\n"
+        # editable notes' cell
+        html += f'    <td contenteditable="true" class="notes-cell" {notes_bkgrnd_col}></td>\n'
 
         html += "  </tr>\n"
 
     html += "</table>"
 
     return html
+
+
+def collation_html_from_dict(dict_input, seg=True, coll_by_lemmas=True):
+    """
+    HTML collation table given lemmatized witnesses dict
+    :param dict_input: str
+    :param seg: bool (opt.), collate with segmentation
+    :param coll_by_lemmas: bool (opt,), collate by lemmas or by forms
+    """
+    from collatex import collate, Collation
+
+    # segmentation
+    if seg:
+        collation = Collation()
+        for w in dict_input['witnesses']:
+            if coll_by_lemmas:
+                all_lemmas = ' '.join([d['t'] for d in w['tokens']])
+                collation.add_plain_witness(w['id'], all_lemmas)
+            else:
+                all_forms = ' '.join([d['form'] for d in w['tokens']])
+                collation.add_plain_witness(w['id'], all_forms)
+        collation_material = collation
+    else:
+        collation_material = dict_input
+
+    # generate output
+    table = collate(
+        collation_material, output="table", layout="vertical", segmentation=seg, near_match=not seg
+    )
+
+    return table_to_html(table.__str__(), dict_input)
 
 
 def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):

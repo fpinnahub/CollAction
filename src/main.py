@@ -42,3 +42,6 @@ collate_from_json(merav_json_lemmas, output_folder + '\\merav', seg=True)
 ### tamente il json - vedere falcon-master/main.py, riga 53;
 ### poi va considerato l'XML generato dalla collazione e rigenerata/corretta la table; infine va
 ### guardata la categorizzazione (penultimo punto del README.md).
+
+
+##### Tutto fatto! Adesso farò una webapp e poi, una volta testata, la trasferirò in un progetto dedicato e passerò al python 3.12.
