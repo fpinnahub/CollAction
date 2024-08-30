@@ -1,3 +1,4 @@
+import os
 import uvicorn
 import models, database
 from typing import List
@@ -5,13 +6,19 @@ from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends, HTTPException, Request, Form, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
+from starlette.middleware.sessions import SessionMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
 from utils import collation_html_from_dict, dictfy_witness_text
 from consts import LEMMATIZERS
 
 app = FastAPI()
+
+# Aggiungi il middleware per le sessioni con una chiave segreta
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "default-secret-key"))
 
 # Aggiungi il middleware CORS per permettere richieste dal frontend
 app.add_middleware(
@@ -21,6 +28,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Middleware personalizzato per intercettare l'errore 401 e reindirizzare
+class RedirectToLoginMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response: Response = await call_next(request)
+        if response.status_code == 401:  # Se l'utente non è autenticato
+
+            return RedirectResponse(url="/login")  # Reindirizza alla pagina di login
+
+        return response
+
+
+app.add_middleware(RedirectToLoginMiddleware)
 
 
 templates = Jinja2Templates(directory="app/templates")
@@ -44,6 +65,13 @@ class CollationTableRequest(BaseModel):
     name: str
 
 
+# Definizione degli utenti (da sostituire con un DB in un contesto reale)
+USERS = {
+    'utente1': 'password123',
+    'utente2': 'password456'
+}
+
+
 # Dependency per ottenere la sessione DB
 def get_db():
     db = database.SessionLocal()
@@ -53,15 +81,51 @@ def get_db():
         db.close()
 
 
+# Funzione per ottenere l'utente corrente dalla sessione
+def get_current_user(request: Request):
+    user = request.session.get('user')
+    if not user:
+
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    return user
+
+
+# Rotte per l'autenticazione
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+@app.post("/login")
+async def login(request: Request, username: str = Form(...), password: str = Form(...)):
+    if USERS.get(username) == password:
+        request.session['user'] = username
+
+        return RedirectResponse(url="/", status_code=303)
+
+    raise HTTPException(status_code=400, detail="Invalid credentials")
+
+
+@app.get("/logout")
+async def logout(request: Request):
+    request.session.clear()
+
+    return RedirectResponse(url="/login", status_code=303)
+
+
+# Rotte esistenti, protette con autenticazione
 @app.get("/lemmatizers/", response_model=List[str])
-async def get_lemmatizers():
+async def get_lemmatizers(user: str = Depends(get_current_user)):  # Protegge questa rotta
 
     return LEMMATIZERS
 
 
 @app.post("/add_witness/")
 async def add_witness(
-        request: AddWitnessRequest, db: Session = Depends(get_db)
+        request: AddWitnessRequest, db: Session = Depends(get_db),
+        user: str = Depends(get_current_user)  # Protegge questa rotta
 ):
     new_witness = models.Witness(
         name=request.witness_name, text=request.witness_text
@@ -76,14 +140,19 @@ async def add_witness(
 
 
 @app.get("/get_witnesses/", response_class=JSONResponse)
-async def get_witnesses(db: Session = Depends(get_db)):
+async def get_witnesses(
+        db: Session = Depends(get_db), user: str = Depends(get_current_user)
+):
     witnesses = db.query(models.Witness).all()
 
     return [{"id": w.id, "name": w.name} for w in witnesses]
 
 
 @app.post("/delete_witness/")
-async def delete_witness(request: DeleteWitnessRequest, db: Session = Depends(get_db)):
+async def delete_witness(
+        request: DeleteWitnessRequest, db: Session = Depends(get_db),
+        user: str = Depends(get_current_user)
+):
     witness = db.query(models.Witness).filter(models.Witness.id == request.witness_id).first()
     if witness:
         db.delete(witness)
@@ -96,7 +165,10 @@ async def delete_witness(request: DeleteWitnessRequest, db: Session = Depends(ge
 
 
 @app.get("/collation/", response_class=HTMLResponse)
-async def get_collation(request: Request, lemmatizer, db: Session = Depends(get_db)):
+async def get_collation(
+        request: Request, lemmatizer, db: Session = Depends(get_db),
+        user: str = Depends(get_current_user)
+):
     selected_lemmatizer = lemmatizer    # per adesso, non utilizzato
     witnesses = db.query(models.Witness).all()
     if len(witnesses) < 2:
@@ -114,20 +186,13 @@ async def get_collation(request: Request, lemmatizer, db: Session = Depends(get_
     html_table = collation_html_from_dict(data)
 
     return JSONResponse(content=jsonable_encoder({"collation_html": html_table}))
-    # return templates.TemplateResponse(
-    #     "index.html",
-    #     {
-    #         "request": request,
-    #         "collation_html": html_table,
-    #         "collation_title": "Risultato della Collazione"
-    #     }
-    # )
 
 
 # API POST per salvare una tabella di collazione nel DB
 @app.post("/save_collation/")
 async def save_collation(
-        name: str = Body(...), html_table: str = Body(...), db: Session = Depends(get_db)
+        name: str = Body(...), html_table: str = Body(...), db: Session = Depends(get_db),
+        user: str = Depends(get_current_user)
 ):
     existing = db.query(models.Collation).filter(models.Collation.name == name).first()
     if existing:
@@ -143,7 +208,10 @@ async def save_collation(
 
 # API POST per cancellare una tabella di collazione dal DB
 @app.post("/delete_collation/")
-async def delete_collation(request: CollationTableRequest, db: Session = Depends(get_db)):
+async def delete_collation(
+        request: CollationTableRequest, db: Session = Depends(get_db),
+        user: str = Depends(get_current_user)
+):
     collation = db.query(models.Collation).filter(models.Collation.name == request.name).first()
     if collation:
         db.delete(collation)
@@ -156,7 +224,10 @@ async def delete_collation(request: CollationTableRequest, db: Session = Depends
 
 # API POST per caricare una tabella di collazione dal DB
 @app.post("/load_collation/")
-async def load_collation(request: CollationTableRequest, db: Session = Depends(get_db)):
+async def load_collation(
+        request: CollationTableRequest, db: Session = Depends(get_db),
+        user: str = Depends(get_current_user)
+):
     collation = db.query(models.Collation).filter(
         models.Collation.name == request.name
     ).first()
@@ -169,16 +240,16 @@ async def load_collation(request: CollationTableRequest, db: Session = Depends(g
 
 # API GET per ottenere la lista di tutte le tabelle di collazione nel DB
 @app.get("/get_collations/")
-async def get_collations(db: Session = Depends(get_db)):
+async def get_collations(db: Session = Depends(get_db), user: str = Depends(get_current_user)):
     collations = db.query(models.Collation).all()
 
     return [{"name": collation.name} for collation in collations]
 
 
 @app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request):
+async def read_root(request: Request, user: str = Depends(get_current_user)):
 
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
 
 if __name__ == "__main__":
