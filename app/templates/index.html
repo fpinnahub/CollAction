@@ -25,6 +25,30 @@
             border-width: thick !important;
             background-color: lightgreen !important;
         }
+        /* Posizionamento dell'area di benvenuto e logout */
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+        /* Stile del messaggio di benvenuto */
+        .welcome-message {
+            font-size: 1.2em;
+        }
+        /* Stile del pulsante di logout */
+        .logout-button {
+            padding: 5px 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .logout-button:hover {
+            background-color: #ff1a1a;
+        }
     </style>
     <title>COLLAZIONATORE</title>
 <!--    Librerie esterne-->
@@ -92,8 +116,18 @@
     </script>
 </head>
 <body>
+    <!-- Area messaggio di benvenuto e logout -->
+    <div class="user-info">
+        <div class="welcome-message">
+            Benvenuto, {{ username }}! <!-- Qui username è passato dal backend -->
+        </div>
+        <form method="POST" action="/logout/">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+
     <h1 style="text-align: center;">COLLAZIONATORE</h1>
-    <p style="text-align: center;">Uno strumento per la collazione dei testimoni.</p>
+    <p style="text-align: center;">Uno strumento per la collazione lemmatizzata dei testimoni.</p>
 
     <!-- Menu a tendina per selezionare il lemmatizzatore -->
     <label for="lemmatizer">Seleziona un Lemmatizzatore:</label><br>

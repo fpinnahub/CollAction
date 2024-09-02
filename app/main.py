@@ -110,11 +110,11 @@ async def login(
     return RedirectResponse(url="/", status_code=303)
 
 
-@app.get("/logout")
+@app.post("/logout")
 async def logout(request: Request):
     request.session.clear()
 
-    return RedirectResponse(url="/login", status_code=303)
+    return RedirectResponse(url="/login", status_code=302)
 
 
 # Rotte esistenti, protette con autenticazione
@@ -264,9 +264,11 @@ async def get_collations(db: Session = Depends(get_db), user: models.User = Depe
 
 
 @app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request, user: models.User = Depends(get_current_user)):
+def home(request: Request, user: models.User = Depends(get_current_user)):
 
-    return templates.TemplateResponse("index.html", {"request": request, "user": user})
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "username": user.username}
+    )
 
 
 if __name__ == "__main__":
