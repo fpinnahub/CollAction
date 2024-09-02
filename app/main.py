@@ -1,6 +1,7 @@
 import os
 import uvicorn
 import models, database
+from security import verify_password, get_password_hash
 from typing import List
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends, HTTPException, Request, Form, Body
@@ -65,13 +66,6 @@ class CollationTableRequest(BaseModel):
     name: str
 
 
-# Definizione degli utenti (da sostituire con un DB in un contesto reale)
-USERS = {
-    'utente1': 'password123',
-    'utente2': 'password456'
-}
-
-
 # Dependency per ottenere la sessione DB
 def get_db():
     db = database.SessionLocal()
@@ -81,12 +75,16 @@ def get_db():
         db.close()
 
 
-# Funzione per ottenere l'utente corrente dalla sessione
-def get_current_user(request: Request):
-    user = request.session.get('user')
-    if not user:
+# Funzione per ottenere l'utente corrente dalla sessione e dal DB
+def get_current_user(request: Request, db: Session = Depends(get_db)):
+    username: str = request.session.get('user')
+    if not username:
 
         raise HTTPException(status_code=401, detail="Not authenticated")
+    user = db.query(models.User).filter(models.User.username == username).first()
+    if not user:
+
+        raise HTTPException(status_code=401, detail="User not found")
 
     return user
 
@@ -99,13 +97,17 @@ async def login_page(request: Request):
 
 
 @app.post("/login")
-async def login(request: Request, username: str = Form(...), password: str = Form(...)):
-    if USERS.get(username) == password:
-        request.session['user'] = username
+async def login(
+        request: Request, db: Session = Depends(get_db), username: str = Form(...),
+        password: str = Form(...)
+):
+    user = db.query(models.User).filter(models.User.username == username).first()
+    if not user or not verify_password(password, user.hashed_password):
 
-        return RedirectResponse(url="/", status_code=303)
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    request.session['user'] = user.username
 
-    raise HTTPException(status_code=400, detail="Invalid credentials")
+    return RedirectResponse(url="/", status_code=303)
 
 
 @app.get("/logout")
@@ -117,7 +119,7 @@ async def logout(request: Request):
 
 # Rotte esistenti, protette con autenticazione
 @app.get("/lemmatizers/", response_model=List[str])
-async def get_lemmatizers(user: str = Depends(get_current_user)):  # Protegge questa rotta
+async def get_lemmatizers(user: models.User = Depends(get_current_user)):  # Protegge questa rotta
 
     return LEMMATIZERS
 
@@ -125,7 +127,7 @@ async def get_lemmatizers(user: str = Depends(get_current_user)):  # Protegge qu
 @app.post("/add_witness/")
 async def add_witness(
         request: AddWitnessRequest, db: Session = Depends(get_db),
-        user: str = Depends(get_current_user)  # Protegge questa rotta
+        user: models.User = Depends(get_current_user)
 ):
     new_witness = models.Witness(
         name=request.witness_name, text=request.witness_text
@@ -134,16 +136,19 @@ async def add_witness(
     db.commit()
     db.refresh(new_witness)
 
-    witnesses = db.query(models.Witness).all()
+    # Show only witness for the current user
+    u_id: int = user.id
+    witnesses = db.query(models.Witness).filter(models.Witness.owner_id == u_id).all()
 
     return {"witnesses": [{"id": w.id, "name": w.name} for w in witnesses]}
 
 
 @app.get("/get_witnesses/", response_class=JSONResponse)
 async def get_witnesses(
-        db: Session = Depends(get_db), user: str = Depends(get_current_user)
+        db: Session = Depends(get_db), user: models.User = Depends(get_current_user)
 ):
-    witnesses = db.query(models.Witness).all()
+    u_id: int = user.id
+    witnesses = db.query(models.Witness).filter(models.Witness.owner_id == u_id).all()
 
     return [{"id": w.id, "name": w.name} for w in witnesses]
 
@@ -151,7 +156,7 @@ async def get_witnesses(
 @app.post("/delete_witness/")
 async def delete_witness(
         request: DeleteWitnessRequest, db: Session = Depends(get_db),
-        user: str = Depends(get_current_user)
+        user: models.User = Depends(get_current_user)
 ):
     witness = db.query(models.Witness).filter(models.Witness.id == request.witness_id).first()
     if witness:
@@ -167,10 +172,11 @@ async def delete_witness(
 @app.get("/collation/", response_class=HTMLResponse)
 async def get_collation(
         request: Request, lemmatizer, db: Session = Depends(get_db),
-        user: str = Depends(get_current_user)
+        user: models.User = Depends(get_current_user)
 ):
     selected_lemmatizer = lemmatizer    # per adesso, non utilizzato
-    witnesses = db.query(models.Witness).all()
+    u_id: int = user.id
+    witnesses = db.query(models.Witness).filter(models.Witness.owner_id == u_id).all()
     if len(witnesses) < 2:
 
         raise HTTPException(status_code=500, detail="Servono almeno due testimoni")
@@ -192,14 +198,18 @@ async def get_collation(
 @app.post("/save_collation/")
 async def save_collation(
         name: str = Body(...), html_table: str = Body(...), db: Session = Depends(get_db),
-        user: str = Depends(get_current_user)
+        user: models.User = Depends(get_current_user)
 ):
-    existing = db.query(models.Collation).filter(models.Collation.name == name).first()
+    u_id: int = user.id
+    existing = db.query(models.Collation).filter(
+        models.Collation.name == name,
+        models.Collation.owner_id == u_id
+    ).first()
     if existing:
 
         raise HTTPException(status_code=400, detail="Una collazione con questo nome esiste già.")
 
-    new_collation = models.Collation(name=name, html_table=html_table)
+    new_collation = models.Collation(name=name, html_table=html_table, owner_id=user.id)
     db.add(new_collation)
     db.commit()
 
@@ -210,9 +220,13 @@ async def save_collation(
 @app.post("/delete_collation/")
 async def delete_collation(
         request: CollationTableRequest, db: Session = Depends(get_db),
-        user: str = Depends(get_current_user)
+        user: models.User = Depends(get_current_user)
 ):
-    collation = db.query(models.Collation).filter(models.Collation.name == request.name).first()
+    u_id: int = user.id
+    collation = db.query(models.Collation).filter(
+        models.Collation.name == request.name,
+        models.Collation.owner_id == u_id
+    ).first()
     if collation:
         db.delete(collation)
         db.commit()
@@ -226,10 +240,12 @@ async def delete_collation(
 @app.post("/load_collation/")
 async def load_collation(
         request: CollationTableRequest, db: Session = Depends(get_db),
-        user: str = Depends(get_current_user)
+        user: models.User = Depends(get_current_user)
 ):
+    u_id: int = user.id
     collation = db.query(models.Collation).filter(
-        models.Collation.name == request.name
+        models.Collation.name == request.name,
+        models.Collation.owner_id == u_id
     ).first()
     if collation:
 
@@ -240,14 +256,15 @@ async def load_collation(
 
 # API GET per ottenere la lista di tutte le tabelle di collazione nel DB
 @app.get("/get_collations/")
-async def get_collations(db: Session = Depends(get_db), user: str = Depends(get_current_user)):
-    collations = db.query(models.Collation).all()
+async def get_collations(db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
+    u_id: int = user.id
+    collations = db.query(models.Collation).filter(models.Collation.owner_id == u_id).all()
 
     return [{"name": collation.name} for collation in collations]
 
 
 @app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request, user: str = Depends(get_current_user)):
+async def read_root(request: Request, user: models.User = Depends(get_current_user)):
 
     return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
