@@ -1,6 +1,5 @@
 ## prossimi passi
 
-### cambiare password
 ### debug
 ### refactoring html
 

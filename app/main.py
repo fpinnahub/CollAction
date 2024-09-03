@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.encoders import jsonable_encoder
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -17,6 +18,9 @@ from utils import collation_html_from_dict, dictfy_witness_text
 from consts import LEMMATIZERS
 
 app = FastAPI()
+
+# Monta la directory static
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Aggiungi il middleware per le sessioni con una chiave segreta
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "default-secret-key"))
