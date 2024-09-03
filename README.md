@@ -1,7 +1,6 @@
 ## prossimi passi
 
 ### debug
-### refactoring html
 
 
 ### How to register a new user
@@ -16,3 +15,10 @@ From a python console, just import:
 `import app.commands.delete_user`
 
 You'll be asked for the username
+
+
+## How to run CollAction
+From outside `app` folder, run:
+```python
+python app/main.py
+```README
