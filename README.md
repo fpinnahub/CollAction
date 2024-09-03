@@ -21,4 +21,4 @@ You'll be asked for the username
 From outside `app` folder, run:
 ```python
 python app/main.py
-```README
+```
