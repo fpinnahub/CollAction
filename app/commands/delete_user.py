@@ -1,3 +1,11 @@
+import sys
+from pathlib import Path
+
+# set "app/" as working directory
+cwd = Path(__file__)
+sys.path.append(cwd.parents[1].__str__())
+
+
 from db_utils import delete_user
 
 try:

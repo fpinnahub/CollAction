@@ -1,4 +1,13 @@
+import sys
+from pathlib import Path
+
+# set "app/" as working directory
+cwd = Path(__file__)
+sys.path.append(cwd.parents[1].__str__())
+
+
 from db_utils import register
+
 
 try:
     username = input('Inserisci il nome del nuovo utente da registrare:')
@@ -10,6 +19,3 @@ try:
 except Exception as e:
     print(e)
     print('Operazione fallita')
-
-
-
