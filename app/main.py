@@ -118,6 +118,26 @@ async def logout(request: Request):
 
 
 # Rotte esistenti, protette con autenticazione
+@app.post("/change_password/")
+async def change_password(
+    request: Request,
+    db: Session = Depends(get_db),
+    current_password: str = Body(...),
+    new_password: str = Body(...),
+    user: models.User = Depends(get_current_user)
+):
+    # Verifica che la password attuale sia corretta
+    if not verify_password(current_password, user.hashed_password):
+
+        raise HTTPException(status_code=400, detail="La password attuale è errata.")
+
+    # Aggiorna la password con quella nuova
+    user.hashed_password = get_password_hash(new_password)
+    db.commit()
+
+    return {"message": "Password aggiornata con successo."}
+
+
 @app.get("/lemmatizers/", response_model=List[str])
 async def get_lemmatizers(user: models.User = Depends(get_current_user)):  # Protegge questa rotta
 

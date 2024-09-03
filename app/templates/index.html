@@ -49,6 +49,52 @@
         .logout-button:hover {
             background-color: #ff1a1a;
         }
+        /* Stile del pulsante di cambio password */
+        .change-pwd-button {
+            padding: 5px 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin:0% 1% 0% 70%;
+        }
+        .change-pwd-button:hover {
+            background-color: #ff1a1a;
+        }
+        /* Stili per il modale di cambio password */
+        .modal {
+            display: none; /* Nascondere di default */
+            position: fixed; /* Rimanere in posizione fissa */
+            z-index: 1; /* Sopra tutto il resto */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Abilitare lo scrolling se necessario */
+            background-color: rgb(0, 0, 0); /* Colore di sfondo nero */
+            background-color: rgba(0, 0, 0, 0.4); /* Trasparenza */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% dall'alto e centrato */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Larghezza */
+            max-width: 400px; /* Massima larghezza */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
     <title>COLLAZIONATORE</title>
 <!--    Librerie esterne-->
@@ -116,14 +162,35 @@
     </script>
 </head>
 <body>
-    <!-- Area messaggio di benvenuto e logout -->
+    <!-- Messaggio di benvenuto e pulsanti di azione -->
     <div class="user-info">
         <div class="welcome-message">
             Benvenuto, {{ username }}! <!-- Qui username è passato dal backend -->
         </div>
-        <form method="POST" action="/logout/">
+        <button onclick="showChangePasswordModal()" class="change-pwd-button">Cambia Password</button>
+        <form action="/logout/" method="post" style="display: inline;">
             <button type="submit" class="logout-button">Logout</button>
         </form>
+    </div>
+
+    <!-- Modale per il cambio password -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChangePasswordModal()">&times;</span>
+            <h2>Cambia Password</h2>
+            <form id="changePasswordForm">
+                <label for="currentPassword">Password Attuale:</label><br>
+                <input type="password" id="currentPassword" name="currentPassword" autocomplete="off" required><br><br>
+
+                <label for="newPassword">Nuova Password:</label><br>
+                <input type="password" id="newPassword" name="newPassword" autocomplete="off" required><br><br>
+
+                <label for="confirmPassword">Conferma Nuova Password:</label><br>
+                <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="off" required><br><br>
+
+                <input type="submit" value="Aggiorna Password">
+            </form>
+        </div>
     </div>
 
     <h1 style="text-align: center;">COLLAZIONATORE</h1>
@@ -533,6 +600,57 @@
             // Genera il file Excel e lo scarica
             XLSX.writeFile(wb, 'collation_export.xlsx');
         });
+
+        // Funzione per mostrare il modale di cambio password
+        function showChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'block';
+        }
+
+        // Funzione per chiudere il modale di cambio password
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+        }
+
+        // Gestione del form di cambio password
+        document.getElementById('changePasswordForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('La nuova password e la conferma non corrispondono.');
+                return;
+            }
+
+            const response = await fetch('/change_password/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    current_password: currentPassword,
+                    new_password: newPassword,
+                }),
+            });
+
+            if (response.ok) {
+                alert('Password aggiornata con successo!');
+                closeChangePasswordModal();
+            } else {
+                const result = await response.json();
+                alert(`Errore: ${result.detail}`);
+            }
+        });
+
+        // Chiudi il modale se l'utente clicca fuori di esso
+        window.onclick = function(event) {
+            const modal = document.getElementById('changePasswordModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
     </script>
 </body>
 </html>
