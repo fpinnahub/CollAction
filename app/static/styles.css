@@ -1,0 +1,91 @@
+        /* Classe per indicare che è in corso un'operazione di caricamento */
+        .loading {
+            cursor: wait; /* Cambia il cursore in una clessidra o indicatore di caricamento */
+        }
+        /* Centrare la tabella nella pagina */
+        #witnesses-table {
+            margin: 0 auto; /* Centro orizzontalmente */
+            text-align: center; /* Centrare il testo all'interno delle celle */
+        }
+        /* Centrare l'intero contenuto */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* Classe per le lezioni accolte */
+        .selected-cell {
+            border-color: green !important;
+            border-width: thick !important;
+            background-color: lightgreen !important;
+        }
+        /* Posizionamento dell'area di benvenuto e logout */
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+        /* Stile del messaggio di benvenuto */
+        .welcome-message {
+            font-size: 1.2em;
+        }
+        /* Stile del pulsante di logout */
+        .logout-button {
+            padding: 5px 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .logout-button:hover {
+            background-color: #ff1a1a;
+        }
+        /* Stile del pulsante di cambio password */
+        .change-pwd-button {
+            padding: 5px 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin:0% 1% 0% 70%;
+        }
+        .change-pwd-button:hover {
+            background-color: #ff1a1a;
+        }
+        /* Stili per il modale di cambio password */
+        .modal {
+            display: none; /* Nascondere di default */
+            position: fixed; /* Rimanere in posizione fissa */
+            z-index: 1; /* Sopra tutto il resto */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Abilitare lo scrolling se necessario */
+            background-color: rgb(0, 0, 0); /* Colore di sfondo nero */
+            background-color: rgba(0, 0, 0, 0.4); /* Trasparenza */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% dall'alto e centrato */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Larghezza */
+            max-width: 400px; /* Massima larghezza */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }

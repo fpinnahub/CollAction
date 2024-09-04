@@ -3,97 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* Classe per indicare che è in corso un'operazione di caricamento */
-        .loading {
-            cursor: wait; /* Cambia il cursore in una clessidra o indicatore di caricamento */
-        }
-        /* Centrare la tabella nella pagina */
-        #witnesses-table {
-            margin: 0 auto; /* Centro orizzontalmente */
-            text-align: center; /* Centrare il testo all'interno delle celle */
-        }
-        /* Centrare l'intero contenuto */
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        /* Classe per le lezioni accolte */
-        .selected-cell {
-            border-color: green !important;
-            border-width: thick !important;
-            background-color: lightgreen !important;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/styles.css">
     <title>COLLAZIONATORE</title>
 <!--    Librerie esterne-->
 <!--    SheetJS (xlsx)-->
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <script>
-        // Gestione chiamare asincrone
-        async function fetchWitnesses() {
-            const response = await fetch('/get_witnesses/');
-            const witnesses = await response.json();
-            updateWitnessesList(witnesses);
-        };
-
-        function updateWitnessesList(witnesses) {
-            const tableBody = document.querySelector('#witnesses-table tbody');
-            tableBody.innerHTML = ''; // Pulisci il contenuto della tabella
-
-            witnesses.forEach(witness => {
-                const row = document.createElement('tr');
-
-                const idCell = document.createElement('td');
-                idCell.textContent = witness.id;
-                row.appendChild(idCell);
-
-                const nameCell = document.createElement('td');
-                nameCell.textContent = witness.name;
-                row.appendChild(nameCell);
-
-                const actionCell = document.createElement('td');
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Rimuovi';
-                deleteButton.onclick = () => deleteWitness(witness.id);
-                actionCell.appendChild(deleteButton);
-                row.appendChild(actionCell);
-
-                tableBody.appendChild(row);
-            });
-
-            updateWitnessesTitle(); // Aggiorna il titolo dopo aver aggiornato la lista
-        };
-
-        async function deleteWitness(id) {
-            const witObj = { witness_id: id };
-
-            const response = await fetch('/delete_witness/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(witObj)
-            });
-            if (response.ok) {
-                alert('Testimone rimosso con successo!');
-                fetchWitnesses();  // Ricarica la lista dei testimoni
-                updateWitnessesTitle(); // Aggiorna il titolo
-            } else {
-                alert('Errore nella rimozione del testimone');
-            };
-        };
-
-        window.onload = function() {
-            fetchWitnesses();
-            updateWitnessesTitle(); // Aggiorna il titolo quando la pagina viene caricata
-        };
-    </script>
 </head>
 <body>
+    <!-- Messaggio di benvenuto e pulsanti di azione -->
+    <div class="user-info">
+        <div class="welcome-message">
+            Benvenuto, {{ username }}! <!-- Qui username è passato dal backend -->
+        </div>
+        <button onclick="showChangePasswordModal()" class="change-pwd-button">Cambia Password</button>
+        <form action="/logout/" method="post" style="display: inline;">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+
+    <!-- Modale per il cambio password -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChangePasswordModal()">&times;</span>
+            <h2>Cambia Password</h2>
+            <form id="changePasswordForm">
+                <label for="currentPassword">Password Attuale:</label><br>
+                <input type="password" id="currentPassword" name="currentPassword" autocomplete="off" required><br><br>
+
+                <label for="newPassword">Nuova Password:</label><br>
+                <input type="password" id="newPassword" name="newPassword" autocomplete="off" required><br><br>
+
+                <label for="confirmPassword">Conferma Nuova Password:</label><br>
+                <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="off" required><br><br>
+
+                <input type="submit" value="Aggiorna Password">
+            </form>
+        </div>
+    </div>
+
     <h1 style="text-align: center;">COLLAZIONATORE</h1>
-    <p style="text-align: center;">Uno strumento per la collazione dei testimoni.</p>
+    <p style="text-align: center;">Uno strumento per la collazione lemmatizzata dei testimoni.</p>
 
     <!-- Menu a tendina per selezionare il lemmatizzatore -->
     <label for="lemmatizer">Seleziona un Lemmatizzatore:</label><br>
@@ -160,345 +109,6 @@
         <div id="collationHTMLtable">{{ collation_html | safe }}</div>
     </div>
     {% endif %}
-    <script>
-        // Funzione per caricare i lemmatizzatori dal backend
-        async function loadLemmatizers() {
-            const response = await fetch('/lemmatizers/');
-            const lemmatizers = await response.json();
-            const lemmatizerSelect = document.getElementById('lemmatizer');
-            lemmatizers.forEach(lemmatizer => {
-                const option = document.createElement('option');
-                option.value = lemmatizer;
-                option.textContent = lemmatizer;
-                lemmatizerSelect.appendChild(option);
-            });
-        }
-
-        // Chiamare la funzione per caricare i lemmatizzatori quando la pagina viene caricata
-        document.addEventListener('DOMContentLoaded', loadLemmatizers);
-
-        // Disabilita il caricamento dei testimoni se l'area è vuota
-        document.getElementById('witness-text-area').addEventListener('input', function() {
-            const text = document.getElementById('witness-text-area').value;
-            const addButton = document.getElementById('addWitnessButton');
-
-            if (text.trim().length > 0) {
-                addButton.disabled = false; // Abilita il bottone se c'è testo
-            } else {
-                addButton.disabled = true; // Disabilita il bottone se non c'è testo
-            }
-        });
-
-        // Form per l'aggiunta del testimone
-        document.getElementById('addWitnessForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const name = document.getElementById('name').value.trim();
-            const text = document.getElementById('witness-text-area').value;
-
-            // Controlla se il nome è vuoto
-            if (name === '') {
-                alert('Errore: il nome del testimone non può essere vuoto.');
-
-                return;
-            };
-
-            // Controlla se il nome esiste già nella tabella dei testimoni
-            const witnessNames = Array.from(
-                document.querySelectorAll('#witnesses-table tbody tr td:nth-child(2)')
-            ).map(td => td.textContent.trim().toLowerCase());
-
-            if (witnessNames.includes(name.toLowerCase())) {
-                alert('Errore: esiste già un testimone con questo nome.');
-
-                return;
-            };
-
-            // Invia la richiesta per aggiungere il testimone
-            const witToAdd = {
-                    witness_name: name,
-                    witness_text: text,
-                };
-
-            const response = await fetch('/add_witness/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(witToAdd),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                alert('Testimone aggiunto con successo!');
-                document.getElementById('name').value = '';
-                document.getElementById('witness-text-area').value = '';
-                document.getElementById('addWitnessButton').disabled = true; // Disabilita il bottone dopo l'aggiunta
-                // Se necessario, aggiorna la lista dei testimoni senza ricaricare la pagina
-                updateWitnessesList(result.witnesses);
-                updateWitnessesTitle(); // Aggiorna il titolo
-            } else {
-                alert(`Errore: ${result.detail || 'Impossibile aggiungere il testimone'}`);
-            }
-        });
-
-        // Gestione del form di collazione
-        document.getElementById('collationForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const selectedLemmatizer = document.getElementById('lemmatizer').value;
-
-            if (!selectedLemmatizer) {
-                alert('Seleziona un lemmatizzatore prima di avviare la collazione.');
-                return;
-            };
-
-            // Conta il numero di testimoni nella tabella
-            const witnessTable = document.getElementById('witnesses-table');
-            const witnessCount = witnessTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr').length;
-
-            if (witnessCount < 2) {
-                alert('Servono almeno due testimoni per avviare la collazione.');
-                return;
-            };
-
-            // Usa fetchWithLoading per avviare la collazione senza cambiare pagina
-            const url = `/collation/?lemmatizer=${encodeURIComponent(selectedLemmatizer)}`;
-
-            try {
-                const response = await fetchWithLoading(url, { method: 'GET' });
-
-                if (response.ok) {
-                    // Qui puoi gestire la risposta, ad esempio:
-                    const result = await response.json();
-                    // Mostra il risultato nella pagina corrente, oppure...
-                    let collationDiv = document.getElementById("collationHTMLtable");
-
-                    // Se l'elemento non esiste, crealo
-                    if (!collationDiv) {
-                        collationDiv = document.createElement('div');
-                        collationDiv.id = "collationHTMLtable";
-                        collationDiv.style.textAlign = "center"; // Stile opzionale, come prima
-                        document.body.appendChild(collationDiv);
-                    };
-                    collationDiv.innerHTML = `        <h2>Risultato della Collazione</h2>${result.collation_html}`;
-                    // ... o naviga a una nuova pagina:
-                    // window.location.href = url; (se proprio vuoi navigare dopo aver ricevuto una risposta positiva)
-
-                    // Aggiorna il bottone "Save Collection"
-                    updateSaveCollationButton();
-
-                    // Abilita la selezione delle celle dopo aver caricato la collazione
-                    enableCellSelection();
-                } else {
-                    alert('Errore durante la collazione.');
-                }
-            } catch (error) {
-                console.error('Errore nella richiesta:', error);
-                alert('Errore nella connessione al server.');
-            };
-        });
-
-        document.getElementById('saveCollationButton').addEventListener('click', async function() {
-            const collationName = prompt("Inserisci il nome per la collazione:");
-            if (!collationName) return;
-
-            const collationHtml = document.querySelector("#collationHTMLtable").innerHTML;
-            const response = await fetch('/save_collation/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: collationName, html_table: collationHtml }),
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert('Collazione salvata con successo!');
-                if (document.getElementById('collations-table')) {
-                    const savedColsBtn = document.getElementById('savedCollationsButton');
-                    savedColsBtn.click();
-                };
-            } else {
-                alert(`Errore: ${result.detail}`);
-            }
-        });
-
-        document.getElementById('savedCollationsButton').addEventListener('click', async function() {
-            const savedCollationsList = document.getElementById('savedCollationsList');
-            savedCollationsList.style.display = 'block'; // Mostra la lista delle collazioni salvate
-
-            const response = await fetch('/get_collations/');
-            const collations = await response.json();
-
-            // Controllo se la lista delle collazioni è vuota
-            if (collations.length === 0) {
-                alert('Nessuna Collazione presente nel Database.');
-
-                return; // Esce dalla funzione se non ci sono collazioni
-            };
-
-            const tableBody = document.querySelector('#collations-table tbody');
-            tableBody.innerHTML = ''; // Pulisci il contenuto della tabella
-
-            collations.forEach(collation => {
-                const row = document.createElement('tr');
-                const nameCell = document.createElement('td');
-                nameCell.textContent = collation.name;
-                row.appendChild(nameCell);
-
-                const actionCell = document.createElement('td');
-
-                const loadButton = document.createElement('button');
-                loadButton.textContent = 'Carica';
-                loadButton.onclick = async () => {
-                    const response = await fetch('/load_collation/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ name: collation.name }),
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                        let collationDiv = document.getElementById("collationHTMLtable");
-
-                        // Se l'elemento non esiste, crealo
-                        if (!collationDiv) {
-                            collationDiv = document.createElement('div');
-                            collationDiv.id = "collationHTMLtable";
-                            collationDiv.style.textAlign = "center"; // Stile opzionale, come prima
-                            document.body.appendChild(collationDiv);
-                        }
-
-                        if (document.getElementById("collationTitle")) {
-                            document.getElementById("collationTitle").innerHTML = "";
-                        };
-                        collationDiv.innerHTML = `        <h2>${collation.name}</h2>${result.html_table}`;
-                        updateSaveCollationButton();  // Aggiorna lo stato del bottone
-                        enableCellSelection();  // Abilitare la selezione delle celle
-                    } else {
-                        alert(`Errore: ${result.detail}`);
-                    };
-                };
-                actionCell.appendChild(loadButton);
-
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Rimuovi';
-                deleteButton.onclick = async () => {
-                    const response = await fetch('/delete_collation/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ name: collation.name }),
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                        alert('Collazione rimossa con successo!');
-                        row.remove();
-                        updateSaveCollationButton();  // Aggiorna lo stato del bottone
-                    } else {
-                        alert(`Errore: ${result.detail}`);
-                    }
-                };
-                actionCell.appendChild(deleteButton);
-
-                row.appendChild(actionCell);
-                tableBody.appendChild(row);
-            });
-        });
-
-        // Funzione per aggiornare lo stato del bottone "Salva Collazione"
-        function updateSaveCollationButton() {
-            const collationDiv = document.getElementById("collationHTMLtable");
-            const saveButton = document.getElementById('saveCollationButton');
-
-            if (collationDiv && collationDiv.innerHTML.trim() !== "") {
-                saveButton.disabled = false; // Abilita il bottone
-            } else {
-                saveButton.disabled = true; // Disabilita il bottone
-            }
-        }
-
-        // Chiamare la funzione precedente quando la pagina viene caricata
-        document.addEventListener('DOMContentLoaded', () => {
-            updateSaveCollationButton();
-        });
-
-        async function fetchWithLoading(url, options = {}) {
-            // Aggiungi la classe 'loading' al body
-            document.body.classList.add('loading');
-
-            try {
-                const response = await fetch(url, options);
-                return response;
-            } finally {
-                // Rimuovi la classe 'loading' dal body, indipendentemente dal successo o fallimento
-                document.body.classList.remove('loading');
-            };
-        };
-
-        // Abilitare la selezione delle celle dei testimoni per accogliere le lezioni
-        function enableCellSelection() {
-            const collationTable = document.getElementById('collationHTMLtable');
-            if (!collationTable) return;
-
-            const witnessCells = collationTable.querySelectorAll('td.witness-cell');
-
-            witnessCells.forEach(cell => {
-                cell.addEventListener('click', handleCellSelection);
-            });
-        };
-
-        // Funzione per gestire la selezione delle celle
-        function handleCellSelection(event) {
-            const clickedCell = event.target;
-            const currentRow = clickedCell.parentElement;
-
-            // Se la cella era già selezionata, deselezionarla
-            if (clickedCell.classList.contains('selected-cell')) {
-                clickedCell.classList.remove('selected-cell');
-
-                return
-            };
-
-            // Deseleziona qualsiasi altra cella selezionata nella stessa riga
-            const selectedCells = currentRow.querySelectorAll('.selected-cell');
-            selectedCells.forEach(cell => cell.classList.remove('selected-cell'));
-
-            // Seleziona la cella cliccata
-            clickedCell.classList.add('selected-cell');
-        };
-
-        function updateWitnessesTitle() {
-            const witnessTable = document.getElementById('witnesses-table');
-            const witnessCount = witnessTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr').length;
-            const titleElement = document.getElementById('witness-table-title');
-
-            if (witnessCount === 0) {
-                titleElement.textContent = "Testimoni nel Database: nessun Testimone attualmente caricato";
-            } else {
-                titleElement.textContent = "Testimoni nel Database:";
-            };
-        };
-
-        // Esportazione in CSV/XLS
-        document.getElementById('exportButton').addEventListener('click', function () {
-            const table = document.getElementById('collationHTMLtable');
-            if (!table) {
-                alert('Nessuna tabella da esportare.');
-
-                return;
-            }
-
-            // Converte la tabella HTML in un foglio di calcolo
-            const wb = XLSX.utils.table_to_book(table.querySelector("#the-collation-table"), { sheet: "Collation Data" });
-
-            // Genera il file Excel e lo scarica
-            XLSX.writeFile(wb, 'collation_export.xlsx');
-        });
-    </script>
 </body>
+<script src="/static/scripts.js"></script>
 </html>
