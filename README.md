@@ -2,6 +2,14 @@
 
 ### debug
 
+### Set an env file
+Create a `.env` file at the same level of "app/" folder, where set all 
+your environment variables. For example:
+```makefile
+SECRET_KEY=mysecretkey123
+```
+Remember to **not commit** this file.
+
 
 ### How to register a new user
 From a python console, just import:
