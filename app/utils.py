@@ -68,8 +68,6 @@ def split_string_text(txt):
     return w_list
 
 
-
-
 def dictfy_witness_text(txt, witness_name, lang_model=None, txt_lang='it'):
     """Get dictionary of lemmas from a plain text"""
     lemmas = get_spacy_lemmas_from_text(txt, lang_model) \
@@ -162,7 +160,26 @@ def table_to_html(table, data):
 <table id='the-collation-table' border='1' cellspacing='0' cellpadding='5'>\n"""
 
     # get rows and cells
-    rows = [row.strip("|").strip() for row in table.splitlines() if "+" not in row and row.strip()]
+    # rows_test = [row.strip("|").strip() for row in table.splitlines() if "+" not in row and row.strip()]
+    rows = []
+    row_prev = ''
+    for row in table.splitlines():
+        if '+' in row:
+            rows.append(row_prev)
+            row_prev = ''
+        elif row_prev:
+            row_prev = '|'.join(
+                [
+                    f'{r_p.strip()} {r.strip()}'
+                    for r_p, r in zip(
+                        row_prev.split('|'),
+                        row.strip("|").strip().split('|')
+                    )
+                ]
+            )
+        else:
+            row_prev = str(row.strip("|").strip())
+    rows = rows[1:]
 
     # witness names
     witness_id = [wit['id'] for wit in data['witnesses']]
@@ -203,6 +220,9 @@ def table_to_html(table, data):
             # consume the cell words
             cell_remainder = str(cell)
             while n[i] < len(witness_data) and witness_data[n[i]]['t'] in cell:
+            # while n[i] < len(witness_data) and witness_data[n[i]]['t'].strip() in cell:
+            # if not witness_data[n[i]]['t'].strip() and cell.strip():
+                #     n[i] += 1
                 cell_remainder = cell_remainder.replace(
                     witness_data[n[i]]['t'], '', 1
                 )
