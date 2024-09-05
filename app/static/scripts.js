@@ -384,16 +384,31 @@ document.getElementById('exportButton').addEventListener('click', function () {
     const table = document.getElementById('collationHTMLtable');
     if (!table) {
         alert('Nessuna tabella da esportare.');
-
         return;
     }
 
+    // Cicla su tutte le celle della tabella e unisce i testi degli span
+    const cells = table.querySelectorAll('td');
+    cells.forEach(function(cell) {
+        let cellText = '';
+        // Unisce i testi di ogni span all'interno della cella
+        cell.querySelectorAll('span').forEach(function(span) {
+            cellText += span.innerText + ' ';
+        });
+        // Rimuove eventuali spazi extra alla fine
+        cell.innerText = cellText.trim();
+    });
+
     // Converte la tabella HTML in un foglio di calcolo
-    const wb = XLSX.utils.table_to_book(table.querySelector("#the-collation-table"), { sheet: "Collation Data" });
+    const wb = XLSX.utils.table_to_book(
+        table.querySelector("#the-collation-table"),
+        { sheet: "Collation Data", raw: true }
+    );
 
     // Genera il file Excel e lo scarica
     XLSX.writeFile(wb, 'collation_export.xlsx');
 });
+
 
 // Funzione per mostrare il modale di cambio password
 function showChangePasswordModal() {
