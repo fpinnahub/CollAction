@@ -201,6 +201,7 @@ def table_to_html(table, data):
                 <span style="font-style:italic;font-size:x-large;">notes</span>
                 </td>\n"""
     html += "  </tr>\n"
+    debug_n = 0
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
         variant = not all_equal(cells)
@@ -210,6 +211,9 @@ def table_to_html(table, data):
             if variant else """style=\"background-color:bisque;\""""
         html += "  <tr>\n"
         for i, cell in enumerate(cells):
+
+            debug_n += 1
+
             witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
             if cell == '-' and cell not in witness_data[n[i]]['t']:
                 html += f"    <td {bkgrnd_col}>-</td>\n"
@@ -220,9 +224,9 @@ def table_to_html(table, data):
             # consume the cell words
             cell_remainder = str(cell)
             while n[i] < len(witness_data) and witness_data[n[i]]['t'] in cell:
-            # while n[i] < len(witness_data) and witness_data[n[i]]['t'].strip() in cell:
-            # if not witness_data[n[i]]['t'].strip() and cell.strip():
-                #     n[i] += 1
+
+                debug_n += 1
+
                 cell_remainder = cell_remainder.replace(
                     witness_data[n[i]]['t'], '', 1
                 )
@@ -238,9 +242,22 @@ def table_to_html(table, data):
                 n[i] += 1
             else:
                 if len(cell_remainder.strip()):
-                    cell_html += f'<span title="UNKNOWN">{cell_remainder}</span> '
+
+                    try:
+
+                        if cell.index(inner_trim(cell_remainder)) < \
+                           cell.index(cell.replace(inner_trim(cell_remainder), '')):
+                            cell_html = f'<span title="UNKNOWN">{cell_remainder}</span> {cell_html}'
+                        else:
+                            cell_html += f'<span title="UNKNOWN">{cell_remainder}</span> '
+
+                    except:
+                        print('ma come?')
+
                 if n[i] < len(witness_data) and cell in witness_data[n[i]]['t']:
                     n[i] += 1
+                    if witness_data[n[i]]['pos'] == 'SPACE':
+                        witness_data[n[i]]['t'] = ' '
                 if variant:
                     if lemmas[i]:
                         lemmas[i] = lemmas[i][:-1]
@@ -283,6 +300,14 @@ def table_to_html(table, data):
     html += "</table>"
 
     return html
+
+
+def inner_trim(string):
+    """Recursively replace double spaces with one"""
+    while '  ' in string:
+        string = string.replace('  ', ' ')
+
+    return string
 
 
 def collation_html_from_dict(dict_input, seg=True, coll_by_lemmas=True):
