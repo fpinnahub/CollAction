@@ -78,9 +78,9 @@ def dictfy_witness_text(txt, witness_name, lang_model=None, txt_lang='it'):
         "id": witness_name,
         "tokens": [
             {
-                "form": lem['word'].replace('\n', 'LB'),
+                "form": lem['word'].replace('\n', LB_CHAR),
                 "xml:id": f'w_{n}',
-                "t": lem['lemma'].replace('\n', LB_CHAR),
+                "t": lem['lemma'].replace('\n', 'LB'),
                 "pos": lem['pos'],
                 "morph": lem['morph']
             } for n, lem in enumerate(lemmas)
