@@ -1,6 +1,6 @@
 
 from consts import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS, \
-LB_CHAR
+LB_FORM, LB_LEMM
 
 
 def plain_text_from_split(txt):
@@ -78,9 +78,9 @@ def dictfy_witness_text(txt, witness_name, lang_model=None, txt_lang='it'):
         "id": witness_name,
         "tokens": [
             {
-                "form": lem['word'].replace('\n', LB_CHAR),
+                "form": lem['word'].replace('\n', LB_FORM),
                 "xml:id": f'w_{n}',
-                "t": lem['lemma'].replace('\n', 'LB'),
+                "t": lem['lemma'].replace('\n', LB_LEMM),
                 "pos": lem['pos'],
                 "morph": lem['morph']
             } for n, lem in enumerate(lemmas)
@@ -216,6 +216,8 @@ def table_to_html(table, data):
                 if variant else """style=\"background-color:rgba(0, 0, 0, 0);\""""
         notes_bkgrnd_col = """style=\"background-color:beige;\"""" \
             if variant else """style=\"background-color:bisque;\""""
+        # remove starting linebreaks
+        start_with_linebreak = True if all(c.startswith(LB_LEMM) for c in cells) else False
         html += "  <tr>\n"
         for i, cell in enumerate(cells):
 
@@ -226,7 +228,7 @@ def table_to_html(table, data):
                 html += f"    <td {bkgrnd_col}>-</td>\n"
 
                 continue
-            cell_html = ""Punctuation
+            cell_html = ""
 
             # consume the cell words
             cell_remainder = str(cell)
@@ -248,6 +250,8 @@ def table_to_html(table, data):
                 cell_html += f'<span title="{tooltip}">{form}</span> '
                 n[i] += 1
             else:
+                if start_with_linebreak:
+                    cell_html = cell_html.replace(LB_FORM, ' ', 1)
                 if len(cell_remainder.strip()):
 
                     try:
@@ -309,7 +313,7 @@ def table_to_html(table, data):
     html += "</table>"
 
     # LB to linebreaks
-    html = html.replace(LB_CHAR, '<br>')
+    html = html.replace(LB_FORM, '<br>')
 
     return html
 
