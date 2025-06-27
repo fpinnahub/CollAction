@@ -206,8 +206,14 @@ def table_to_html(table, data):
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
         variant = not all_equal(cells)
-        bkgrnd_col = """style=\"background-color:red;\"""" \
-            if variant else """style=\"background-color:rgba(0, 0, 0, 0);\""""
+        # check for just punctuation variation
+        just_punct = False
+        if variant and all(c in PUNCT_SINGS + ['-'] for c in cells):
+            bkgrnd_col = """style=\"background-color:peru;\""""
+            just_punct = not just_punct
+        else:
+            bkgrnd_col = """style=\"background-color:red;\"""" \
+                if variant else """style=\"background-color:rgba(0, 0, 0, 0);\""""
         notes_bkgrnd_col = """style=\"background-color:beige;\"""" \
             if variant else """style=\"background-color:bisque;\""""
         html += "  <tr>\n"
@@ -220,7 +226,7 @@ def table_to_html(table, data):
                 html += f"    <td {bkgrnd_col}>-</td>\n"
 
                 continue
-            cell_html = ""
+            cell_html = ""Punctuation
 
             # consume the cell words
             cell_remainder = str(cell)
@@ -280,6 +286,8 @@ def table_to_html(table, data):
             # if forms have same @lemma, but different @pos and @msd > diffPos
             elif all_equal(lemmas):
                 variation_cat = "morphosyntactic"
+            elif just_punct:
+                variation_cat = "punctuation"
             else:
                 variation_cat = "lexical"
 
