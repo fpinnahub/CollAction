@@ -1,5 +1,6 @@
 
-from consts import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS
+from consts import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS, \
+LB_CHAR
 
 
 def plain_text_from_split(txt):
@@ -79,7 +80,7 @@ def dictfy_witness_text(txt, witness_name, lang_model=None, txt_lang='it'):
             {
                 "form": lem['word'].replace('\n', 'LB'),
                 "xml:id": f'w_{n}',
-                "t": lem['lemma'].replace('\n', 'LB'),
+                "t": lem['lemma'].replace('\n', LB_CHAR),
                 "pos": lem['pos'],
                 "morph": lem['morph']
             } for n, lem in enumerate(lemmas)
@@ -298,6 +299,9 @@ def table_to_html(table, data):
         html += "  </tr>\n"
 
     html += "</table>"
+
+    # LB to linebreaks
+    html = html.replace(LB_CHAR, '<br>')
 
     return html
 

@@ -13,3 +13,5 @@ XML_NAMESPACE = {'tei': 'http://www.tei-c.org/ns/1.0'}
 
 # Lista dei lemmatizzatori disponibili
 LEMMATIZERS = ["spaCy ita lm", "Lemmatizzatore B", "Lemmatizzatore C"]
+
+LB_CHAR = 'LB'
