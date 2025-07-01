@@ -1,6 +1,6 @@
 
 from consts import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS, \
-LB_FORM, LB_LEMM
+LB_FORM, LB_LEMM, LB_CHAR
 
 
 def plain_text_from_split(txt):
@@ -35,10 +35,20 @@ def get_spacy_lemmas_from_text(txt, lang_model='it_core_news_lg', **lang_model_p
     # getting the lemmas and words
     lemmas = []
     for token in doc:
+        # let's fix a Spacy bug here (lemma for prop. names often are not
+        # capitalized):
+        if token.pos_ is 'PROPN' and token.text[0].isupper() and \
+                not token.lemma_[0].isupper():
+            lemma_fixed = token.lemma_.capitalize()
+        elif token.pos_ is 'PROPN' and token.text[0].islower() and \
+                token.lemma_[0].isupper():
+            lemma_fixed = token.lemma_.lower()
+        else:
+            lemma_fixed = token.lemma_
         lemmas.append(
             {
                 'word': token.text,
-                'lemma': token.lemma_,
+                'lemma': lemma_fixed,
                 'pos': token.pos_,
                 'morph': token.morph.__str__(),
                 'n': token.i,
@@ -206,6 +216,12 @@ def table_to_html(table, data):
     for row in rows[1:]:
         cells = [cell.strip() for cell in row.split("|")]
         variant = not all_equal(cells)
+
+        ### provare a correggere cosí: se i lemmi non sono uguali ma le forme sí, e si tratta di
+        ### PROPN come pos per tutte, allora non c'è variante.
+        #if variant and all_equal()
+
+
         # check for just punctuation variation
         just_punct = False
         if variant and all(c in PUNCT_SINGS + ['-'] for c in cells):
@@ -313,7 +329,7 @@ def table_to_html(table, data):
     html += "</table>"
 
     # LB to linebreaks
-    html = html.replace(LB_FORM, '<br>')
+    html = html.replace(LB_FORM, LB_CHAR)
 
     return html
 

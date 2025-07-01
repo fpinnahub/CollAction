@@ -16,3 +16,4 @@ LEMMATIZERS = ["spaCy ita lm", "Lemmatizzatore B", "Lemmatizzatore C"]
 
 LB_FORM = 'LiNeBrEAk'
 LB_LEMM = 'LLBB'
+LB_CHAR = '↲<br>'
