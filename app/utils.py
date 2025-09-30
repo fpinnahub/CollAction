@@ -158,7 +158,7 @@ def all_equal(iterable):
     return next(g, True) and not next(g, False)
 
 
-def table_to_html(table, data):
+def table_to_html(collation, table, data):
     """Generate html collation table from plain text table"""
 
     # bare HTML table
@@ -213,9 +213,20 @@ def table_to_html(table, data):
                 </td>\n"""
     html += "  </tr>\n"
     debug_n = 0
-    for row in rows[1:]:
-        cells = [cell.strip() for cell in row.split("|")]
-        variant = not all_equal(cells)
+    witness_datas = tuple(
+        next(
+            w['tokens'] for w in data["witnesses"] if w["id"] == wit_name
+        ) for wit_name in witness_id
+    )
+    tech_obj = type('TechClass', (object,), {'token_string': ''})()
+    for row in collation.columns[1:]:
+        cells = [
+            ' '.join([tok.token_string for tok in row.tokens_per_witness.get(w_name, [tech_obj])])
+            for w_name in witness_id
+        ]
+        variant = row.variant
+        # cells = [cell.strip() for cell in row.split("|")]
+        # variant = not all_equal(cells)
 
         ### provare a correggere cosí: se i lemmi non sono uguali ma le forme sí, e si tratta di
         ### PROPN come pos per tutte, allora non c'è variante.
@@ -239,7 +250,8 @@ def table_to_html(table, data):
 
             debug_n += 1
 
-            witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
+            # witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
+            witness_data = witness_datas[i]
             if cell == '-' and cell not in witness_data[n[i]]['t']:
                 html += f"    <td {bkgrnd_col}>-</td>\n"
 
@@ -262,7 +274,7 @@ def table_to_html(table, data):
                     poss[i] += f'{pos}¬'
                     morphs[i] += f'{morph}¬'
                 tooltip = f"LEM: {lemma}\nPOS: {pos}\nMorph: {morph}" if \
-                          pos not in {'PUNCT', 'SPACE'} else ""
+                    pos not in {'PUNCT', 'SPACE'} else ""
                 cell_html += f'<span title="{tooltip}">{form}</span> '
                 n[i] += 1
             else:
@@ -273,7 +285,7 @@ def table_to_html(table, data):
                     try:
 
                         if cell.index(inner_trim(cell_remainder)) < \
-                           cell.index(cell.replace(inner_trim(cell_remainder), '')):
+                                cell.index(cell.replace(inner_trim(cell_remainder), '')):
                             cell_html = f'<span title="UNKNOWN">{cell_remainder}</span> {cell_html}'
                         else:
                             cell_html += f'<span title="UNKNOWN">{cell_remainder}</span> '
@@ -370,7 +382,7 @@ def collation_html_from_dict(dict_input, seg=True, coll_by_lemmas=True):
         collation_material, output="table", layout="vertical", segmentation=seg, near_match=not seg
     )
 
-    return table_to_html(table.__str__(), dict_input)
+    return table_to_html(table, table.__str__(), dict_input)
 
 
 def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):
@@ -412,7 +424,7 @@ def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):
         indent=True
     )
     xml_output = table_to_xml(table) if not seg else collate(collation_material, output='xml', indent=True)
-    html_table = table_to_html(table.__str__(), collation_material_json)
+    html_table = table_to_html(table, table.__str__(), collation_material_json)
 
     # writing output files
     with open(normpath(output_dir) + "/coll" + "/out.html", 'w', encoding='utf8') as f:
