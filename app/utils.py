@@ -219,7 +219,7 @@ def table_to_html(collation, table, data):
         ) for wit_name in witness_id
     )
     tech_obj = type('TechClass', (object,), {'token_string': ''})()
-    for row in collation.columns[1:]:
+    for row in collation.columns:
         cells = [
             ' '.join([tok.token_string for tok in row.tokens_per_witness.get(w_name, [tech_obj])])
             for w_name in witness_id
@@ -250,9 +250,10 @@ def table_to_html(collation, table, data):
 
             debug_n += 1
 
+            # cell = cell.replace(LB_LEMM, LB_FORM)
             # witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
             witness_data = witness_datas[i]
-            if cell == '-' and cell not in witness_data[n[i]]['t']:
+            if cell == '' and cell not in witness_data[n[i]]['t']:
                 html += f"    <td {bkgrnd_col}>-</td>\n"
 
                 continue
@@ -265,6 +266,7 @@ def table_to_html(collation, table, data):
                 debug_n += 1
 
                 cell_remainder = cell_remainder.replace(
+                    # witness_data[n[i]]['t'].replace(LB_LEMM, LB_FORM), '', 1
                     witness_data[n[i]]['t'], '', 1
                 )
                 token = witness_data[n[i]]
