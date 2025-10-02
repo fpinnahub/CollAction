@@ -1,6 +1,6 @@
 
 from consts import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS, \
-LB_FORM, LB_LEMM, LB_CHAR
+LB_FORM, LB_LEMM, LB_CHAR, CAT_BKGRND_COL
 
 
 def plain_text_from_split(txt):
@@ -190,7 +190,7 @@ def table_to_html(collation, table, data):
             )
         else:
             row_prev = str(row.strip("|").strip())
-    rows = rows[1:]
+    rows = rows[2:]
 
     # witness names
     witness_id = [wit['id'] for wit in data['witnesses']]
@@ -201,6 +201,7 @@ def table_to_html(collation, table, data):
     lemmas = [''] * len(data['witnesses'])
     poss = [''] * len(data['witnesses'])
     morphs = [''] * len(data['witnesses'])
+    forms =  [''] * len(data['witnesses'])
     for w_id in witness_id:
         html += f"""    <td style="text-align: center;">
         <span style="font-weight:bold;font-size:xx-large;">{w_id.strip()}</span>
@@ -219,11 +220,48 @@ def table_to_html(collation, table, data):
         ) for wit_name in witness_id
     )
     tech_obj = type('TechClass', (object,), {'token_string': ''})()
+
+
+    # rows form printed table
+    rows_from_table = [[cell.strip() for cell in row.split("|")] for row in rows]
+
+    # rows from collation object
+    rows_from_collation = [[' '.join([tok.token_string for tok in row.tokens_per_witness.get(w_name, [tech_obj])]) for w_name in witness_id] for row in collation.columns]
+
+    if len(rows_from_collation) != len(rows_from_table):
+
+        raise AssertionError('Collation and printed table have different length')
+
+    # check alignment
+    wit_num = len(witness_id)
+    for j in range(len(rows_from_table)):
+        for k in range(wit_num):
+            if not rows_from_collation[j][k]:
+
+                continue
+            if rows_from_table[j][k] != rows_from_collation[j][k]:
+
+                # debug
+                print(f'table: {rows_from_table[j][k]}\ncollation: {rows_from_collation[j][k]}')
+
+                # correction
+                # if rows_from_collation[j][k].replace(' ( ', '(').replace(' ) ', ')') == rows_from_table[j][k]:
+                #     rows_from_collation[j][k] = rows_from_collation[j][k].replace(' ( ', '(').replace(' ) ', ')')
+                if rows_from_collation[j][k].replace(' ', '') == rows_from_table[j][k].replace(' ', ''):
+                    rows_from_collation[j][k] = rows_from_table[j][k]
+                else:
+
+                    raise ValueError('Bad parsing value in collation table')
+
+
+    ri = 0
     for row in collation.columns:
-        cells = [
-            ' '.join([tok.token_string for tok in row.tokens_per_witness.get(w_name, [tech_obj])])
-            for w_name in witness_id
-        ]
+        cells = rows_from_collation[ri]
+        ri += 1
+        # cells = [
+        #     ' '.join([tok.token_string for tok in row.tokens_per_witness.get(w_name, [tech_obj])])
+        #     for w_name in witness_id
+        # ]
         variant = row.variant
         # cells = [cell.strip() for cell in row.split("|")]
         # variant = not all_equal(cells)
@@ -253,7 +291,8 @@ def table_to_html(collation, table, data):
             # cell = cell.replace(LB_LEMM, LB_FORM)
             # witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
             witness_data = witness_datas[i]
-            if cell == '' and cell not in witness_data[n[i]]['t']:
+            #if cell == '' and cell not in witness_data[n[i]]['t']:
+            if cell == '':
                 html += f"    <td {bkgrnd_col}>-</td>\n"
 
                 continue
@@ -275,6 +314,7 @@ def table_to_html(collation, table, data):
                     lemmas[i] += f'{lemma}¬'
                     poss[i] += f'{pos}¬'
                     morphs[i] += f'{morph}¬'
+                    forms[i] += f'{form}¬'
                 tooltip = f"LEM: {lemma}\nPOS: {pos}\nMorph: {morph}" if \
                     pos not in {'PUNCT', 'SPACE'} else ""
                 cell_html += f'<span title="{tooltip}">{form}</span> '
@@ -306,6 +346,8 @@ def table_to_html(collation, table, data):
                         poss[i] = poss[i][:-1]
                     if morphs[i]:
                         morphs[i] = morphs[i][:-1]
+                    if forms[i]:
+                        forms[i] = forms[i][:-1]
 
             html += f"    <td  class=\"witness-cell\" {bkgrnd_col}>{cell_html.strip()}</td>\n"
 
@@ -322,16 +364,19 @@ def table_to_html(collation, table, data):
                 variation_cat = "morphosyntactic"
             elif just_punct:
                 variation_cat = "punctuation"
+            elif all_equal(forms):
+                variation_cat = "homographic interpretative"
             else:
                 variation_cat = "lexical"
 
             # write the category
-            html += f"    <td {bkgrnd_col}>{variation_cat}</td>\n"
+            html += f"    <td {CAT_BKGRND_COL[variation_cat]}>{variation_cat}</td>\n"
 
             # reset category vars
             lemmas = [''] * len(data['witnesses'])
             poss = [''] * len(data['witnesses'])
             morphs = [''] * len(data['witnesses'])
+            forms = [''] * len(data['witnesses'])
         else:
             # empty cell for category
             html += f"    <td {bkgrnd_col}></td>\n"

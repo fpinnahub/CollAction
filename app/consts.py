@@ -1,7 +1,7 @@
 
 ETC_FOLDER = '../etc/'
 
-PUNCT_SINGS = [',', '.', ';', ':', '?', '!']
+PUNCT_SINGS = ['', '↲', ',', '.', ';', ':', '?', '!']
 
 END_SENTENCE = ['.', '!', '?']
 
@@ -19,3 +19,12 @@ LEMMATIZERS = ["spaCy ita lm", "Lemmatizzatore B", "Lemmatizzatore C"]
 LB_CHAR = '↲<br>'
 LB_FORM = '↲'
 LB_LEMM = '↲'
+
+CAT_BKGRND_COL = {
+    "graphematic": """style=\"background-color:brown;\"""",
+    "flexional": """style=\"background-color:coral;\"""",
+    "morphosyntactic": """style=\"background-color:crimson;\"""",
+    "punctuation": """style=\"background-color:darkkhaki;\"""",
+    "homographic interpretative": """style=\"background-color:darksalmon;\"""",
+    "lexical": """style=\"background-color:tomato;\""""
+}
