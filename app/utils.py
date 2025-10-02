@@ -314,7 +314,7 @@ def table_to_html(collation, table, data):
                     lemmas[i] += f'{lemma}¬'
                     poss[i] += f'{pos}¬'
                     morphs[i] += f'{morph}¬'
-                    forms[i] += f'{form}¬'
+                forms[i] += f'{form}¬'
                 tooltip = f"LEM: {lemma}\nPOS: {pos}\nMorph: {morph}" if \
                     pos not in {'PUNCT', 'SPACE'} else ""
                 cell_html += f'<span title="{tooltip}">{form}</span> '
@@ -346,8 +346,8 @@ def table_to_html(collation, table, data):
                         poss[i] = poss[i][:-1]
                     if morphs[i]:
                         morphs[i] = morphs[i][:-1]
-                    if forms[i]:
-                        forms[i] = forms[i][:-1]
+                if forms[i]:
+                    forms[i] = forms[i][:-1]
 
             html += f"    <td  class=\"witness-cell\" {bkgrnd_col}>{cell_html.strip()}</td>\n"
 
@@ -364,6 +364,7 @@ def table_to_html(collation, table, data):
                 variation_cat = "morphosyntactic"
             elif just_punct:
                 variation_cat = "punctuation"
+            # if forms differ but lemmas don't
             elif all_equal(forms):
                 variation_cat = "homographic interpretative"
             else:
@@ -376,10 +377,13 @@ def table_to_html(collation, table, data):
             lemmas = [''] * len(data['witnesses'])
             poss = [''] * len(data['witnesses'])
             morphs = [''] * len(data['witnesses'])
-            forms = [''] * len(data['witnesses'])
+        elif all_equal(lemmas) and all_equal(poss) and all_equal(morphs) and not all_equal(forms):
+            html += f"    <td {CAT_BKGRND_COL['graphematic']}>graphematic</td>\n"
         else:
             # empty cell for category
             html += f"    <td {bkgrnd_col}></td>\n"
+
+        forms = [''] * len(data['witnesses'])
         # editable notes' cell
         html += f'    <td contenteditable="true" class="notes-cell" {notes_bkgrnd_col}></td>\n'
 
