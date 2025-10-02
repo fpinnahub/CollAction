@@ -300,7 +300,8 @@ def table_to_html(collation, table, data):
 
             # consume the cell words
             cell_remainder = str(cell)
-            while n[i] < len(witness_data) and witness_data[n[i]]['t'] in cell:
+            # while n[i] < len(witness_data) and witness_data[n[i]]['t'] in cell:
+            while n[i] < len(witness_data) and cell_remainder.strip():
 
                 debug_n += 1
 
