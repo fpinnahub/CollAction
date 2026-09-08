@@ -12,10 +12,6 @@ function updateWitnessesList(witnesses) {
     witnesses.forEach(witness => {
         const row = document.createElement('tr');
 
-        const idCell = document.createElement('td');
-        idCell.textContent = witness.id;
-        row.appendChild(idCell);
-
         const nameCell = document.createElement('td');
         nameCell.textContent = witness.name;
         row.appendChild(nameCell);
@@ -100,7 +96,7 @@ document.getElementById('addWitnessForm').addEventListener('submit', async funct
 
     // Controlla se il nome esiste già nella tabella dei testimoni
     const witnessNames = Array.from(
-        document.querySelectorAll('#witnesses-table tbody tr td:nth-child(2)')
+        document.querySelectorAll('#witnesses-table tbody tr td:first-child')
     ).map(td => td.textContent.trim().toLowerCase());
 
     if (witnessNames.includes(name.toLowerCase())) {
