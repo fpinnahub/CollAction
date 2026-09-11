@@ -184,6 +184,16 @@ def get_rows_from_printed_table(table):
     return [[cell.strip() for cell in row.split("|")] for row in rows]
 
 
+def remove_prefix(text, prefix):
+
+    return text[len(prefix):] if text.startswith(prefix) else text
+
+
+def remove_suffix(text, suffix):
+
+    return text[:-len(suffix)] if suffix and text.endswith(suffix) else text
+
+
 def table_to_html(collation, table, data):
     """Generate html collation table from plain text table"""
 
@@ -341,11 +351,25 @@ def table_to_html(collation, table, data):
 
                 # lemma-by-lemma, recover its form, caring for variants
 
-                ##################TODO: motivate
+                # Workaround for Collation misbehaviour:
+                # sometimes rows like these happens
+                # |prestame(|prestame(|
+                # |n)te     |nte )    |
+                # where the lemma begins in a cell and ends in the cell below.
+                # We are going to check if the lemma stand across the cells,
+                # remove its tail form the lower cell and replace the form in
+                # the upper.
                 if lemma not in cell_remainder:
-                    stay = False
+                    if f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma):
+                        remainder = lemma[len(cell_remainder):]
+                        rows_from_collation[ri][ci] = rows_from_collation[ri][ci].replace(remainder, '')
+                        cell_remainder = ''
+                    else:
+                        # this is the case of some orphan string,
+                        # without a corresponding lemma
+                        stay = False
 
-                    continue
+                        continue
 
                 cell_remainder = cell_remainder.replace(lemma, '', 1)
 
