@@ -287,7 +287,7 @@ def table_to_html(collation, table, data):
             if rows_from_table[r][w] != rows_from_collation[r][w]:
 
                 # debug
-                print(f'table: {rows_from_table[r][w]}\ncollation: {rows_from_collation[r][w]}')
+                # print(f'table: {rows_from_table[r][w]}\ncollation: {rows_from_collation[r][w]}')
 
                 # correction:
                 # we expect that from collation we got more spaces, nothing more
@@ -355,14 +355,28 @@ def table_to_html(collation, table, data):
                 # sometimes rows like these happens
                 # |prestame(|prestame(|
                 # |n)te     |nte )    |
+                # or
+                # |postiere|postiere|
+                # |   -    |   lo   |
                 # where the lemma begins in a cell and ends in the cell below.
                 # We are going to check if the lemma stand across the cells,
                 # remove its tail form the lower cell and replace the form in
                 # the upper.
                 if lemma not in cell_remainder:
-                    if f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma):
+                    # first case: somenthing like
+                    # lemma = 'postire lo', cell = 'postiere', cell below = 'lo'
+                    lemma_compact = lemma.replace(' ', '')
+                    if f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma_compact):
+                        remainder = lemma_compact[len(cell_remainder):]
+                        rows_from_collation[ri][ci] = \
+                            rows_from_collation[ri][ci].replace(remainder, '')
+                        cell_remainder = ''
+                    # second case: something like:
+                    # lemma = 'prestame(n)te', cell = 'prestame(', cell below = 'n)te'
+                    elif f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma.replace(' ', '')):
                         remainder = lemma[len(cell_remainder):]
-                        rows_from_collation[ri][ci] = rows_from_collation[ri][ci].replace(remainder, '')
+                        rows_from_collation[ri][ci] = \
+                            rows_from_collation[ri][ci].replace(remainder, '')
                         cell_remainder = ''
                     else:
                         # this is the case of some orphan string,
@@ -399,11 +413,15 @@ def table_to_html(collation, table, data):
                     except:
                         print('ma come?')
 
-                ### STRANGE --> see
+                # To correctly count white spaces - maybe futile, under testing
                 if n[ci] < len(witness_data) and cell in witness_data[n[ci]]['t']:
-                    n[ci] += 1
+                    #n[ci] += 1
                     if witness_data[n[ci]]['pos'] == 'SPACE':
                         witness_data[n[ci]]['t'] = ' '
+                        n[ci] += 1
+                        print('SPACE ADDED, SPACE COUNTED!')
+                        print(f'debug_n: {debug_n}\ncells: {cells}\nn: {n}\nci: {ci}\n\n')
+
 
                 # remove go-to-line HTML char
                 if variant:
