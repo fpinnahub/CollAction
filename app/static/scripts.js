@@ -386,20 +386,100 @@ document.getElementById('exportButton').addEventListener('click', function () {
     // Cicla su tutte le celle della tabella e unisce i testi degli span
     const cells = table.querySelectorAll('td');
     cells.forEach(function(cell) {
+        const spans = cell.querySelectorAll('span');
+        if (spans.length === 0) {
+            return;
+        }
+
         let cellText = '';
         // Unisce i testi di ogni span all'interno della cella
-        cell.querySelectorAll('span').forEach(function(span) {
+        spans.forEach(function(span) {
             cellText += span.innerText + ' ';
         });
         // Rimuove eventuali spazi extra alla fine
-        cell.innerText = cellText.trim();
+        if (cellText) {
+            cell.innerText = cellText.trim();
+        }
     });
+
+    // Converte un colore CSS rgb()/rgba() nel formato ARGB usato da Excel.
+    function excelColor(cssColor) {
+        const colorParts = cssColor.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)$/);
+        if (!colorParts || (colorParts[4] !== undefined && Number(colorParts[4]) === 0)) {
+            return null;
+        }
+
+        return (`FF${Number(colorParts[1]).toString(16).padStart(2, '0')}`
+            + `${Number(colorParts[2]).toString(16).padStart(2, '0')}`
+            + `${Number(colorParts[3]).toString(16).padStart(2, '0')}`).toUpperCase();
+    }
+
+    const collationTable = table.querySelector('#the-collation-table');
 
     // Converte la tabella HTML in un foglio di calcolo
     const wb = XLSX.utils.table_to_book(
-        table.querySelector("#the-collation-table"),
+        collationTable,
         { sheet: "Collation Data", raw: true }
     );
+
+    const worksheet = wb.Sheets['Collation Data'];
+    Array.from(collationTable.rows).forEach(function (htmlRow, rowIndex) {
+        Array.from(htmlRow.cells).forEach(function (htmlCell, columnIndex) {
+            const excelCell = worksheet[XLSX.utils.encode_cell({ r: rowIndex, c: columnIndex })];
+            if (!excelCell) {
+                return;
+            }
+
+            const style = {};
+            if (rowIndex === 0) {
+                style.font = { bold: true };
+            }
+
+            // The category column is always the penultimate column.
+            if (columnIndex !== htmlRow.cells.length - 2) {
+                style.alignment = { wrapText: true };
+            }
+
+            const backgroundColor = excelColor(window.getComputedStyle(htmlCell).backgroundColor);
+            if (backgroundColor) {
+                style.fill = {
+                    patternType: 'solid',
+                    fgColor: { rgb: backgroundColor }
+                };
+            }
+
+            if (Object.keys(style).length > 0) {
+                excelCell.s = style;
+            }
+        });
+    });
+
+    // Excel stores sizes per column and per row, not per cell. Calculate them
+    // from the exported values to mirror Excel's auto-fit behaviour.
+    const exportedRows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+    const columnWidths = [];
+    exportedRows.forEach(function (row) {
+        row.forEach(function (value, columnIndex) {
+            const longestLine = String(value)
+                .split(/\r?\n/)
+                .reduce(function (length, line) { return Math.max(length, line.length); }, 0);
+            columnWidths[columnIndex] = Math.max(columnWidths[columnIndex] || 0, longestLine);
+        });
+    });
+    worksheet['!cols'] = columnWidths.map(function (width) {
+        return { wch: Math.max(1, width + 2) };
+    });
+
+    worksheet['!rows'] = exportedRows.map(function (row) {
+        const lineCount = row.reduce(function (maximum, value, columnIndex) {
+            const columnWidth = Math.max(1, columnWidths[columnIndex] || 1);
+            const wrappedLines = String(value).split(/\r?\n/).reduce(function (count, line) {
+                return count + Math.max(1, Math.ceil(line.length / columnWidth));
+            }, 0);
+            return Math.max(maximum, wrappedLines);
+        }, 1);
+        return { hpt: 15 * lineCount };
+    });
 
     // Genera il file Excel e lo scarica
     XLSX.writeFile(wb, 'collation_export.xlsx');
