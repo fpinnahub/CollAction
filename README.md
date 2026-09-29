@@ -1,6 +1,7 @@
 ## prossimi passi
 
 ### debug
+### sistemare requirements
 
 ### Set an env file
 Create a `.env` file at the same level of "app/" folder, where set all 
@@ -30,3 +31,12 @@ From outside `app` folder, run:
 ```python
 python app/main.py
 ```
+
+<hr>
+
+### Forbidden strings
+Avoid these strings to be present inside witness:
+- "+"
+- " - "
+
+Do not go to the line in the string of witness title.

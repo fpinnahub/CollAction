@@ -1,5 +1,6 @@
 
-from consts import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS
+from consts import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS, \
+LB_FORM, LB_LEMM, LB_CHAR, CAT_BKGRND_COL
 
 
 def plain_text_from_split(txt):
@@ -34,10 +35,20 @@ def get_spacy_lemmas_from_text(txt, lang_model='it_core_news_lg', **lang_model_p
     # getting the lemmas and words
     lemmas = []
     for token in doc:
+        # let's fix a Spacy bug here (lemma for prop. names often are not
+        # capitalized):
+        if token.pos_ is 'PROPN' and token.text[0].isupper() and \
+                not token.lemma_[0].isupper():
+            lemma_fixed = token.lemma_.capitalize()
+        elif token.pos_ is 'PROPN' and token.text[0].islower() and \
+                token.lemma_[0].isupper():
+            lemma_fixed = token.lemma_.lower()
+        else:
+            lemma_fixed = token.lemma_
         lemmas.append(
             {
                 'word': token.text,
-                'lemma': token.lemma_,
+                'lemma': lemma_fixed,
                 'pos': token.pos_,
                 'morph': token.morph.__str__(),
                 'n': token.i,
@@ -68,8 +79,6 @@ def split_string_text(txt):
     return w_list
 
 
-
-
 def dictfy_witness_text(txt, witness_name, lang_model=None, txt_lang='it'):
     """Get dictionary of lemmas from a plain text"""
     lemmas = get_spacy_lemmas_from_text(txt, lang_model) \
@@ -79,9 +88,9 @@ def dictfy_witness_text(txt, witness_name, lang_model=None, txt_lang='it'):
         "id": witness_name,
         "tokens": [
             {
-                "form": lem['word'].replace('\n', 'LB'),
+                "form": lem['word'].replace('\n', LB_FORM),
                 "xml:id": f'w_{n}',
-                "t": lem['lemma'].replace('\n', 'LB'),
+                "t": lem['lemma'].replace('\n', LB_LEMM),
                 "pos": lem['pos'],
                 "morph": lem['morph']
             } for n, lem in enumerate(lemmas)
@@ -149,8 +158,58 @@ def all_equal(iterable):
     return next(g, True) and not next(g, False)
 
 
-def table_to_html(table, data):
+def get_rows_from_printed_table(table):
+    """Returning the list of the table rows"""
+    rows = []
+    row_prev = ''
+    for row in table.splitlines():
+        if '+' in row:
+            rows.append(row_prev)
+            row_prev = ''
+        elif row_prev:
+            row_prev = '|'.join(
+                [
+                    f'{r_p.strip()} {r.strip()}'
+                    for r_p, r in zip(
+                        row_prev.split('|'),
+                        row.strip("|").strip().split('|')
+                    )
+                ]
+            )
+        else:
+            row_prev = str(row.strip("|").strip())
+    rows = rows[2:]
+
+    # rows form printed table
+    return [[cell.strip() for cell in row.split("|")] for row in rows]
+
+
+def remove_prefix(text, prefix):
+
+    return text[len(prefix):] if text.startswith(prefix) else text
+
+
+def remove_suffix(text, suffix):
+
+    return text[:-len(suffix)] if suffix and text.endswith(suffix) else text
+
+
+def table_to_html(collation, table, data):
     """Generate html collation table from plain text table"""
+
+    """
+    'table' is a print of the collation table made with lemmas; we want to 
+    produce the same table in HTML, with forms in place of lemmas.
+    We work cell by cell, getting each cell table form 'collation.columns', 
+    taking each lemma in the cell from ??? and replacing it with corresponding 
+    forms, that are stored in 'data'.
+    Issues come from extra characters from lemma to form, like
+    mon(do) <-> mon ( do ),
+    and cases like these.
+    
+    The HTML table is build step-by-step as pieces of text appended into 'html'.
+     
+    """
 
     # bare HTML table
     html = """<!DOCTYPE html>
@@ -162,17 +221,21 @@ def table_to_html(table, data):
 <table id='the-collation-table' border='1' cellspacing='0' cellpadding='5'>\n"""
 
     # get rows and cells
-    rows = [row.strip("|").strip() for row in table.splitlines() if "+" not in row and row.strip()]
+    rows_from_table = get_rows_from_printed_table(table)
 
     # witness names
     witness_id = [wit['id'] for wit in data['witnesses']]
     html += "  <tr>\n"
 
-    # working row by row
-    n = [0] * len(data['witnesses'])
-    lemmas = [''] * len(data['witnesses'])
-    poss = [''] * len(data['witnesses'])
-    morphs = [''] * len(data['witnesses'])
+    # working row by row, we collect words info
+    wit_num = len(witness_id)
+    n = [0] * wit_num           # to count the words in each cell
+    lemmas = [''] * wit_num
+    poss = [''] * wit_num
+    morphs = [''] * wit_num
+    forms = [''] * wit_num
+
+    # setting the HTML table header
     for w_id in witness_id:
         html += f"""    <td style="text-align: center;">
         <span style="font-weight:bold;font-size:xx-large;">{w_id.strip()}</span>
@@ -184,52 +247,196 @@ def table_to_html(table, data):
                 <span style="font-style:italic;font-size:x-large;">notes</span>
                 </td>\n"""
     html += "  </tr>\n"
-    for row in rows[1:]:
-        cells = [cell.strip() for cell in row.split("|")]
-        variant = not all_equal(cells)
-        bkgrnd_col = """style=\"background-color:red;\"""" \
-            if variant else """style=\"background-color:rgba(0, 0, 0, 0);\""""
+
+    debug_n = 0
+
+    # extracting witnesses' info from data
+    witness_datas = tuple(
+        next(
+            w['tokens'] for w in data["witnesses"] if w["id"] == wit_name
+        ) for wit_name in witness_id
+    )
+
+    # rows from collation object
+    # (we get rows also from collation table to double-check; mind that
+    # collation table seems transposed, so we point at collation.columns)
+    tech_obj = type('TechClass', (object,), {'token_string': ''})()
+    rows_from_collation = [
+        [' '.join(
+            [
+                tok.token_string
+                for tok in row.tokens_per_witness.get(w_name, [tech_obj])
+            ]
+        ) for w_name in witness_id]
+        for row in collation.columns
+    ]
+
+    # check length
+    if len(rows_from_collation) != len(rows_from_table):
+
+        raise AssertionError(
+            'Collation and printed table have different length'
+        )
+
+    # check alignment
+    for r in range(len(rows_from_table)):
+        for w in range(wit_num):
+            if not rows_from_collation[r][w]:
+
+                continue
+            if rows_from_table[r][w] != rows_from_collation[r][w]:
+
+                # debug
+                # print(f'table: {rows_from_table[r][w]}\ncollation: {rows_from_collation[r][w]}')
+
+                # correction:
+                # we expect that from collation we got more spaces, nothing more
+                if (rows_from_collation[r][w].replace(' ', '') ==
+                        rows_from_table[r][w].replace(' ', '')):
+                    rows_from_collation[r][w] = rows_from_table[r][w]
+                else:
+
+                    raise ValueError('Bad parsing value in collation table')
+
+    # row-by-row and cell-by-cell, build the HTML table
+    ri = 0
+    for row in collation.columns:
+        cells = rows_from_collation[ri]
+        ri += 1
+
+        variant = row.variant
+
+        # check if just punctuation variation, and set cell background color
+        # depending on the case
+        just_punct = False
+        if variant and all(c in PUNCT_SINGS + ['-'] for c in cells):
+            bkgrnd_col = """style=\"background-color:peru;\""""
+            just_punct = not just_punct
+        else:
+            bkgrnd_col = """style=\"background-color:red;\"""" \
+                if variant else """style=\"background-color:rgba(0, 0, 0, 0);\""""
         notes_bkgrnd_col = """style=\"background-color:beige;\"""" \
             if variant else """style=\"background-color:bisque;\""""
+
+        # check starting linebreaks (we will remove for better rendering)
+        start_with_linebreak = True if all(c.startswith(LB_LEMM)
+                                           for c in cells) else False
+
         html += "  <tr>\n"
-        for i, cell in enumerate(cells):
-            witness_data = next(w['tokens'] for w in data["witnesses"] if w["id"] == witness_id[i])
-            if cell == '-' and cell not in witness_data[n[i]]['t']:
+        for ci, cell in enumerate(cells):   # 'ci' stands for cell index
+
+            debug_n += 1
+
+            # collect all token info for the cell
+            witness_data = witness_datas[ci]
+
+            # empty cell case
+            if cell == '':
                 html += f"    <td {bkgrnd_col}>-</td>\n"
 
                 continue
             cell_html = ""
 
             # consume the cell words
-            cell_remainder = str(cell)
-            while n[i] < len(witness_data) and witness_data[n[i]]['t'] in cell:
-                cell_remainder = cell_remainder.replace(
-                    witness_data[n[i]]['t'], '', 1
-                )
-                token = witness_data[n[i]]
-                form, pos, morph, lemma = token['form'], token['pos'], token['morph'], token['t']
-                if variant:
-                    lemmas[i] += f'{lemma}¬'
-                    poss[i] += f'{pos}¬'
-                    morphs[i] += f'{morph}¬'
+            cell_remainder = str(cell)      # remainder should be empty when
+            #                               # all words are consumed
+            stay = True
+            while n[ci] < len(witness_data) and cell_remainder.strip() and stay:
+
+                debug_n += 1
+
+                token = witness_data[n[ci]]
+                form, pos, morph, lemma = \
+                    token['form'], token['pos'], token['morph'], token['t']
+
+                # lemma-by-lemma, recover its form, caring for variants
+
+                # Workaround for Collation misbehaviour:
+                # sometimes rows like these happens
+                # |prestame(|prestame(|
+                # |n)te     |nte )    |
+                # or
+                # |postiere|postiere|
+                # |   -    |   lo   |
+                # where the lemma begins in a cell and ends in the cell below.
+                # We are going to check if the lemma stand across the cells,
+                # remove its tail form the lower cell and replace the form in
+                # the upper.
+                if lemma not in cell_remainder:
+                    # first case: somenthing like
+                    # lemma = 'postire lo', cell = 'postiere', cell below = 'lo'
+                    lemma_compact = lemma.replace(' ', '')
+                    if f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma_compact):
+                        remainder = lemma_compact[len(cell_remainder):]
+                        rows_from_collation[ri][ci] = \
+                            rows_from_collation[ri][ci].replace(remainder, '')
+                        cell_remainder = ''
+                    # second case: something like:
+                    # lemma = 'prestame(n)te', cell = 'prestame(', cell below = 'n)te'
+                    elif f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma.replace(' ', '')):
+                        remainder = lemma[len(cell_remainder):]
+                        rows_from_collation[ri][ci] = \
+                            rows_from_collation[ri][ci].replace(remainder, '')
+                        cell_remainder = ''
+                    else:
+                        # this is the case of some orphan string,
+                        # without a corresponding lemma
+                        stay = False
+
+                        continue
+
+                cell_remainder = cell_remainder.replace(lemma, '', 1)
+
+                if variant:     # store value in list for further actions
+                    lemmas[ci] += f'{lemma}¬'
+                    poss[ci] += f'{pos}¬'
+                    morphs[ci] += f'{morph}¬'
+                forms[ci] += f'{form}¬'
                 tooltip = f"LEM: {lemma}\nPOS: {pos}\nMorph: {morph}" if \
-                          pos not in {'PUNCT', 'SPACE'} else ""
+                    pos not in {'PUNCT', 'SPACE'} else ""
                 cell_html += f'<span title="{tooltip}">{form}</span> '
-                n[i] += 1
-            else:
-                if len(cell_remainder.strip()):
-                    cell_html += f'<span title="UNKNOWN">{cell_remainder}</span> '
-                if n[i] < len(witness_data) and cell in witness_data[n[i]]['t']:
-                    n[i] += 1
+                n[ci] += 1
+            else:   # all words in the cell are now consumed
+                if start_with_linebreak:
+                    cell_html = cell_html.replace(LB_FORM, ' ', 1)
+
+                if len(cell_remainder.strip()):     # this should not happen
+
+                    try:
+
+                        if cell.index(inner_trim(cell_remainder)) < \
+                                cell.index(cell.replace(inner_trim(cell_remainder), '')):
+                            cell_html = f'<span title="UNKNOWN">{cell_remainder}</span> {cell_html}'
+                        else:
+                            cell_html += f'<span title="UNKNOWN">{cell_remainder}</span> '
+
+                    except:
+                        print('ma come?')
+
+                # To correctly count white spaces - maybe futile, under testing
+                if n[ci] < len(witness_data) and cell in witness_data[n[ci]]['t']:
+                    #n[ci] += 1
+                    if witness_data[n[ci]]['pos'] == 'SPACE':
+                        witness_data[n[ci]]['t'] = ' '
+                        n[ci] += 1
+                        print('SPACE ADDED, SPACE COUNTED!')
+                        print(f'debug_n: {debug_n}\ncells: {cells}\nn: {n}\nci: {ci}\n\n')
+
+
+                # remove go-to-line HTML char
                 if variant:
-                    if lemmas[i]:
-                        lemmas[i] = lemmas[i][:-1]
-                    if poss[i]:
-                        poss[i] = poss[i][:-1]
-                    if morphs[i]:
-                        morphs[i] = morphs[i][:-1]
+                    if lemmas[ci]:
+                        lemmas[ci] = lemmas[ci][:-1]
+                    if poss[ci]:
+                        poss[ci] = poss[ci][:-1]
+                    if morphs[ci]:
+                        morphs[ci] = morphs[ci][:-1]
+                if forms[ci]:
+                    forms[ci] = forms[ci][:-1]
 
             html += f"    <td  class=\"witness-cell\" {bkgrnd_col}>{cell_html.strip()}</td>\n"
+
+
 
         # guess the category
         if variant:
@@ -242,27 +449,51 @@ def table_to_html(table, data):
             # if forms have same @lemma, but different @pos and @msd > diffPos
             elif all_equal(lemmas):
                 variation_cat = "morphosyntactic"
+            elif just_punct:
+                variation_cat = "punctuation"
+            # if lemmas differ but forms don't
+            elif all_equal(forms):
+                variation_cat = "homographic interpretative"
             else:
                 variation_cat = "lexical"
 
             # write the category
-            html += f"    <td {bkgrnd_col}>{variation_cat}</td>\n"
+            html += f"    <td {CAT_BKGRND_COL[variation_cat]}>{variation_cat}</td>\n"
 
             # reset category vars
-            lemmas = [''] * len(data['witnesses'])
-            poss = [''] * len(data['witnesses'])
-            morphs = [''] * len(data['witnesses'])
+            lemmas = [''] * wit_num
+            poss = [''] * wit_num
+            morphs = [''] * wit_num
+        elif all_equal(lemmas) and all_equal(poss) and all_equal(morphs) and not all_equal(forms):
+            html += f"    <td {CAT_BKGRND_COL['graphematic']}>graphematic</td>\n"
         else:
             # empty cell for category
             html += f"    <td {bkgrnd_col}></td>\n"
+
+        forms = [''] * wit_num
         # editable notes' cell
         html += f'    <td contenteditable="true" class="notes-cell" {notes_bkgrnd_col}></td>\n'
 
         html += "  </tr>\n"
 
+
+
+
+
     html += "</table>"
 
+    # LB to linebreaks
+    html = html.replace(LB_FORM, LB_CHAR)
+
     return html
+
+
+def inner_trim(string):
+    """Recursively replace double spaces with one"""
+    while '  ' in string:
+        string = string.replace('  ', ' ')
+
+    return string
 
 
 def collation_html_from_dict(dict_input, seg=True, coll_by_lemmas=True):
@@ -293,7 +524,7 @@ def collation_html_from_dict(dict_input, seg=True, coll_by_lemmas=True):
         collation_material, output="table", layout="vertical", segmentation=seg, near_match=not seg
     )
 
-    return table_to_html(table.__str__(), dict_input)
+    return table_to_html(table, table.__str__(), dict_input)
 
 
 def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):
@@ -335,7 +566,7 @@ def collate_from_json(json_input, output_dir, seg=False, coll_by_lemmas=True):
         indent=True
     )
     xml_output = table_to_xml(table) if not seg else collate(collation_material, output='xml', indent=True)
-    html_table = table_to_html(table.__str__(), collation_material_json)
+    html_table = table_to_html(table, table.__str__(), collation_material_json)
 
     # writing output files
     with open(normpath(output_dir) + "/coll" + "/out.html", 'w', encoding='utf8') as f:

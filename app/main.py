@@ -153,15 +153,15 @@ async def add_witness(
         request: AddWitnessRequest, db: Session = Depends(get_db),
         user: models.User = Depends(get_current_user)
 ):
+    u_id: int = user.id
     new_witness = models.Witness(
-        name=request.witness_name, text=request.witness_text
+        name=request.witness_name, text=request.witness_text, owner_id=u_id
     )
     db.add(new_witness)
     db.commit()
     db.refresh(new_witness)
 
     # Show only witness for the current user
-    u_id: int = user.id
     witnesses = db.query(models.Witness).filter(models.Witness.owner_id == u_id).all()
 
     return {"witnesses": [{"id": w.id, "name": w.name} for w in witnesses]}
