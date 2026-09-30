@@ -345,6 +345,12 @@ def table_to_html(collation, table, data):
 
                 debug_n += 1
 
+
+                if debug_n in list(range(1146, 1154)):
+                    print(f'This case - debug n°{debug_n}, needs attention!')
+
+
+
                 token = witness_data[n[ci]]
                 form, pos, morph, lemma = \
                     token['form'], token['pos'], token['morph'], token['t']
@@ -366,24 +372,29 @@ def table_to_html(collation, table, data):
                     # first case: somenthing like
                     # lemma = 'postire lo', cell = 'postiere', cell below = 'lo'
                     lemma_compact = lemma.replace(' ', '')
-                    if f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma_compact):
-                        remainder = lemma_compact[len(cell_remainder):]
-                        rows_from_collation[ri][ci] = \
-                            rows_from_collation[ri][ci].replace(remainder, '')
-                        cell_remainder = ''
-                    # second case: something like:
-                    # lemma = 'prestame(n)te', cell = 'prestame(', cell below = 'n)te'
-                    elif f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma.replace(' ', '')):
-                        remainder = lemma[len(cell_remainder):]
-                        rows_from_collation[ri][ci] = \
-                            rows_from_collation[ri][ci].replace(remainder, '')
-                        cell_remainder = ''
-                    else:
-                        # this is the case of some orphan string,
-                        # without a corresponding lemma
-                        stay = False
+                    try:
+                        if f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma_compact):
+                            remainder = lemma_compact[len(cell_remainder):]
+                            rows_from_collation[ri][ci] = \
+                                rows_from_collation[ri][ci].replace(remainder, '')
+                            cell_remainder = ''
+                        # second case: something like:
+                        # lemma = 'prestame(n)te', cell = 'prestame(', cell below = 'n)te'
+                        elif f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma.replace(' ', '')):
+                            remainder = lemma[len(cell_remainder):]
+                            rows_from_collation[ri][ci] = \
+                                rows_from_collation[ri][ci].replace(remainder, '')
+                            cell_remainder = ''
+                        else:
+                            # this is the case of some orphan string,
+                            # without a corresponding lemma
+                            stay = False
 
-                        continue
+                            continue
+
+                    except:
+                        print(f'Sarà IndexError: {Exception}\ndebug n°{debug_n}')
+
 
                 cell_remainder = cell_remainder.replace(lemma, '', 1)
 
