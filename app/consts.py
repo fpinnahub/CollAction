@@ -1,3 +1,11 @@
+import os
+
+
+DEBUG_MODE = os.getenv("DEBUG_MODE", "False").lower() in ("true", "1", "t")
+
+if DEBUG_MODE:
+    print("Debugging enabled via system settings")
+
 
 ETC_FOLDER = '../etc/'
 

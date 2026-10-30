@@ -1,6 +1,11 @@
 
 from consts import PUNCT_SINGS, ETC_FOLDER, END_SENTENCE, XML_NAMESPACE, XML_TAGS_FOR_LEMMAS, \
-LB_FORM, LB_LEMM, LB_CHAR, CAT_BKGRND_COL
+LB_FORM, LB_LEMM, LB_CHAR, CAT_BKGRND_COL, DEBUG_MODE
+
+
+def print_debug(db):
+    if DEBUG_MODE:
+        print(db)
 
 
 def plain_text_from_split(txt):
@@ -346,10 +351,10 @@ def table_to_html(collation, table, data):
                 debug_n += 1
 
 
-                if debug_n in list(range(1146, 1154)):
+                if debug_n in list(range(308, 315)):
                     print(f'This case - debug n°{debug_n}, needs attention!')
 
-
+                ### "pace prestame( ...sempre lui!
 
                 token = witness_data[n[ci]]
                 form, pos, morph, lemma = \
@@ -372,19 +377,20 @@ def table_to_html(collation, table, data):
                     # first case: somenthing like
                     # lemma = 'postire lo', cell = 'postiere', cell below = 'lo'
                     lemma_compact = lemma.replace(' ', '')
+                    cell_rem_clean = f'{cell_remainder}{rows_from_collation[ri][ci]}'.lstrip()
                     try:
-                        if f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma_compact):
+                        if cell_rem_clean.startswith(lemma_compact):
                             remainder = lemma_compact[len(cell_remainder):]
                             rows_from_collation[ri][ci] = \
                                 rows_from_collation[ri][ci].replace(remainder, '')
                             cell_remainder = ''
                         # second case: something like:
                         # lemma = 'prestame(n)te', cell = 'prestame(', cell below = 'n)te'
-                        elif f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma.replace(' ', '')):
-                            remainder = lemma[len(cell_remainder):]
-                            rows_from_collation[ri][ci] = \
-                                rows_from_collation[ri][ci].replace(remainder, '')
-                            cell_remainder = ''
+                        # elif f'{cell_remainder}{rows_from_collation[ri][ci]}'.startswith(lemma.replace(' ', '')):
+                        #     remainder = lemma[len(cell_remainder):]
+                        #     rows_from_collation[ri][ci] = \
+                        #         rows_from_collation[ri][ci].replace(remainder, '')
+                        #     cell_remainder = ''
                         else:
                             # this is the case of some orphan string,
                             # without a corresponding lemma
@@ -423,6 +429,7 @@ def table_to_html(collation, table, data):
 
                     except:
                         print('ma come?')
+                        print_debug(debug_n)
 
                 # To correctly count white spaces - maybe futile, under testing
                 if n[ci] < len(witness_data) and cell in witness_data[n[ci]]['t']:
@@ -446,6 +453,8 @@ def table_to_html(collation, table, data):
                     forms[ci] = forms[ci][:-1]
 
             html += f"    <td  class=\"witness-cell\" {bkgrnd_col}>{cell_html.strip()}</td>\n"
+            if DEBUG_MODE:
+                html += f"    <!-- {debug_n} -->\n"
 
 
 

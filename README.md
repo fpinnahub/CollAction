@@ -2,13 +2,14 @@
 <!--
 ## prossimi passi
 
-### debug
-### provare ad aggiornare interprete e pacchetti
-### sistemare requirements
-### prove con piú testimoni, anche inventati
-### possibilità di caricare testimoni in formato txt e docx
-### introdurre un check al caricamento dei testimoni che verifichi la presenza di caratteri proibiti
-### migliorare la grafica lato FE - piú moderna, piú accattivante, e favico
+### • debug
+### • provare ad aggiornare interprete e pacchetti
+### • sistemare requirements
+### • prove con piú testimoni, anche inventati
+### • possibilità di caricare testimoni in formato txt e docx
+### • introdurre un check al caricamento dei testimoni che verifichi la presenza di caratteri proibiti
+### • migliorare la grafica lato FE - piú moderna, piú accattivante, e _favico_
+### • disclaimer per cookies
 -->
 ### Set an env file
 Create a `.env` file at the same level of "app/" folder, where set all 
